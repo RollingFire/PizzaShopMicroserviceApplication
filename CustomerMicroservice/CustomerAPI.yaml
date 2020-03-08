@@ -1,0 +1,217 @@
+openapi: 3.0.0
+info:
+  title: Customer API
+  description: Intereface for Customer Microservice to edit the MySQL customer table.
+  version: 0.0.1
+
+paths:
+  /customer:
+    get:
+      summary: Returns a list of customers matching query paramiters if any.
+      parameters:
+        - in: query
+          name: firstName
+          required: false
+          schema:
+            type: string
+          description: Will return customers that match the first name.
+        - in: query
+          name: lastName
+          required: false
+          schema:
+            type: string
+          description: Will return customers that match the last name.
+      responses:
+        '200':
+          description: A JSON array of customers
+          content:
+            application/json:
+              schema: 
+                type: array
+                items: 
+                  type: object
+                  properties:
+                    id:
+                      type: integer
+                    firstName:
+                      type: string
+                    lastName:
+                      type: string
+                    numberOrders:
+                      type: integer
+                    memberSince:
+                      type: string
+                      example: YYYY/MM/DD
+        '500':
+          description: An error occered.
+          content:
+            text/plain:
+              schema:
+                type: string
+                example: Error Message
+    post:
+      summary: Adds a new customer.
+      parameters:
+        - in: query
+          name: firstName
+          required: false
+          schema:
+            type: string
+          description: What to set costomer's first name to.
+        - in: query
+          name: lastName
+          required: false
+          schema:
+            type: string
+          description: What to set costomer's last name to.
+      responses:
+        '201':
+          description: Customer created.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: integer
+                  firstName:
+                    type: string
+                  lastName:
+                    type: string
+                  numberOrders:
+                    type: integer
+                  memberSince:
+                    type: string
+                    example: YYYY/MM/DD
+        '500':
+          description: An error occered.
+          content:
+            text/plain:
+              schema:
+                type: string
+                example: Error Message
+  
+  /customer/{id}:
+    get:
+      summary: Returns a customer where id matches.
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: ID of the customer.
+          schema:
+            type : int
+      responses:
+        '200':
+          description: Successfully returning a customer with the given ID if present.
+          content:
+            application/json:
+              schema: 
+                type: object
+                properties:
+                  id:
+                    type: integer
+                  firstName:
+                    type: string
+                  lastName:
+                    type: string
+                  numberOrders:
+                    type: integer
+                  memberSince:
+                    type: string
+                    example: YYYY/MM/DD
+        '404':
+          description: Customer not found.
+        '500':
+          description: An error occered.
+          content:
+            text/plain:
+              schema:
+                type: string
+                example: Error Message
+
+    delete:
+      summary: Returns customer where id matches.
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: ID of the customer.
+          schema:
+            type : int
+      responses:
+        '200':
+          description: Customer deleted.
+        '404':
+          description: Customer not found.
+        '500':
+          description: An error occered.
+          content:
+            text/plain:
+              schema:
+                type: string
+                example: Error Message
+    post:
+      summary: Increments the order count by one.
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: ID of the customer.
+          schema:
+            type : int
+      responses:
+        '200':
+          description: Successfully incremented the order count.
+          content:
+            text/plain:
+              schema:
+                type: number
+                example: 3
+        '404':
+          description: Customer not found.
+        '500':
+          description: An error occered.
+          content:
+            text/plain:
+              schema:
+                type: string
+                example: Error Message
+    put:
+      summary: Changes the customer's name.
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: ID of the customer.
+          schema:
+            type : int
+        - in: query
+          name: firstName
+          required: false
+          schema:
+            type: string
+          description: What to change the customer's first name to.
+        - in: query
+          name: lastName
+          required: false
+          schema:
+            type: string
+          description: What to change the customer's last name to.
+      responses:
+        '200':
+          description: Successfully updated customers name
+          content:
+            text/plain:
+              schema:
+                type: string
+                example: John Doe
+        '404':
+          description: Customer not found.
+        '500':
+          description: An error occered.
+          content:
+            text/plain:
+              schema:
+                type: string
+                example: Error Message

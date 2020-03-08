@@ -1,0 +1,4 @@
+FROM python:3
+ADD AutoRestocker.py restocker.properties ./
+RUN pip install requests
+CMD [ "python", "-u", "./AutoRestocker.py" ]

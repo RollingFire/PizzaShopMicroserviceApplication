@@ -1,0 +1,426 @@
+openapi: 3.0.0
+info:
+  title: Inventory API
+  description: Intereface for Inventory Microservice to edit the MySQL invenetory table.
+  version: 0.0.1
+
+paths:
+  /inventory:
+    get:
+      summary: Returns a list of inventory items.
+      responses:
+        '200':
+          description: A JSON array of itmes in the inventory
+          content:
+            application/json:
+              schema: 
+                type: array
+                items: 
+                  type: object
+                  properties:
+                    id:
+                      type: integer
+                    name:
+                      type: string
+                    units:
+                      type: number
+                    unitType:
+                      type: string
+                    restockAt:
+                      type: number
+                    restockAmount:
+                      type: number
+        '500':
+          description: An error occered.
+          content:
+            text/plain:
+              schema:
+                type: string
+                example: Error Message
+    post:
+      summary: Adds a new item to the inventory.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                units:
+                  type: number
+                unitType:
+                  type: string
+                restockAt:
+                  type: number
+                restockAmount:
+                  type: number
+      responses:
+        '201':
+          description: Inventory item added.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: integer
+                  name:
+                    type: string
+                  units:
+                    type: number
+                  unitType:
+                    type: string
+                  restockAt:
+                    type: number
+                  restockAmount:
+                    type: number
+        '500':
+          description: An error occered.
+          content:
+            text/plain:
+              schema:
+                type: string
+                example: Error Message
+
+  /inventory/{id}:
+    get:
+      summary: Returns the inventory item.
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: ID of the item in the inventory.
+          schema:
+            type : int
+      responses:
+        '200':
+          description: Item was found and returned.
+          content:
+            application/json:
+              schema: 
+                type: object
+                properties:
+                  id:
+                    type: integer
+                  name:
+                    type: string
+                  units:
+                    type: number
+                  unitType:
+                    type: string
+                  restockAt:
+                    type: number
+                  restockAmount:
+                    type: number
+        '404':
+          description: Item not found.
+        '500':
+          description: An error occered.
+          content:
+            text/plain:
+              schema:
+                type: string
+                example: Error Message
+    delete:
+      summary: Deletes the inventory item.
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: ID of the item in the inventory.
+          schema:
+            type : int
+      responses:
+        '200':
+          description: Item deleted.
+        '404':
+          description: Item not found.
+        '500':
+          description: An error occered.
+          content:
+            text/plain:
+              schema:
+                type: string
+                example: Error Message
+    put:
+      summary: Updates an item in the inventory.
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: ID of the item in the inventory.
+          schema:
+            type : int
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                units:
+                  type: number
+                unitType:
+                  type: string
+                restockAt:
+                  type: number
+                restockAmount:
+                  type: number
+      responses:
+        '200':
+          description: Inventory item updated.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: integer
+                  name:
+                    type: string
+                  units:
+                    type: number
+                  unitType:
+                    type: string
+                  restockAt:
+                    type: number
+                  restockAmount:
+                    type: number
+        '500':
+          description: An error occered.
+          content:
+            text/plain:
+              schema:
+                type: string
+                example: Error Message
+
+  /inventory/{name}:
+    get:
+      summary: Returns the inventory item.
+      parameters:
+        - name: name
+          in: path
+          required: true
+          description: Name of the item in the inventory.
+          schema:
+            type : string
+      responses:
+        '200':
+          description: Item was found and returned.
+          content:
+            application/json:
+              schema: 
+                type: object
+                properties:
+                  id:
+                    type: integer
+                  name:
+                    type: string
+                  units:
+                    type: number
+                  unitType:
+                    type: string
+                  restockAt:
+                    type: number
+                  restockAmount:
+                    type: number
+        '404':
+          description: Item not found.
+        '500':
+          description: An error occered.
+          content:
+            text/plain:
+              schema:
+                type: string
+                example: Error Message
+    delete:
+      summary: Deletes the inventory item.
+      parameters:
+        - name: name
+          in: path
+          required: true
+          description: Name of the item in the inventory.
+          schema:
+            type : string
+      responses:
+        '200':
+          description: Item deleted.
+        '404':
+          description: Item not found.
+        '500':
+          description: An error occered.
+          content:
+            text/plain:
+              schema:
+                type: string
+                example: Error Message
+    post:
+      summary: Adds a new item to the inventory.
+      parameters:
+        - name: name
+          in: path
+          required: true
+          description: Name of the item in the inventory.
+          schema:
+            type : string
+      responses:
+        '201':
+          description: Inventory item added.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: integer
+                  name:
+                    type: string
+                  units:
+                    type: number
+                  unitType:
+                    type: string
+                  restockAt:
+                    type: number
+                  restockAmount:
+                    type: number
+        '500':
+          description: An error occered.
+          content:
+            text/plain:
+              schema:
+                type: string
+                example: Error Message
+    put:
+      summary: Updates an item in the inventory.
+      parameters:
+        - name: name
+          in: path
+          required: true
+          description: Name of the item in the inventory.
+          schema:
+            type : string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                units:
+                  type: number
+                unitType:
+                  type: string
+                restockAt:
+                  type: number
+                restockAmount:
+                  type: number
+      responses:
+        '200':
+          description: Inventory item updated.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: integer
+                  name:
+                    type: string
+                  units:
+                    type: number
+                  unitType:
+                    type: string
+                  restockAt:
+                    type: number
+                  restockAmount:
+                    type: number
+        '404':
+          description: Item not found.
+        '500':
+          description: An error occered.
+          content:
+            text/plain:
+              schema:
+                type: string
+                example: Error Message
+
+  /inventory/restock/{id}:
+    post:
+      summary: Restocks the inventory item.
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: ID of the item in the inventory.
+          schema:
+            type : integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                unitsAdded:
+                  type: number
+      responses:
+        '200':
+          description: Inventory item updated, new number of units returned.
+          content:
+            text/plain:
+              schema:
+                type: number
+                example: 16
+        '404':
+          description: Item not found.
+        '500':
+          description: An error occered.
+          content:
+            text/plain:
+              schema:
+                type: string
+                example: Error Message
+
+  /inventory/restock/{name}:
+    post:
+      summary: Restocks the inventory item.
+      parameters:
+        - name: name
+          in: path
+          required: true
+          description: Name of the item in the inventory.
+          schema:
+            type : string
+      requestBody:
+        required: true
+        content:
+          text/plain:
+            schema:
+              type: number
+              example: 16
+      responses:
+        '200':
+          description: Inventory item updated, new number of units returned.
+          content:
+            application/json:
+              schema: 
+                type: object
+                properties:
+                  newAmount:
+                    type: number
+        '404':
+          description: Item not found.
+        '500':
+          description: An error occered.
+          content:
+            text/plain:
+              schema:
+                type: string
+                example: Error Message
+                    

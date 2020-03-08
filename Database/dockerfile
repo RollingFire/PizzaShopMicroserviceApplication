@@ -1,0 +1,5 @@
+FROM mysql
+
+ENV MYSQL_DATABASE pizza-shop
+
+COPY ./sql-scripts/ /docker-entrypoint-initdb.d/
