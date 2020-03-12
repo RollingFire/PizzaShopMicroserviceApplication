@@ -188,7 +188,8 @@ public class CustomerServiceIMPL implements CustomerService {
 
             ResultSet result = statement.executeQuery("SELECT * FROM " + tableName + " WHERE id='" + id + "';");
             if (result.next()) {
-                return result.getString("firstName") + " " + result.getString("lastName");
+                return (result.getString("firstName") != null ? result.getString("firstName") : "Last Name:") + 
+                       (result.getString("lastName") != null ? " " + result.getString("lastName") : "");
             } else {
                 return null;
             }

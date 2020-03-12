@@ -37,11 +37,11 @@ paths:
                       type: string
                     lastName:
                       type: string
-                    numberOrders:
+                    numberOfOrders:
                       type: integer
                     memberSince:
                       type: string
-                      example: YYYY/MM/DD
+                      example: YYYY-MM-DD
         '500':
           description: An error occered.
           content:
@@ -78,11 +78,11 @@ paths:
                     type: string
                   lastName:
                     type: string
-                  numberOrders:
+                  numberOfOrders:
                     type: integer
                   memberSince:
                     type: string
-                    example: YYYY/MM/DD
+                    example: YYYY-MM-DD
         '500':
           description: An error occered.
           content:
@@ -115,11 +115,11 @@ paths:
                     type: string
                   lastName:
                     type: string
-                  numberOrders:
+                  numberOfOrders:
                     type: integer
                   memberSince:
                     type: string
-                    example: YYYY/MM/DD
+                    example: YYYY-MM-DD
         '404':
           description: Customer not found.
         '500':

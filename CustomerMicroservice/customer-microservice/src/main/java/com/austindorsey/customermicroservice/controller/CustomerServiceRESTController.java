@@ -53,7 +53,7 @@ public class CustomerServiceRESTController {
                                   @RequestParam(required=false) String lastName) {
         try {
             Customer customers = customerService.addCustomer(firstName, lastName);
-            return new ResponseEntity<>(customers, HttpStatus.OK);
+            return new ResponseEntity<>(customers, HttpStatus.CREATED);
         } catch (Exception e) {
             return new ResponseEntity<>(e, HttpStatus.INTERNAL_SERVER_ERROR);
         }
