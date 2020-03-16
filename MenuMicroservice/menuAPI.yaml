@@ -486,6 +486,30 @@ paths:
                   description: ID of the menu.
                   schema:
                     type: int
+                - name: catagory
+                  in: query
+                  required: false
+                  description: What to change catagory to.
+                  schema:
+                    type: string
+                - name: name
+                  in: query
+                  required: false
+                  description: What to change name to.
+                  schema:
+                    type: string
+                - name: discription
+                  in: query
+                  required: false
+                  description: What to change discription to.
+                  schema:
+                    type: string
+                - name: cost
+                  in: query
+                  required: false
+                  description: What to change cost to.
+                  schema:
+                    type: number
             responses:
                 '200':
                     description: Successfully returning menu.
