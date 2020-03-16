@@ -1,0 +1,340 @@
+openapi: 3.0.0
+info:
+  title: Menu API
+  description: Intereface for Menu Microservice to edit the MySQL menu and menuItem tables.
+  version: 0.0.1
+
+paths:
+    /menu:
+        get:
+            summary: Returns a list of all current menus.
+            tags:
+                - Menu
+            responses:
+                '200':
+                    description: Successfully returning list of menus.
+                    content:
+                        application/json:
+                            schema: 
+                                type: array
+                                items:
+                                    type: object
+                                    properties:
+                                        id:
+                                            type: integer
+                                        name:
+                                            type: string
+                                        items:
+                                            type: string
+                                        revistionDate:
+                                            type: string
+                '500':
+                    description: An error occered.
+                    content:
+                        text/plain:
+                            schema:
+                                type: string
+                                example: Error Message
+        post:
+            summary: Creates a menu.
+            tags:
+                - Menu
+            requestBody:
+                required: true
+                content:
+                    application/json:
+                        schema:
+                            type: object
+                            properties:
+                                name:
+                                    type: string
+                                items:
+                                    type: string
+            responses:
+                '201':
+                    description: Successfully created menu.
+                    content:
+                        application/json:
+                            schema: 
+                                type: object
+                                properties:
+                                    id:
+                                        type: integer
+                                    name:
+                                        type: string
+                                    items:
+                                        type: json
+                                    revistionDate:
+                                        type: string
+                '500':
+                    description: An error occered.
+                    content:
+                        text/plain:
+                            schema:
+                                type: string
+                                example: Error Message
+    /menu/{id}:
+        get:
+            summary: Returns the most up to date menu at the given id.
+            tags:
+                - Menu
+            parameters:
+                - name: id
+                  in: path
+                  required: true
+                  description: ID of the menu.
+                  schema:
+                    type: int
+            responses:
+                '200':
+                    description: Successfully returning menu.
+                    content:
+                        application/json:
+                            schema: 
+                                type: object
+                                properties:
+                                    id:
+                                        type: integer
+                                    name:
+                                        type: string
+                                    items:
+                                        type: json
+                                    revistionDate:
+                                        type: string
+                '500':
+                    description: An error occered.
+                    content:
+                        text/plain:
+                            schema:
+                                type: string
+                                example: Error Message
+        post:
+            summary: Updates the menu at the given id.
+            tags:
+                - Menu
+            parameters:
+                - name: id
+                  in: path
+                  required: true
+                  description: ID of the menu.
+                  schema:
+                      type: int
+            requestBody:
+                required: true
+                content:
+                    application/json:
+                        schema:
+                            type: object
+                            properties:
+                                name:
+                                    type: string
+                                items:
+                                    type: string
+            responses:
+                '200':
+                    description: Successfully updated and returning menus.
+                    content:
+                        application/json:
+                            schema: 
+                                type: object
+                                properties:
+                                    id:
+                                        type: integer
+                                    name:
+                                        type: string
+                                    items:
+                                        type: json
+                                    revistionDate:
+                                        type: string
+                '500':
+                    description: An error occered.
+                    content:
+                        text/plain:
+                            schema:
+                                type: string
+                                example: Error Message
+    /menu/{name}:
+        get:
+            summary: Returns most up to date menu with the given name.
+            tags:
+                - Menu
+            parameters:
+                - name: name
+                  in: path
+                  required: true
+                  description: name of the menu.
+                  schema:
+                      type: string
+            responses:
+                '200':
+                    description: Successfully updated and returning menus.
+                    content:
+                        application/json:
+                            schema: 
+                                type: object
+                                properties:
+                                    id:
+                                        type: integer
+                                    name:
+                                        type: string
+                                    items:
+                                        type: json
+                                    revistionDate:
+                                        type: string
+                '500':
+                    description: An error occered.
+                    content:
+                        text/plain:
+                            schema:
+                                type: string
+                                example: Error Message
+        post:
+            summary: Updates the menu with the given name.
+            tags:
+                - Menu
+            parameters:
+                - name: name
+                  in: path
+                  required: true
+                  description: name of the menu.
+                  schema:
+                    type: string
+            requestBody:
+                required: true
+                content:
+                    application/json:
+                        schema:
+                            type: object
+                            properties:
+                                name:
+                                    type: string
+                                items:
+                                    type: string
+            responses:
+                '200':
+                    description: Successfully updated and returning menus.
+                    content:
+                        application/json:
+                            schema: 
+                                type: object
+                                properties:
+                                    id:
+                                        type: integer
+                                    name:
+                                        type: string
+                                    items:
+                                        type: json
+                                    revistionDate:
+                                        type: string
+                '500':
+                    description: An error occered.
+                    content:
+                        text/plain:
+                            schema:
+                                type: string
+                                example: Error Message
+    /menu/{id}/history:
+        get:
+            summary: Returns the history of the menu at the given id.
+            tags:
+                - Menu
+            parameters:
+                - name: id
+                  in: path
+                  required: true
+                  description: ID of the menu.
+                  schema:
+                    type: int
+            responses:
+                '200':
+                    description: Successfully returning menu.
+                    content:
+                        application/json:
+                            schema: 
+                                type: array
+                                items:
+                                    type: object
+                                    properties:
+                                        id:
+                                            type: integer
+                                        name:
+                                            type: string
+                                        items:
+                                            type: json
+                                        revistionDate:
+                                            type: string
+                '500':
+                    description: An error occered.
+                    content:
+                        text/plain:
+                            schema:
+                                type: string
+                                example: Error Message
+    /menu/{name}/history:
+        get:
+            summary: Returns the history of the menu with the given name.
+            tags:
+                - Menu
+            parameters:
+                - name: name
+                  in: path
+                  required: true
+                  description: name of the menu.
+                  schema:
+                      type: string
+            responses:
+                '200':
+                    description: Successfully updated and returning menus.
+                    content:
+                        application/json:
+                            schema: 
+                                type: array
+                                items:
+                                    type: object
+                                    properties:
+                                        id:
+                                            type: integer
+                                        name:
+                                            type: string
+                                        items:
+                                            type: json
+                                        revistionDate:
+                                            type: string
+                '500':
+                    description: An error occered.
+                    content:
+                        text/plain:
+                            schema:
+                                type: string
+                                example: Error Message
+
+
+            
+    /menuItem:
+        get:
+            summary: Returns a list of all current and previous menu items.
+            tags:
+                - Menu Items
+        post:
+            summary: Creates a new menu item.
+            tags:
+                - Menu Items
+    /menuItem/{id}:
+        get:
+            summary: Returns the menu item at the given id.
+            tags:
+                - Menu Items
+        post:
+            summary: Updates the menu item at the given id.
+            tags:
+                - Menu Items
+    /menuItem/{name}:
+        get:
+            summary: Runs a seach using the provided name and returns a list of the resaulting menu items.
+            tags:
+                - Menu Items
+    /menuItem/{id}/history:
+        get:
+            summary: Returns the history of the menu item at the given id.
+            tags:
+                - Menu Items
