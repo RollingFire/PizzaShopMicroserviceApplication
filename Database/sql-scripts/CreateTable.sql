@@ -25,8 +25,8 @@ CREATE TABLE inventory (
 
 CREATE TABLE menu (
   id int AUTO_INCREMENT NOT NULL,
-  name varchar(255) UNIQUE,
-  items text,
+  name varchar(255) UNIQUE NOT NULL,
+  items text NOT NULL,
   revisionDate timestamp DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (id)
 );
@@ -51,8 +51,8 @@ DELIMITER ;
 
 CREATE TABLE menuItem (
   id int AUTO_INCREMENT NOT NULL,
-  catagory text,
-  name text,
+  catagory text NOT NULL,
+  name text NOT NULL,
   discription text,
   cost decimal(10, 2),
   revisionDate timestamp DEFAULT CURRENT_TIMESTAMP,

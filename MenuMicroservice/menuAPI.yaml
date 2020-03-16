@@ -25,7 +25,10 @@ paths:
                                         name:
                                             type: string
                                         items:
-                                            type: string
+                                            type: array
+                                            example: []
+                                            items:
+                                                type: integer
                                         revistionDate:
                                             type: string
                 '500':
@@ -49,7 +52,10 @@ paths:
                                 name:
                                     type: string
                                 items:
-                                    type: string
+                                    type: array
+                                    example: []
+                                    items:
+                                        type: integer
             responses:
                 '201':
                     description: Successfully created menu.
@@ -63,7 +69,10 @@ paths:
                                     name:
                                         type: string
                                     items:
-                                        type: json
+                                        type: array
+                                        example: []
+                                        items:
+                                            type: integer
                                     revistionDate:
                                         type: string
                 '500':
@@ -98,9 +107,14 @@ paths:
                                     name:
                                         type: string
                                     items:
-                                        type: json
+                                        type: array
+                                        example: []
+                                        items:
+                                            type: integer
                                     revistionDate:
                                         type: string
+                '404':
+                    description: Item not found.
                 '500':
                     description: An error occered.
                     content:
@@ -126,10 +140,12 @@ paths:
                         schema:
                             type: object
                             properties:
-                                name:
-                                    type: string
                                 items:
-                                    type: string
+                                    type: array
+                                    example: []
+                                    items:
+                                        type: integer
+
             responses:
                 '200':
                     description: Successfully updated and returning menus.
@@ -143,9 +159,14 @@ paths:
                                     name:
                                         type: string
                                     items:
-                                        type: json
+                                        type: array
+                                        example: []
+                                        items:
+                                            type: integer
                                     revistionDate:
                                         type: string
+                '404':
+                    description: Item not found.
                 '500':
                     description: An error occered.
                     content:
@@ -178,9 +199,14 @@ paths:
                                     name:
                                         type: string
                                     items:
-                                        type: json
+                                        type: array
+                                        example: []
+                                        items:
+                                            type: integer
                                     revistionDate:
                                         type: string
+                '404':
+                    description: Item not found.
                 '500':
                     description: An error occered.
                     content:
@@ -206,10 +232,11 @@ paths:
                         schema:
                             type: object
                             properties:
-                                name:
-                                    type: string
                                 items:
-                                    type: string
+                                    type: array
+                                    example: []
+                                    items:
+                                        type: integer
             responses:
                 '200':
                     description: Successfully updated and returning menus.
@@ -223,9 +250,14 @@ paths:
                                     name:
                                         type: string
                                     items:
-                                        type: json
+                                        type: array
+                                        example: []
+                                        items:
+                                            type: integer
                                     revistionDate:
                                         type: string
+                '404':
+                    description: Item not found.
                 '500':
                     description: An error occered.
                     content:
@@ -260,9 +292,14 @@ paths:
                                         name:
                                             type: string
                                         items:
-                                            type: json
+                                            type: array
+                                            example: []
+                                            items:
+                                                type: integer
                                         revistionDate:
                                             type: string
+                '404':
+                    description: Item not found.
                 '500':
                     description: An error occered.
                     content:
@@ -297,9 +334,14 @@ paths:
                                         name:
                                             type: string
                                         items:
-                                            type: json
+                                            type: array
+                                            example: []
+                                            items:
+                                                type: integer
                                         revistionDate:
                                             type: string
+                '404':
+                    description: Item not found.
                 '500':
                     description: An error occered.
                     content:
@@ -315,26 +357,246 @@ paths:
             summary: Returns a list of all current and previous menu items.
             tags:
                 - Menu Items
+            responses:
+                '200':
+                    description: Successfully returning menu.
+                    content:
+                        application/json:
+                            schema: 
+                                type: array
+                                items:
+                                    type: object
+                                    properties:
+                                        id:
+                                            type: integer
+                                        catagory:
+                                            type: string
+                                        name:
+                                            type: string
+                                        discription:
+                                            type: string
+                                        cost:
+                                            type: number
+                                        revistionDate:
+                                            type: string
+                '500':
+                    description: An error occered.
+                    content:
+                        text/plain:
+                            schema:
+                                type: string
+                                example: Error Message
         post:
             summary: Creates a new menu item.
             tags:
                 - Menu Items
+            requestBody:
+                required: true
+                content:
+                    application/json:
+                        schema:
+                            type: object
+                            properties:
+                                catagory:
+                                    type: string
+                                name:
+                                    type: string
+                                discription:
+                                    type: string
+                                cost:
+                                    type: number
+            responses:
+                '200':
+                    description: Successfully returning menu.
+                    content:
+                        application/json:
+                            schema: 
+                                type: array
+                                items:
+                                    type: object
+                                    properties:
+                                        id:
+                                            type: integer
+                                        catagory:
+                                            type: string
+                                        name:
+                                            type: string
+                                        discription:
+                                            type: string
+                                        cost:
+                                            type: number
+                                        revistionDate:
+                                            type: string
+                '500':
+                    description: An error occered.
+                    content:
+                        text/plain:
+                            schema:
+                                type: string
+                                example: Error Message
     /menuItem/{id}:
         get:
             summary: Returns the menu item at the given id.
             tags:
                 - Menu Items
+            parameters:
+                - name: id
+                  in: path
+                  required: true
+                  description: ID of the menu.
+                  schema:
+                    type: int
+            responses:
+                '200':
+                    description: Successfully returning menu.
+                    content:
+                        application/json:
+                            schema: 
+                                type: object
+                                properties:
+                                    id:
+                                        type: integer
+                                    catagory:
+                                        type: string
+                                    name:
+                                        type: string
+                                    discription:
+                                        type: string
+                                    cost:
+                                        type: number
+                                    revistionDate:
+                                        type: string
+                '404':
+                    description: Item not found.
+                '500':
+                    description: An error occered.
+                    content:
+                        text/plain:
+                            schema:
+                                type: string
+                                example: Error Message
         post:
             summary: Updates the menu item at the given id.
             tags:
                 - Menu Items
+            parameters:
+                - name: id
+                  in: path
+                  required: true
+                  description: ID of the menu.
+                  schema:
+                    type: int
+            responses:
+                '200':
+                    description: Successfully returning menu.
+                    content:
+                        application/json:
+                            schema: 
+                                type: object
+                                properties:
+                                    id:
+                                        type: integer
+                                    catagory:
+                                        type: string
+                                    name:
+                                        type: string
+                                    discription:
+                                        type: string
+                                    cost:
+                                        type: number
+                                    revistionDate:
+                                        type: string
+                '404':
+                    description: Item not found.
+                '500':
+                    description: An error occered.
+                    content:
+                        text/plain:
+                            schema:
+                                type: string
+                                example: Error Message
     /menuItem/{name}:
         get:
             summary: Runs a seach using the provided name and returns a list of the resaulting menu items.
             tags:
                 - Menu Items
+            parameters:
+                - name: name
+                  in: path
+                  required: true
+                  description: Name to seach to find menu items.
+                  schema:
+                    type: string
+            responses:
+                '200':
+                    description: Successfully returning menu.
+                    content:
+                        application/json:
+                            schema: 
+                                type: array
+                                items:
+                                    type: object
+                                    properties:
+                                        id:
+                                            type: integer
+                                        catagory:
+                                            type: string
+                                        name:
+                                            type: string
+                                        discription:
+                                            type: string
+                                        cost:
+                                            type: number
+                                        revistionDate:
+                                            type: string
+                '500':
+                    description: An error occered.
+                    content:
+                        text/plain:
+                            schema:
+                                type: string
+                                example: Error Message
     /menuItem/{id}/history:
         get:
             summary: Returns the history of the menu item at the given id.
             tags:
                 - Menu Items
+            parameters:
+                - name: id
+                  in: path
+                  required: true
+                  description: ID of the menu item.
+                  schema:
+                    type: int
+            responses:
+                '200':
+                    description: Successfully returning menu.
+                    content:
+                        application/json:
+                            schema: 
+                                type: array
+                                items:
+                                    type: object
+                                    properties:
+                                        id:
+                                            type: integer
+                                        catagory:
+                                            type: string
+                                        name:
+                                            type: string
+                                        discription:
+                                            type: string
+                                        cost:
+                                            type: number
+                                        revistionDate:
+                                            type: string
+                '404':
+                    description: Item not found.
+                '500':
+                    description: An error occered.
+                    content:
+                        text/plain:
+                            schema:
+                                type: string
+                                example: Error Message
+    
