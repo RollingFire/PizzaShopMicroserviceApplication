@@ -40,6 +40,18 @@ CREATE TABLE menuHistory (
 );
 
 DELIMITER //
+CREATE TRIGGER `menu_preventLikeName`
+BEFORE INSERT ON `menu` FOR EACH ROW
+BEGIN
+  IF EXISTS (SELECT 1 FROM `menu` WHERE name LIKE new.name)
+    SET @error = CONCAT("Name LIKE ", new.name, " already exists."
+    SIGNAL SQLSTATE '45000'
+            SET MESSAGE_TEXT = @error;
+  END IF;
+END; //
+DELIMITER ;
+
+DELIMITER //
 CREATE TRIGGER `menu_saveMenuHistory`
 BEFORE UPDATE ON `menu` FOR EACH ROW
 BEGIN
