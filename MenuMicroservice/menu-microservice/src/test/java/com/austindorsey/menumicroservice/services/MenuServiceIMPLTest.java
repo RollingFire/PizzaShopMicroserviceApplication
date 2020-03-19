@@ -20,7 +20,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 
 @SpringBootTest
 public class MenuServiceIMPLTest {
-    private MenuService service = new MenuServiceIMPL();
+    @InjectMocks private MenuService service = new MenuServiceIMPL();
     @InjectMocks private DriverManagerWrapper driverManagerWrapper = Mockito.spy(DriverManagerWrapper.class);
     @Mock private Connection mockConnection;
     @Mock private Statement mockStatement;
