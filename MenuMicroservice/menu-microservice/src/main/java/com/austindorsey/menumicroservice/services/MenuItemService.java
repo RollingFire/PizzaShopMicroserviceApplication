@@ -1,5 +1,7 @@
 package com.austindorsey.menumicroservice.services;
 
+import java.util.Map;
+
 import com.austindorsey.menumicroservice.models.MenuItem;
 
 public interface MenuItemService {
@@ -9,5 +11,5 @@ public interface MenuItemService {
     public MenuItem[] searchMenuItemsByName(String name);
 
     public MenuItem createNewMenuItem(MenuItem item);
-    public MenuItem updateMenuItem(int id, MenuItem item);
+    public MenuItem updateMenuItem(int id, Map<String,String> updatePairs);
 }
