@@ -1,6 +1,7 @@
 package com.austindorsey.menumicroservice.services;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.fail;
 
 import java.sql.Connection;
 import java.sql.Date;
@@ -27,6 +28,7 @@ public class MenuServiceIMPLTest {
 
     @Test
     public void getMenus_3Fourd() {
+        fail("Not implimented");
         Menu menu1 = new Menu(1, "General", "{[1,2,4,5,6,7]}", Date.valueOf("2020-3-18"));
         Menu menu2 = new Menu(2, "Weekend", "{[1,2,5,6,7,12]}", Date.valueOf("2020-1-12"));
         Menu menu3 = new Menu(3, "Christmas", "{[11,21,41,42,43]}", Date.valueOf("2019-12-18"));
@@ -38,6 +40,7 @@ public class MenuServiceIMPLTest {
     }
     @Test
     public void getMenus_1Fourd() {
+        fail("Not implimented");
         Menu menu = new Menu(1, "General", "{[1,2,4,5,6,7]}", Date.valueOf("2020-3-18"));
         Menu[] expected = {menu};
 
@@ -47,12 +50,14 @@ public class MenuServiceIMPLTest {
     }
     @Test
     public void getMenus_0Fourd() {
+        fail("Not implimented");
         Menu[] returned = service.getMenus();
 
         assertEquals(null, returned);
     }
     @Test
     public void getCurrentMenuById_found() {
+        fail("Not implimented");
         Menu menu = new Menu(1, "General", "{[1,2,4,5,6,7]}", Date.valueOf("2020-3-18"));
 
         Menu returned = service.getCurrentMenuById(menu.getId());
@@ -61,6 +66,7 @@ public class MenuServiceIMPLTest {
     }
     @Test
     public void getCurrentMenuById_notFound() {
+        fail("Not implimented");
         int idNotFound = 42;
 
         Menu returned = service.getCurrentMenuById(idNotFound);
@@ -69,6 +75,7 @@ public class MenuServiceIMPLTest {
     }
     @Test
     public void getCurrentMenuByName_found() {
+        fail("Not implimented");
         Menu menu = new Menu(1, "General", "{[1,2,4,5,6,7]}", Date.valueOf("2020-3-18"));
 
         Menu returned = service.getCurrentMenuByName(menu.getName());
@@ -77,6 +84,7 @@ public class MenuServiceIMPLTest {
     }
     @Test
     public void getCurrentMenuByName_notFound() {
+        fail("Not implimented");
         String nameNotFound = "This is not the name you are looking for.";
 
         Menu returned = service.getCurrentMenuByName(nameNotFound);
@@ -85,6 +93,7 @@ public class MenuServiceIMPLTest {
     }
     @Test
     public void getMenuHistoryById_historyFound() {
+        fail("Not implimented");
         Menu menuCurrent = new Menu(1, "General", "{[1,2,4,7,8]}", Date.valueOf("2020-3-18"));
         Menu menuLast = new Menu(1, "General", "{[1,2,4,5,7]}", Date.valueOf("2020-2-28"));
         Menu menu2Last = new Menu(1, "General", "{[1,2,4,5]}", Date.valueOf("2020-2-10"));
@@ -96,6 +105,7 @@ public class MenuServiceIMPLTest {
     }
     @Test
     public void getMenuHistoryById_onlyCurrent() {
+        fail("Not implimented");
         Menu menuCurrent = new Menu(1, "General", "{[1,2,4,7,8]}", Date.valueOf("2020-3-18"));
         Menu[] expected = {menuCurrent};
 
@@ -105,6 +115,7 @@ public class MenuServiceIMPLTest {
     }
     @Test
     public void getMenuHistoryById_notFound() {
+        fail("Not implimented");
         int idNotFound = 42;
 
         Menu[] returned = service.getMenuHistoryById(idNotFound);
@@ -113,6 +124,7 @@ public class MenuServiceIMPLTest {
     }
     @Test
     public void getMenuHistoryByName_historyFound() {
+        fail("Not implimented");
         Menu menuCurrent = new Menu(1, "General", "{[1,2,4,7,8]}", Date.valueOf("2020-3-18"));
         Menu menuLast = new Menu(1, "General", "{[1,2,4,5,7]}", Date.valueOf("2020-2-28"));
         Menu menu2Last = new Menu(1, "General", "{[1,2,4,5]}", Date.valueOf("2020-2-10"));
@@ -124,6 +136,7 @@ public class MenuServiceIMPLTest {
     }
     @Test
     public void getMenuHistoryByName_onlyCurrent() {
+        fail("Not implimented");
         Menu menuCurrent = new Menu(1, "General", "{[1,2,4,7,8]}", Date.valueOf("2020-3-18"));
         Menu[] expected = {menuCurrent};
 
@@ -133,6 +146,7 @@ public class MenuServiceIMPLTest {
     }
     @Test
     public void getMenuHistoryByName_notFound() {
+        fail("Not implimented");
         String nameNotFound = "This is not the name you are looking for.";
 
         Menu[] returned = service.getMenuHistoryByName(nameNotFound);
@@ -141,6 +155,7 @@ public class MenuServiceIMPLTest {
     }
     @Test
     public void updateMenu_noUpdate() {
+        fail("Not implimented");
         Menu startMenu = new Menu(1, "General", "{[1,2,4,7,8]}", Date.valueOf("2019-2-12"));
         Map<String,String> request = new HashMap<String,String>();
 
@@ -150,6 +165,7 @@ public class MenuServiceIMPLTest {
     }
     @Test
     public void updateMenu_itemsUpdate() {
+        fail("Not implimented");
         Menu startMenu = new Menu(1, "General", "{[1,2,4,7,8]}", Date.valueOf("2019-2-12"));
         Menu endMenu = new Menu(1, "General", "{[1,2,4,7,8,12]}", Date.valueOf("2020-3-18"));
         Map<String,String> request = new HashMap<String,String>();
