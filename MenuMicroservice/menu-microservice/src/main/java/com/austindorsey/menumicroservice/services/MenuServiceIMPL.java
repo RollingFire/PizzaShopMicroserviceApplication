@@ -1,56 +1,220 @@
 package com.austindorsey.menumicroservice.services;
 
+import java.sql.Connection;
+import java.sql.Date;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
+import java.util.ArrayList;
 import java.util.Map;
 
 import com.austindorsey.menumicroservice.models.Menu;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.PropertySource;
+import org.springframework.stereotype.Service;
+
+@Service
+@PropertySource("classpath:database.properties")
 public class MenuServiceIMPL implements MenuService {
 
+    @Value("${mysql.host}")
+    private String dbHost;
+    @Value("${mysql.port}")
+    private String dbPort;
+    @Value("${mysql.user}")
+    private String dbUserName;
+    @Value("${mysql.password}")
+    private String dbPassword;
+    @Value("${mysql.database}")
+    private String dbName;
+    @Value("${mysql.tableName.menu}")
+    private String tableName;
+    @Value("${mysql.tableName.menuHistory}")
+    private String historyTableName;
+    private Connection mysql;
+
+    @Autowired private DriverManagerWrapper driverManagerWrapped;
+    
+
     @Override
-    public Menu[] getMenus() {
-        // TODO Auto-generated method stub
-        return null;
+    public Menu[] getMenus() throws SQLException, ClassNotFoundException {
+        try {
+            Class.forName("com.mysql.cj.jdbc.Driver");
+            String url = "jdbc:mysql://" + dbHost + ":" + dbPort + "/" + dbName;
+            mysql = driverManagerWrapped.getConnection(url, dbUserName, dbPassword);
+            Statement statement = mysql.createStatement();
+            ResultSet result = statement.executeQuery("SELECT * FROM " + tableName + ";");
+            ArrayList<Menu> list = new ArrayList<>();
+            while (result.next()) {
+                int id = result.getInt("id");
+                String name = result.getString("name");
+                String items = result.getString("items");
+                Date revisionDate = result.getDate("revisionDate");
+                Menu item = new Menu(id, name, items, revisionDate);
+                list.add(item);
+            }
+            return list.toArray(new Menu[list.size()]);
+        } finally {
+            if (mysql != null) {
+                mysql.close();
+            }
+        }
     }
 
     @Override
-    public Menu getCurrentMenuById(int id) {
-        // TODO Auto-generated method stub
-        return null;
+    public Menu getCurrentMenuById(int id) throws SQLException, ClassNotFoundException {
+        try {
+            Class.forName("com.mysql.cj.jdbc.Driver");
+            String url = "jdbc:mysql://" + dbHost + ":" + dbPort + "/" + dbName;
+            mysql = driverManagerWrapped.getConnection(url, dbUserName, dbPassword);
+            Menu item = null;
+            Statement statement = mysql.createStatement();
+            ResultSet result = statement.executeQuery("SELECT * FROM " + tableName + " WHERE id='" + id + "';");
+            if (result.next()) {
+                String name = result.getString("name");
+                String items = result.getString("items");
+                Date revisionDate = result.getDate("revisionDate");
+                item = new Menu(id, name, items, revisionDate);
+            }
+            return item;
+        } finally {
+            mysql.close();
+        }
     }
 
     @Override
-    public Menu getCurrentMenuByName(String name) {
-        // TODO Auto-generated method stub
-        return null;
+    public Menu getCurrentMenuByName(String name) throws SQLException, ClassNotFoundException {
+        try {
+            Class.forName("com.mysql.cj.jdbc.Driver");
+            String url = "jdbc:mysql://" + dbHost + ":" + dbPort + "/" + dbName;
+            mysql = driverManagerWrapped.getConnection(url, dbUserName, dbPassword);
+            Menu item = null;
+            Statement statement = mysql.createStatement();
+            ResultSet result = statement.executeQuery("SELECT * FROM " + tableName + " WHERE name='" + name + "';");
+            if (result.next()) {
+                int id = result.getInt("id");
+                String items = result.getString("items");
+                Date revisionDate = result.getDate("revisionDate");
+                item = new Menu(id, name, items, revisionDate);
+            }
+            return item;
+        } finally {
+            mysql.close();
+        }
     }
 
     @Override
-    public Menu[] getMenuHistoryById(int origenalId) {
-        // TODO Auto-generated method stub
-        return null;
+    public Menu[] getMenuHistoryById(int origenalId) throws SQLException, ClassNotFoundException {
+        ArrayList<Menu> history = new ArrayList<>();
+        Menu curentItem = getCurrentMenuById(origenalId);
+        if (curentItem == null) {
+            return null;
+        } else {
+            history.add(getCurrentMenuById(origenalId));
+        }
+        try {
+            Class.forName("com.mysql.cj.jdbc.Driver");
+            String url = "jdbc:mysql://" + dbHost + ":" + dbPort + "/" + dbName;
+            mysql = driverManagerWrapped.getConnection(url, dbUserName, dbPassword);
+            Statement statement = mysql.createStatement();
+            ResultSet result = statement.executeQuery("SELECT * FROM " + historyTableName + " WHERE origenalId='" + origenalId + "';");
+            while (result.next()) {
+                int id = result.getInt("id");
+                String name = result.getString("name");
+                String items = result.getString("items");
+                Date revisionDate = result.getDate("revisionDate");
+                Menu item = new Menu(id, name, items, revisionDate);
+                history.add(item);
+            }
+            return history.toArray(new Menu[history.size()]);
+        } finally {
+            mysql.close();
+        }
     }
 
     @Override
-    public Menu[] getMenuHistoryByName(String name) {
-        // TODO Auto-generated method stub
-        return null;
+    public Menu[] getMenuHistoryByName(String name) throws SQLException, ClassNotFoundException {
+        ArrayList<Menu> history = new ArrayList<>();
+        Menu curentItem = getCurrentMenuByName(name);
+        if (curentItem == null) {
+            return null;
+        } else {
+            history.add(curentItem);
+        }
+        try {
+            Class.forName("com.mysql.cj.jdbc.Driver");
+            String url = "jdbc:mysql://" + dbHost + ":" + dbPort + "/" + dbName;
+            mysql = driverManagerWrapped.getConnection(url, dbUserName, dbPassword);
+            Statement statement = mysql.createStatement();
+            ResultSet result = statement.executeQuery("SELECT * FROM " + historyTableName + " WHERE name='" + name + "';");
+            while (result.next()) {
+                int id = result.getInt("id");
+                String items = result.getString("items");
+                Date revisionDate = result.getDate("revisionDate");
+                Menu item = new Menu(id, name, items, revisionDate);
+                history.add(item);
+            }
+            return history.toArray(new Menu[history.size()]);
+        } finally {
+            mysql.close();
+        }
     }
 
     @Override
-    public Menu createNewMenu(Menu menu) {
-        // TODO Auto-generated method stub
-        return null;
+    public Menu createNewMenu(Menu menu) throws SQLException, ClassNotFoundException {
+        try {
+            Class.forName("com.mysql.cj.jdbc.Driver");
+            String url = "jdbc:mysql://" + dbHost + ":" + dbPort + "/" + dbName;
+            mysql = driverManagerWrapped.getConnection(url, dbUserName, dbPassword);
+            Statement statement = mysql.createStatement();
+            statement.executeUpdate("INSERT INTO " + tableName + " (name, items) VALUES ('" + 
+                                menu.getName() + "', '" + menu.getItems() + "');");
+            ResultSet result = statement.executeQuery("SELECT * FROM " + tableName + " WHERE name='" + menu.getName() +
+                                                                                      "' AND items='" + menu.getItems() +";");
+            Menu newItem = null;
+            if (result.next()) {
+                int id = result.getInt("id");
+                String name = result.getString("name");
+                String items = result.getString("items");
+                Date revisionDate = result.getDate("revisionDate");
+                newItem = new Menu(id, name, items, revisionDate);
+            }
+            return newItem;
+        } finally {
+            mysql.close();
+        }
     }
 
     @Override
-    public Menu updateMenu(int id, Map<String,String> updatePairs) {
-        // TODO Auto-generated method stub
-        return null;
+    public Menu updateMenu(int id, Map<String,Object> updatePairs) throws SQLException, ClassNotFoundException {
+        try {
+            if (updatePairs.size() > 0) {
+                Class.forName("com.mysql.cj.jdbc.Driver");
+                String url = "jdbc:mysql://" + dbHost + ":" + dbPort + "/" + dbName;
+                mysql = driverManagerWrapped.getConnection(url, dbUserName, dbPassword);
+                Statement statement = mysql.createStatement();
+
+                String sql = "UPDATE " + tableName + " SET ";
+                for (String key : updatePairs.keySet()) {
+                    sql = sql.replace(";", ", ");
+                    if (updatePairs.get(key) instanceof String) {
+                        sql += key + "='" + updatePairs.get(key) + "';";
+                    } else {
+                        sql += key + "=" + updatePairs.get(key) + ";";
+                    }
+                }
+                statement.executeUpdate(sql);
+            }
+            return getCurrentMenuById(id);
+        } finally {
+            mysql.close();
+        }
     }
 
     @Override
-    public Menu updateMenu(String name, Map<String,String> updatePairs) {
-        // TODO Auto-generated method stub
+    public Menu updateMenu(String name, Map<String,Object> updatePairs) throws SQLException, ClassNotFoundException {
         Menu menu = getCurrentMenuByName(name);
         if (menu != null) {
             int id = menu.getId();
