@@ -4,13 +4,13 @@ import java.sql.Date;
 
 public class Menu {
     int id;
-    String name;
+    String menuName;
     String items;
     Date revisionDate;
 
-    public Menu(int id, String name, String items, Date revisionDate) {
+    public Menu(int id, String menuName, String items, Date revisionDate) {
         this.id = id;
-        this.name = name;
+        this.menuName = menuName;
         this.items = items;
         this.revisionDate = revisionDate;
     }
@@ -20,11 +20,11 @@ public class Menu {
     }
 
     public String getName() {
-        return name;
+        return menuName;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setName(String menuName) {
+        this.menuName = menuName;
     }
 
     public String getItems() {
@@ -41,7 +41,7 @@ public class Menu {
 
     @Override
     public String toString() {
-        return "Menu [id=" + id + ", items=" + items + ", name=" + name + ", revisionDate=" + revisionDate + "]";
+        return "Menu [id=" + id + ", items=" + items + ", menuName=" + menuName + ", revisionDate=" + revisionDate + "]";
     }
 
     @Override
@@ -50,7 +50,7 @@ public class Menu {
         int result = 1;
         result = prime * result + id;
         result = prime * result + ((items == null) ? 0 : items.hashCode());
-        result = prime * result + ((name == null) ? 0 : name.hashCode());
+        result = prime * result + ((menuName == null) ? 0 : menuName.hashCode());
         result = prime * result + ((revisionDate == null) ? 0 : revisionDate.hashCode());
         return result;
     }
@@ -71,10 +71,10 @@ public class Menu {
                 return false;
         } else if (!items.equals(other.items))
             return false;
-        if (name == null) {
-            if (other.name != null)
+        if (menuName == null) {
+            if (other.menuName != null)
                 return false;
-        } else if (!name.equals(other.name))
+        } else if (!menuName.equals(other.menuName))
             return false;
         if (revisionDate == null) {
             if (other.revisionDate != null)

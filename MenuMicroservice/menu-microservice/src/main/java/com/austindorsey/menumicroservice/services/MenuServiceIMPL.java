@@ -8,6 +8,7 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.Map;
 
+import com.austindorsey.menumicroservice.models.CreateMenuRequest;
 import com.austindorsey.menumicroservice.models.Menu;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -49,10 +50,10 @@ public class MenuServiceIMPL implements MenuService {
             ArrayList<Menu> list = new ArrayList<>();
             while (result.next()) {
                 int id = result.getInt("id");
-                String name = result.getString("name");
+                String menuName = result.getString("menuName");
                 String items = result.getString("items");
                 Date revisionDate = result.getDate("revisionDate");
-                Menu item = new Menu(id, name, items, revisionDate);
+                Menu item = new Menu(id, menuName, items, revisionDate);
                 list.add(item);
             }
             return list.toArray(new Menu[list.size()]);
@@ -73,10 +74,10 @@ public class MenuServiceIMPL implements MenuService {
             Statement statement = mysql.createStatement();
             ResultSet result = statement.executeQuery("SELECT * FROM " + tableName + " WHERE id='" + id + "';");
             if (result.next()) {
-                String name = result.getString("name");
+                String menuName = result.getString("menuName");
                 String items = result.getString("items");
                 Date revisionDate = result.getDate("revisionDate");
-                item = new Menu(id, name, items, revisionDate);
+                item = new Menu(id, menuName, items, revisionDate);
             }
             return item;
         } finally {
@@ -85,19 +86,19 @@ public class MenuServiceIMPL implements MenuService {
     }
 
     @Override
-    public Menu getCurrentMenuByName(String name) throws SQLException, ClassNotFoundException {
+    public Menu getCurrentMenuByName(String menuName) throws SQLException, ClassNotFoundException {
         try {
             Class.forName("com.mysql.cj.jdbc.Driver");
             String url = "jdbc:mysql://" + dbHost + ":" + dbPort + "/" + dbName;
             mysql = driverManagerWrapped.getConnection(url, dbUserName, dbPassword);
             Menu item = null;
             Statement statement = mysql.createStatement();
-            ResultSet result = statement.executeQuery("SELECT * FROM " + tableName + " WHERE name='" + name + "';");
+            ResultSet result = statement.executeQuery("SELECT * FROM " + tableName + " WHERE menuName='" + menuName + "';");
             if (result.next()) {
                 int id = result.getInt("id");
                 String items = result.getString("items");
                 Date revisionDate = result.getDate("revisionDate");
-                item = new Menu(id, name, items, revisionDate);
+                item = new Menu(id, menuName, items, revisionDate);
             }
             return item;
         } finally {
@@ -122,10 +123,10 @@ public class MenuServiceIMPL implements MenuService {
             ResultSet result = statement.executeQuery("SELECT * FROM " + historyTableName + " WHERE origenalId='" + origenalId + "';");
             while (result.next()) {
                 int id = result.getInt("id");
-                String name = result.getString("name");
+                String menuName = result.getString("menuName");
                 String items = result.getString("items");
                 Date revisionDate = result.getDate("revisionDate");
-                Menu item = new Menu(id, name, items, revisionDate);
+                Menu item = new Menu(id, menuName, items, revisionDate);
                 history.add(item);
             }
             return history.toArray(new Menu[history.size()]);
@@ -135,9 +136,9 @@ public class MenuServiceIMPL implements MenuService {
     }
 
     @Override
-    public Menu[] getMenuHistoryByName(String name) throws SQLException, ClassNotFoundException {
+    public Menu[] getMenuHistoryByName(String menuName) throws SQLException, ClassNotFoundException {
         ArrayList<Menu> history = new ArrayList<>();
-        Menu curentItem = getCurrentMenuByName(name);
+        Menu curentItem = getCurrentMenuByName(menuName);
         if (curentItem == null) {
             return null;
         } else {
@@ -148,12 +149,12 @@ public class MenuServiceIMPL implements MenuService {
             String url = "jdbc:mysql://" + dbHost + ":" + dbPort + "/" + dbName;
             mysql = driverManagerWrapped.getConnection(url, dbUserName, dbPassword);
             Statement statement = mysql.createStatement();
-            ResultSet result = statement.executeQuery("SELECT * FROM " + historyTableName + " WHERE name='" + name + "';");
+            ResultSet result = statement.executeQuery("SELECT * FROM " + historyTableName + " WHERE menuName='" + menuName + "';");
             while (result.next()) {
                 int id = result.getInt("id");
                 String items = result.getString("items");
                 Date revisionDate = result.getDate("revisionDate");
-                Menu item = new Menu(id, name, items, revisionDate);
+                Menu item = new Menu(id, menuName, items, revisionDate);
                 history.add(item);
             }
             return history.toArray(new Menu[history.size()]);
@@ -163,23 +164,23 @@ public class MenuServiceIMPL implements MenuService {
     }
 
     @Override
-    public Menu createNewMenu(Menu menu) throws SQLException, ClassNotFoundException {
+    public Menu createNewMenu(CreateMenuRequest menuRequest) throws SQLException, ClassNotFoundException {
         try {
             Class.forName("com.mysql.cj.jdbc.Driver");
             String url = "jdbc:mysql://" + dbHost + ":" + dbPort + "/" + dbName;
             mysql = driverManagerWrapped.getConnection(url, dbUserName, dbPassword);
             Statement statement = mysql.createStatement();
-            statement.executeUpdate("INSERT INTO " + tableName + " (name, items) VALUES ('" + 
-                                menu.getName() + "', '" + menu.getItems() + "');");
-            ResultSet result = statement.executeQuery("SELECT * FROM " + tableName + " WHERE name='" + menu.getName() +
-                                                                                      "' AND items='" + menu.getItems() +";");
+            statement.executeUpdate("INSERT INTO " + tableName + " (menuName, items) VALUES ('" + 
+                                menuRequest.getName() + "', '" + menuRequest.getItems() + "');");
+            ResultSet result = statement.executeQuery("SELECT * FROM " + tableName + " WHERE menuName='" + menuRequest.getName() +
+                                                                                      "' AND items='" + menuRequest.getItems() +"';");
             Menu newItem = null;
             if (result.next()) {
                 int id = result.getInt("id");
-                String name = result.getString("name");
+                String menuName = result.getString("menuName");
                 String items = result.getString("items");
                 Date revisionDate = result.getDate("revisionDate");
-                newItem = new Menu(id, name, items, revisionDate);
+                newItem = new Menu(id, menuName, items, revisionDate);
             }
             return newItem;
         } finally {
@@ -214,8 +215,8 @@ public class MenuServiceIMPL implements MenuService {
     }
 
     @Override
-    public Menu updateMenu(String name, Map<String,Object> updatePairs) throws SQLException, ClassNotFoundException {
-        Menu menu = getCurrentMenuByName(name);
+    public Menu updateMenu(String menuName, Map<String,Object> updatePairs) throws SQLException, ClassNotFoundException {
+        Menu menu = getCurrentMenuByName(menuName);
         if (menu != null) {
             int id = menu.getId();
             return updateMenu(id, updatePairs);

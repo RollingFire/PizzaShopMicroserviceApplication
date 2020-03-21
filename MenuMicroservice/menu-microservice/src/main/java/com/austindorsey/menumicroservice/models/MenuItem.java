@@ -5,15 +5,15 @@ import java.sql.Date;
 public class MenuItem {
     int id;
     String catagory;
-    String name;
+    String itemName;
     String discription;
     Number cost;
     Date revisionDate;
 
-    public MenuItem(int id, String catagory, String name, String discription, Number cost, Date revisionDate) {
+    public MenuItem(int id, String catagory, String itemName, String discription, Number cost, Date revisionDate) {
         this.id = id;
         this.catagory = catagory;
-        this.name = name;
+        this.itemName = itemName;
         this.discription = discription;
         this.cost = cost;
         this.revisionDate = revisionDate;
@@ -32,11 +32,11 @@ public class MenuItem {
     }
 
     public String getName() {
-        return name;
+        return itemName;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setName(String itemName) {
+        this.itemName = itemName;
     }
 
     public String getDiscription() {
@@ -67,7 +67,7 @@ public class MenuItem {
         result = prime * result + ((cost == null) ? 0 : cost.hashCode());
         result = prime * result + ((discription == null) ? 0 : discription.hashCode());
         result = prime * result + id;
-        result = prime * result + ((name == null) ? 0 : name.hashCode());
+        result = prime * result + ((itemName == null) ? 0 : itemName.hashCode());
         result = prime * result + ((revisionDate == null) ? 0 : revisionDate.hashCode());
         return result;
     }
@@ -98,10 +98,10 @@ public class MenuItem {
             return false;
         if (id != other.id)
             return false;
-        if (name == null) {
-            if (other.name != null)
+        if (itemName == null) {
+            if (other.itemName != null)
                 return false;
-        } else if (!name.equals(other.name))
+        } else if (!itemName.equals(other.itemName))
             return false;
         if (revisionDate == null) {
             if (other.revisionDate != null)
@@ -114,6 +114,6 @@ public class MenuItem {
     @Override
     public String toString() {
         return "MenuItem [catagory=" + catagory + ", cost=" + cost + ", discription=" + discription + ", id=" + id
-                + ", name=" + name + ", revisionDate=" + revisionDate + "]";
+                + ", itemName=" + itemName + ", revisionDate=" + revisionDate + "]";
     }
 }

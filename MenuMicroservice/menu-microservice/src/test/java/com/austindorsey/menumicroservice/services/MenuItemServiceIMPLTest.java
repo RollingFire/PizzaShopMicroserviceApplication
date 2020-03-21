@@ -9,6 +9,7 @@ import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
+import com.austindorsey.menumicroservice.models.CreateMenuItemRequest;
 import com.austindorsey.menumicroservice.models.MenuItem;
 
 import org.junit.jupiter.api.Test;
@@ -63,7 +64,7 @@ public class MenuItemServiceIMPLTest {
             .thenReturn(menuItem2.getCatagory())
             .thenReturn(menuItem3.getCatagory())
             .thenReturn(menuItem4.getCatagory());
-        when(mockResult.getString("name"))
+        when(mockResult.getString("itemName"))
             .thenReturn(menuItem1.getName())
             .thenReturn(menuItem2.getName())
             .thenReturn(menuItem3.getName())
@@ -107,7 +108,7 @@ public class MenuItemServiceIMPLTest {
             .thenReturn(menuItem.getId());
         when(mockResult.getString("catagory"))
             .thenReturn(menuItem.getCatagory());
-        when(mockResult.getString("name"))
+        when(mockResult.getString("itemName"))
             .thenReturn(menuItem.getName());
         when(mockResult.getString("discription"))
             .thenReturn(menuItem.getDiscription());
@@ -156,7 +157,7 @@ public class MenuItemServiceIMPLTest {
             .thenReturn(menuItem.getId());
         when(mockResult.getString("catagory"))
             .thenReturn(menuItem.getCatagory());
-        when(mockResult.getString("name"))
+        when(mockResult.getString("itemName"))
             .thenReturn(menuItem.getName());
         when(mockResult.getString("discription"))
             .thenReturn(menuItem.getDiscription());
@@ -213,7 +214,7 @@ public class MenuItemServiceIMPLTest {
         when(mockResult.getString("catagory"))
             .thenReturn(menuItemLast.getCatagory())
             .thenReturn(menuItem2Last.getCatagory());
-        when(mockResult.getString("name"))
+        when(mockResult.getString("itemName"))
             .thenReturn(menuItemLast.getName())
             .thenReturn(menuItem2Last.getName());
         when(mockResult.getString("discription"))
@@ -388,8 +389,8 @@ public class MenuItemServiceIMPLTest {
         MenuItem currentItem = new MenuItem(5, "Pasta", "Sausage Vodka Pasta", "Sage Sausage, shell pasta with carimelized shallots in house made vodka sauce. Served with garlic toast.", 18, Date.valueOf("2018-05-6"));
         MenuItem updatedItem = new MenuItem(5, "Pasta", "Sausage Alla Vodka", "Sage Sausage, shell pasta with carimelized shallots in house made vodka sauce. Served with garlic toast.", 18, Date.valueOf("2020-03-19"));
         Map<String,Object> request = new HashMap<String,Object>();
-        request.put("name", updatedItem.getName());
-        String expectedSQL = "UPDATE null SET name='Sausage Alla Vodka';";
+        request.put("itemName", updatedItem.getName());
+        String expectedSQL = "UPDATE null SET itemName='Sausage Alla Vodka';";
 
         doReturn(updatedItem).when(service).getMenuItemByID(currentItem.getId());
         Mockito.mock(DriverManagerWrapper.class);
@@ -483,13 +484,13 @@ public class MenuItemServiceIMPLTest {
         Map<String,Object> request = new HashMap<String,Object>();
         request.put("discription", updatedItem.getDiscription());
         request.put("cost", updatedItem.getCost());
-        request.put("name", updatedItem.getName());
+        request.put("itemName", updatedItem.getName());
         request.put("catagory", updatedItem.getCatagory());
         String expectedSQL = "UPDATE null SET " + 
                                 "catagory='Pasta', " +
+                                "itemName='Sausage Alla Vodka', " +
                                 "discription='Sage Sausage, shell pasta with carimelized shallots in house made vodka sauce. Served with garlic toast.', " +
-                                "cost=18, " +
-                                "name='Sausage Alla Vodka'" +
+                                "cost=18" +
                                 ";";
 
         doReturn(updatedItem).when(service).getMenuItemByID(currentItem.getId());
@@ -510,8 +511,8 @@ public class MenuItemServiceIMPLTest {
 
     @Test
     public void createNewMenuItem() throws Exception {
-        MenuItem menu = new MenuItem(5, "Pasta", "Sausage Alla Vodka", "Sage Sausage, shell pasta with carimelized shallots in house made vodka sauce. Served with garlic toast.", 18.0, Date.valueOf("2020-03-19"));
-        String expectedSQL = "INSERT INTO null (catagory, name, discription, cost) VALUES (" + 
+        MenuItem MenuItem = new MenuItem(5, "Pasta", "Sausage Alla Vodka", "Sage Sausage, shell pasta with carimelized shallots in house made vodka sauce. Served with garlic toast.", 18.0, Date.valueOf("2020-03-19"));
+        String expectedSQL = "INSERT INTO null (catagory, itemName, discription, cost) VALUES (" + 
                                 "'Pasta', " +
                                 "'Sausage Alla Vodka', " +
                                 "'Sage Sausage, shell pasta with carimelized shallots in house made vodka sauce. Served with garlic toast.', " +
@@ -526,27 +527,28 @@ public class MenuItemServiceIMPLTest {
             .thenReturn(true)
             .thenReturn(false);
         when(mockResult.getInt("id"))
-            .thenReturn(menu.getId());
+            .thenReturn(MenuItem.getId());
         when(mockResult.getString("catagory"))
-            .thenReturn(menu.getCatagory());
-        when(mockResult.getString("name"))
-            .thenReturn(menu.getName());
+            .thenReturn(MenuItem.getCatagory());
+        when(mockResult.getString("itemName"))
+            .thenReturn(MenuItem.getName());
         when(mockResult.getString("discription"))
-            .thenReturn(menu.getDiscription());
+            .thenReturn(MenuItem.getDiscription());
         when(mockResult.getDouble("cost"))
-            .thenReturn(menu.getCost().doubleValue());
+            .thenReturn(MenuItem.getCost().doubleValue());
         when(mockResult.getDate("revisionDate"))
-            .thenReturn(menu.getRevisionDate());
+            .thenReturn(MenuItem.getRevisionDate());
 
-        MenuItem returnedItem = service.createNewMenuItem(menu);
+        CreateMenuItemRequest itemRequest = new CreateMenuItemRequest(MenuItem.getCatagory(), MenuItem.getName(), MenuItem.getDiscription(), MenuItem.getCost().doubleValue());
+        MenuItem returnedItem = service.createNewMenuItem(itemRequest);
 
         verify(mockStatement).executeUpdate(captor.capture());
         String capturedSQL = captor.getValue();
 
-        assertEquals(menu, returnedItem);
+        assertEquals(MenuItem, returnedItem);
         assertEquals(expectedSQL, capturedSQL);
         verify(driverManagerWrapper, times(1)).getConnection(any(), any(), any());
-        verify(service, times(1)).createNewMenuItem(menu);
+        verify(service, times(1)).createNewMenuItem(itemRequest);
         verify(mockStatement, times(1)).executeUpdate(anyString());
     }
 }

@@ -8,6 +8,7 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.Map;
 
+import com.austindorsey.menumicroservice.models.CreateMenuItemRequest;
 import com.austindorsey.menumicroservice.models.MenuItem;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -50,11 +51,11 @@ public class MenuItemServiceIMPL implements MenuItemService {
             while (result.next()) {
                 int id = result.getInt("id");
                 String catagory = result.getString("catagory");
-                String name = result.getString("name");
+                String itemName = result.getString("itemName");
                 String discription = result.getString("discription");
                 Number cost = result.getDouble("cost");
                 Date revisionDate = result.getDate("revisionDate");
-                MenuItem item = new MenuItem(id, catagory, name, discription, cost, revisionDate);
+                MenuItem item = new MenuItem(id, catagory, itemName, discription, cost, revisionDate);
                 list.add(item);
             }
             return list.toArray(new MenuItem[list.size()]);
@@ -76,12 +77,12 @@ public class MenuItemServiceIMPL implements MenuItemService {
             ResultSet result = statement.executeQuery("SELECT * FROM " + tableName + " WHERE id='" + id + "';");
             if (result.next()) {
                 String catagory = result.getString("catagory");
-                String name = result.getString("name");
+                String itemName = result.getString("itemName");
                 String discription = result.getString("discription");
                 Number cost = result.getDouble("cost");
                 Date revisionDate = result.getDate("revisionDate");
 
-                item = new MenuItem(id, catagory, name, discription, cost, revisionDate);
+                item = new MenuItem(id, catagory, itemName, discription, cost, revisionDate);
             }
             return item;
         } finally {
@@ -107,11 +108,11 @@ public class MenuItemServiceIMPL implements MenuItemService {
             while (result.next()) {
                 int id = result.getInt("id");
                 String catagory = result.getString("catagory");
-                String name = result.getString("name");
+                String itemName = result.getString("itemName");
                 String discription = result.getString("discription");
                 Number cost = result.getDouble("cost");
                 Date revisionDate = result.getDate("revisionDate");
-                MenuItem item = new MenuItem(id, catagory, name, discription, cost, revisionDate);
+                MenuItem item = new MenuItem(id, catagory, itemName, discription, cost, revisionDate);
                 history.add(item);
             }
             return history.toArray(new MenuItem[history.size()]);
@@ -150,28 +151,28 @@ public class MenuItemServiceIMPL implements MenuItemService {
     }
 
     @Override
-    public MenuItem createNewMenuItem(MenuItem item) throws SQLException, ClassNotFoundException {
+    public MenuItem createNewMenuItem(CreateMenuItemRequest item) throws SQLException, ClassNotFoundException {
         try {
             Class.forName("com.mysql.cj.jdbc.Driver");
             String url = "jdbc:mysql://" + dbHost + ":" + dbPort + "/" + dbName;
             mysql = driverManagerWrapped.getConnection(url, dbUserName, dbPassword);
             Statement statement = mysql.createStatement();
-            statement.executeUpdate("INSERT INTO " + tableName + " (catagory, name, discription, cost) VALUES ('" + 
+            statement.executeUpdate("INSERT INTO " + tableName + " (catagory, itemName, discription, cost) VALUES ('" + 
                                     item.getCatagory() + "', '" + item.getName() + "', '" + item.getDiscription() + "', " + item.getCost().doubleValue() + ");");
             ResultSet result = statement.executeQuery("SELECT * FROM " + tableName + " WHERE catagory='" + item.getCatagory() +
-                                                                                      "' AND name='" + item.getName() +
+                                                                                      "' AND itemName='" + item.getName() +
                                                                                       "' AND discription='" + item.getDiscription() +
                                                                                       "' AND cost="  + item.getCost().doubleValue() + ";");
             MenuItem newItem = null;
             if (result.next()) {
                 int id = result.getInt("id");
                 String catagory = result.getString("catagory");
-                String name = result.getString("name");
+                String itemName = result.getString("itemName");
                 String discription = result.getString("discription");
                 Number cost = result.getDouble("cost");
                 Date revisionDate = result.getDate("revisionDate");
 
-                newItem = new MenuItem(id, catagory, name, discription, cost, revisionDate);
+                newItem = new MenuItem(id, catagory, itemName, discription, cost, revisionDate);
             }
             return newItem;
         } finally {

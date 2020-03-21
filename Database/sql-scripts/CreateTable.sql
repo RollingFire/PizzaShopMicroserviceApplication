@@ -25,7 +25,7 @@ CREATE TABLE inventory (
 
 CREATE TABLE menu (
   id int AUTO_INCREMENT NOT NULL,
-  name varchar(255) UNIQUE NOT NULL,
+  menuName varchar(255) UNIQUE NOT NULL,
   items text NOT NULL,
   revisionDate timestamp DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (id)
@@ -33,7 +33,7 @@ CREATE TABLE menu (
 
 CREATE TABLE menuHistory (
   origenalId int,
-  name text,
+  menuName text,
   items text,
   revisionDate timestamp DEFAULT CURRENT_TIMESTAMP,
   FOREIGN KEY (origenalId) REFERENCES menu(id)
@@ -43,8 +43,8 @@ DELIMITER //
 CREATE TRIGGER `menu_preventLikeName`
 BEFORE INSERT ON `menu` FOR EACH ROW
 BEGIN
-  IF EXISTS (SELECT 1 FROM `menu` WHERE name LIKE new.name)
-    SET @error = CONCAT("Name LIKE ", new.name, " already exists."
+  IF EXISTS (SELECT 1 FROM `menu` WHERE menuName LIKE new.menuName) THEN
+    SET @error = CONCAT("Menu name LIKE ", new.menuName, " already exists.");
     SIGNAL SQLSTATE '45000'
             SET MESSAGE_TEXT = @error;
   END IF;
@@ -56,15 +56,15 @@ CREATE TRIGGER `menu_saveMenuHistory`
 BEFORE UPDATE ON `menu` FOR EACH ROW
 BEGIN
   SET NEW.revisionDate = CURRENT_TIMESTAMP;
-  INSERT INTO menuHistory (origenalId, name, items, revisionDate) 
-      VALUES (old.id, old.name, old.items, old.revisionDate);
+  INSERT INTO menuHistory (origenalId, menuName, items, revisionDate) 
+      VALUES (old.id, old.menuName, old.items, old.revisionDate);
 END; //
 DELIMITER ;
 
 CREATE TABLE menuItem (
   id int AUTO_INCREMENT NOT NULL,
   catagory text NOT NULL,
-  name text NOT NULL,
+  itemName text NOT NULL,
   discription text,
   cost decimal(10, 2),
   revisionDate timestamp DEFAULT CURRENT_TIMESTAMP,
@@ -74,7 +74,7 @@ CREATE TABLE menuItem (
 CREATE TABLE menuItemHistory (
   origenalId int,
   catagory text,
-  name text,
+  itemName text,
   discription text,
   cost decimal(10, 2),
   revisionDate timestamp,
@@ -86,8 +86,8 @@ CREATE TRIGGER `menuItem_saveMenuItemHistory`
 BEFORE UPDATE ON `menuItem` FOR EACH ROW
 BEGIN
   SET NEW.revisionDate = CURRENT_TIMESTAMP;
-  INSERT INTO menuItemHistory (origenalId, catagory, name, discription, cost, revisionDate) 
-      VALUES (old.id, old.catagory, old.name, old.discription, old.cost, old.revisionDate);
+  INSERT INTO menuItemHistory (origenalId, catagory, itemName, discription, cost, revisionDate) 
+      VALUES (old.id, old.catagory, old.itemName, old.discription, old.cost, old.revisionDate);
 END; //
 DELIMITER ;
 

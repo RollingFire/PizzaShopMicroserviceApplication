@@ -57,7 +57,7 @@ public class MenuServiceIMPLTest {
             .thenReturn(menu1.getId())
             .thenReturn(menu2.getId())
             .thenReturn(menu3.getId());
-        when(mockResult.getString("name"))
+        when(mockResult.getString("menuName"))
             .thenReturn(menu1.getName())
             .thenReturn(menu2.getName())
             .thenReturn(menu3.getName());
@@ -91,7 +91,7 @@ public class MenuServiceIMPLTest {
             .thenReturn(false);
         when(mockResult.getInt("id"))
             .thenReturn(menu.getId());
-        when(mockResult.getString("name"))
+        when(mockResult.getString("menuName"))
             .thenReturn(menu.getName());
         when(mockResult.getString("items"))
             .thenReturn(menu.getItems());
@@ -135,7 +135,7 @@ public class MenuServiceIMPLTest {
             .thenReturn(true);
         when(mockResult.getInt("id"))
             .thenReturn(menu.getId());
-        when(mockResult.getString("name"))
+        when(mockResult.getString("menuName"))
             .thenReturn(menu.getName());
         when(mockResult.getString("items"))
             .thenReturn(menu.getItems());
@@ -179,7 +179,7 @@ public class MenuServiceIMPLTest {
             .thenReturn(true);
         when(mockResult.getInt("id"))
             .thenReturn(menu.getId());
-        when(mockResult.getString("name"))
+        when(mockResult.getString("menuName"))
             .thenReturn(menu.getName());
         when(mockResult.getString("items"))
             .thenReturn(menu.getItems());
@@ -230,7 +230,7 @@ public class MenuServiceIMPLTest {
         when(mockResult.getInt("id"))
             .thenReturn(menuLast.getId())
             .thenReturn(menu2Last.getId());
-        when(mockResult.getString("name"))
+        when(mockResult.getString("menuName"))
             .thenReturn(menuLast.getName())
             .thenReturn(menu2Last.getName());
         when(mockResult.getString("items"))
@@ -299,7 +299,7 @@ public class MenuServiceIMPLTest {
         when(mockResult.getInt("id"))
             .thenReturn(menuLast.getId())
             .thenReturn(menu2Last.getId());
-        when(mockResult.getString("name"))
+        when(mockResult.getString("menuName"))
             .thenReturn(menuLast.getName())
             .thenReturn(menu2Last.getName());
         when(mockResult.getString("items"))
