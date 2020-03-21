@@ -106,13 +106,12 @@ public class MenuItemServiceIMPL implements MenuItemService {
             Statement statement = mysql.createStatement();
             ResultSet result = statement.executeQuery("SELECT * FROM " + historyTableName + " WHERE origenalId='" + origenalId + "';");
             while (result.next()) {
-                int id = result.getInt("id");
                 String catagory = result.getString("catagory");
                 String itemName = result.getString("itemName");
                 String discription = result.getString("discription");
                 Number cost = result.getDouble("cost");
                 Date revisionDate = result.getDate("revisionDate");
-                MenuItem item = new MenuItem(id, catagory, itemName, discription, cost, revisionDate);
+                MenuItem item = new MenuItem(origenalId, catagory, itemName, discription, cost, revisionDate);
                 history.add(item);
             }
             return history.toArray(new MenuItem[history.size()]);
@@ -190,6 +189,7 @@ public class MenuItemServiceIMPL implements MenuItemService {
                 Statement statement = mysql.createStatement();
 
                 String sql = "UPDATE " + tableName + " SET ";
+                System.out.println(updatePairs.keySet());
                 for (String key : updatePairs.keySet()) {
                     sql = sql.replace(";", ", ");
                     if (updatePairs.get(key) instanceof String) {

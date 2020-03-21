@@ -25,10 +25,8 @@ paths:
                                         menuName:
                                             type: string
                                         items:
-                                            type: array
-                                            example: []
-                                            items:
-                                                type: integer
+                                            type: String
+                                            example: "[1,2,3]"
                                         revistionDate:
                                             type: string
                 '500':
@@ -52,10 +50,8 @@ paths:
                                 menuName:
                                     type: string
                                 items:
-                                    type: array
-                                    example: []
-                                    items:
-                                        type: integer
+                                    type: String
+                                    example: "[1,2,3]"
             responses:
                 '201':
                     description: Successfully created menu.
@@ -69,10 +65,8 @@ paths:
                                     menuName:
                                         type: string
                                     items:
-                                        type: array
-                                        example: []
-                                        items:
-                                            type: integer
+                                        type: String
+                                        example: "[1,2,3]"
                                     revistionDate:
                                         type: string
                 '500':
@@ -107,10 +101,8 @@ paths:
                                     menuName:
                                         type: string
                                     items:
-                                        type: array
-                                        example: []
-                                        items:
-                                            type: integer
+                                        type: String
+                                        example: "[1,2,3]"
                                     revistionDate:
                                         type: string
                 '404':
@@ -122,7 +114,7 @@ paths:
                             schema:
                                 type: string
                                 example: Error Message
-        post:
+        put:
             summary: Updates the menu at the given id.
             tags:
                 - Menu
@@ -141,10 +133,8 @@ paths:
                             type: object
                             properties:
                                 items:
-                                    type: array
-                                    example: []
-                                    items:
-                                        type: integer
+                                    type: String
+                                    example: "[1,2,3]"
 
             responses:
                 '200':
@@ -159,10 +149,8 @@ paths:
                                     menuName:
                                         type: string
                                     items:
-                                        type: array
-                                        example: []
-                                        items:
-                                            type: integer
+                                        type: String
+                                        example: "[1,2,3]"
                                     revistionDate:
                                         type: string
                 '404':
@@ -199,10 +187,8 @@ paths:
                                     menuName:
                                         type: string
                                     items:
-                                        type: array
-                                        example: []
-                                        items:
-                                            type: integer
+                                        type: String
+                                        example: "[1,2,3]"
                                     revistionDate:
                                         type: string
                 '404':
@@ -214,7 +200,7 @@ paths:
                             schema:
                                 type: string
                                 example: Error Message
-        post:
+        put:
             summary: Updates the menu with the given menuName.
             tags:
                 - Menu
@@ -233,10 +219,8 @@ paths:
                             type: object
                             properties:
                                 items:
-                                    type: array
-                                    example: []
-                                    items:
-                                        type: integer
+                                    type: String
+                                    example: "[1,2,3]"
             responses:
                 '200':
                     description: Successfully updated and returning menus.
@@ -250,10 +234,8 @@ paths:
                                     menuName:
                                         type: string
                                     items:
-                                        type: array
-                                        example: []
-                                        items:
-                                            type: integer
+                                        type: String
+                                        example: "[1,2,3]"
                                     revistionDate:
                                         type: string
                 '404':
@@ -292,10 +274,8 @@ paths:
                                         menuName:
                                             type: string
                                         items:
-                                            type: array
-                                            example: []
-                                            items:
-                                                type: integer
+                                            type: String
+                                            example: "[1,2,3]"
                                         revistionDate:
                                             type: string
                 '404':
@@ -334,10 +314,8 @@ paths:
                                         menuName:
                                             type: string
                                         items:
-                                            type: array
-                                            example: []
-                                            items:
-                                                type: integer
+                                            type: String
+                                            example: "[1,2,3]"
                                         revistionDate:
                                             type: string
                 '404':
@@ -371,7 +349,7 @@ paths:
                                             type: integer
                                         catagory:
                                             type: string
-                                        name:
+                                        itemName:
                                             type: string
                                         discription:
                                             type: string
@@ -475,12 +453,12 @@ paths:
                             schema:
                                 type: string
                                 example: Error Message
-        post:
+        put:
             summary: Updates the menu item at the given id.
             tags:
                 - Menu Items
             parameters:
-                - itemName: id
+                - name: id
                   in: path
                   required: true
                   description: ID of the menu.

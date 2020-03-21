@@ -6,6 +6,10 @@ public class UpdateMenuRequest {
     public UpdateMenuRequest(String items) {
         this.items = items;
     }
+    
+    public UpdateMenuRequest() {
+        this.items = null;
+    }
 
     public String getItems() {
         return items;

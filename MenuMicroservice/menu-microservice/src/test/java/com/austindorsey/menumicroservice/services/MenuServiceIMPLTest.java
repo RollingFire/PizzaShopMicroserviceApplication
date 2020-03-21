@@ -296,7 +296,7 @@ public class MenuServiceIMPLTest {
             .thenReturn(true)
             .thenReturn(true)
             .thenReturn(false);
-        when(mockResult.getInt("id"))
+        when(mockResult.getInt("origenalId"))
             .thenReturn(menuLast.getId())
             .thenReturn(menu2Last.getId());
         when(mockResult.getString("menuName"))
@@ -369,7 +369,7 @@ public class MenuServiceIMPLTest {
         Menu endMenu = new Menu(1, "General", "{[1,2,4,7,8,12]}", Date.valueOf("2020-3-18"));
         Map<String,Object> request = new HashMap<String,Object>();
         request.put("items", endMenu.getItems());
-        String expectedSQL = "UPDATE null SET items='" + endMenu.getItems() + "';";
+        String expectedSQL = "UPDATE null SET items='" + endMenu.getItems() + "' WHERE id=" + endMenu.getId() + ";";
 
         doReturn(endMenu).when(service).getCurrentMenuById(startMenu.getId());
         doReturn(mockConnection).when(driverManagerWrapper).getConnection(any(), any(), any());

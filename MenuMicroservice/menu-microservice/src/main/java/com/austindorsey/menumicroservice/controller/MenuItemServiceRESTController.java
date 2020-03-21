@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
@@ -56,18 +57,18 @@ public class MenuItemServiceRESTController {
         }
     }
 
-    @RequestMapping(value = "/menuItem/{id:^[0-9]+$}", method = RequestMethod.POST)
+    @RequestMapping(value = "/menuItem/{id:^[0-9]+$}", method = RequestMethod.PUT)
     ResponseEntity<?> updateMenuById(@PathVariable(value = "id") int id,
-                                     @PathVariable(value = "catagory", required = false) String catagory,
-                                     @PathVariable(value = "name", required = false) String name,
-                                     @PathVariable(value = "discription", required = false) String discription,
-                                     @PathVariable(value = "cost", required = false) Double cost) {
+                                     @RequestParam(value = "catagory", required = false) String catagory,
+                                     @RequestParam(value = "itemName", required = false) String name,
+                                     @RequestParam(value = "discription", required = false) String discription,
+                                     @RequestParam(value = "cost", required = false) Number cost) {
         try {
             Map<String,Object> updatePairs = new HashMap<String,Object>();
             if (catagory != null) {updatePairs.put("catagory", catagory);}
-            if (catagory != null) {updatePairs.put("name", name);}
-            if (catagory != null) {updatePairs.put("discription", discription);}
-            if (catagory != null) {updatePairs.put("cost", cost);}
+            if (name != null) {updatePairs.put("itemName", name);}
+            if (discription != null) {updatePairs.put("discription", discription);}
+            if (cost != null) {updatePairs.put("cost", cost);}
 
             MenuItem newMenu = menuItemService.updateMenuItem(id, updatePairs);
             if (newMenu == null) {

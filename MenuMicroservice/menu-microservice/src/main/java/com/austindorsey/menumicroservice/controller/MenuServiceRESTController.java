@@ -57,7 +57,7 @@ public class MenuServiceRESTController {
         }
     }
 
-    @RequestMapping(value = "/menu/{id:^[0-9]+$}", method = RequestMethod.POST)
+    @RequestMapping(value = "/menu/{id:^[0-9]+$}", method = RequestMethod.PUT)
     ResponseEntity<?> updateMenuById(@PathVariable(value = "id") int id, @RequestBody UpdateMenuRequest request) {
         try {
             Map<String,Object> updatePairs = new HashMap<String,Object>();
@@ -87,7 +87,7 @@ public class MenuServiceRESTController {
         }
     }
     
-    @RequestMapping(value = "/menu/{itemName:(?!^\\d+$)^.+$}", method = RequestMethod.POST)
+    @RequestMapping(value = "/menu/{itemName:(?!^\\d+$)^.+$}", method = RequestMethod.PUT)
     ResponseEntity<?> updateMenuByName(@PathVariable(value = "itemName") String itemName, @RequestBody UpdateMenuRequest request) {
         try {
             Map<String,Object> updatePairs = new HashMap<String,Object>();

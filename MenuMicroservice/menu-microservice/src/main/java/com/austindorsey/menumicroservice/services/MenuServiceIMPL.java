@@ -93,12 +93,13 @@ public class MenuServiceIMPL implements MenuService {
             mysql = driverManagerWrapped.getConnection(url, dbUserName, dbPassword);
             Menu item = null;
             Statement statement = mysql.createStatement();
-            ResultSet result = statement.executeQuery("SELECT * FROM " + tableName + " WHERE menuName='" + menuName + "';");
+            ResultSet result = statement.executeQuery("SELECT * FROM " + tableName + " WHERE menuName LIKE '" + menuName + "';");
             if (result.next()) {
                 int id = result.getInt("id");
+                String actualMenuName = result.getString("menuName");
                 String items = result.getString("items");
                 Date revisionDate = result.getDate("revisionDate");
-                item = new Menu(id, menuName, items, revisionDate);
+                item = new Menu(id, actualMenuName, items, revisionDate);
             }
             return item;
         } finally {
@@ -122,11 +123,10 @@ public class MenuServiceIMPL implements MenuService {
             Statement statement = mysql.createStatement();
             ResultSet result = statement.executeQuery("SELECT * FROM " + historyTableName + " WHERE origenalId='" + origenalId + "';");
             while (result.next()) {
-                int id = result.getInt("id");
                 String menuName = result.getString("menuName");
                 String items = result.getString("items");
                 Date revisionDate = result.getDate("revisionDate");
-                Menu item = new Menu(id, menuName, items, revisionDate);
+                Menu item = new Menu(origenalId, menuName, items, revisionDate);
                 history.add(item);
             }
             return history.toArray(new Menu[history.size()]);
@@ -149,12 +149,13 @@ public class MenuServiceIMPL implements MenuService {
             String url = "jdbc:mysql://" + dbHost + ":" + dbPort + "/" + dbName;
             mysql = driverManagerWrapped.getConnection(url, dbUserName, dbPassword);
             Statement statement = mysql.createStatement();
-            ResultSet result = statement.executeQuery("SELECT * FROM " + historyTableName + " WHERE menuName='" + menuName + "';");
+            ResultSet result = statement.executeQuery("SELECT * FROM " + historyTableName + " WHERE menuName LIKE '" + menuName + "';");
             while (result.next()) {
-                int id = result.getInt("id");
+                int origenalId = result.getInt("origenalId");
+                String actualMenuName = result.getString("menuName");
                 String items = result.getString("items");
                 Date revisionDate = result.getDate("revisionDate");
-                Menu item = new Menu(id, menuName, items, revisionDate);
+                Menu item = new Menu(origenalId, actualMenuName, items, revisionDate);
                 history.add(item);
             }
             return history.toArray(new Menu[history.size()]);
@@ -199,13 +200,14 @@ public class MenuServiceIMPL implements MenuService {
 
                 String sql = "UPDATE " + tableName + " SET ";
                 for (String key : updatePairs.keySet()) {
-                    sql = sql.replace(";", ", ");
+                    sql = sql.replace("$", ", ");
                     if (updatePairs.get(key) instanceof String) {
-                        sql += key + "='" + updatePairs.get(key) + "';";
+                        sql += key + "='" + updatePairs.get(key) + "'$";
                     } else {
-                        sql += key + "=" + updatePairs.get(key) + ";";
+                        sql += key + "=" + updatePairs.get(key) + "$";
                     }
                 }
+                sql = sql.replace("$", (" WHERE id=" + id + ";" ));
                 statement.executeUpdate(sql);
             }
             return getCurrentMenuById(id);
