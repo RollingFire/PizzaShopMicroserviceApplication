@@ -250,14 +250,15 @@ if __name__ == '__main__':
             deleteInventoryName(putOneExpected["name"])
 
             #Check 404s
+            request = {"name": "string","units": 0,"unitType": "string","restockAt": 0,"restockAmount": 0}
             testFor404(requests.get(baseURL + "/inventory/0"))
             testFor404(requests.delete(baseURL + "/inventory/0"))
-            testFor404(requests.put(baseURL + "/inventory/0"))
-            testFor404(requests.get(baseURL + "/inventory/AStingThatShouldn'tBeTakenAsANameOfAnItmeBecasueThatWouldBeWeird"))
-            testFor404(requests.delete(baseURL + "/inventory/AStingThatShouldn'tBeTakenAsANameOfAnItmeBecasueThatWouldBeWeird"))
-            testFor404(requests.put(baseURL + "/inventory/AStingThatShouldn'tBeTakenAsANameOfAnItmeBecasueThatWouldBeWeird"))
-            testFor404(requests.post(baseURL + "/inventory/restock/0"))
-            testFor404(requests.post(baseURL + "/inventory/restock/AStingThatShouldn'tBeTakenAsANameOfAnItmeBecasueThatWouldBeWeird"))
+            testFor404(requests.put(baseURL + "/inventory/0", json=request))
+            testFor404(requests.get(baseURL + "/inventory/AStingThatShouldntBeTakenAsANameOfAnItmeBecasueThatWouldBeWeird"))
+            testFor404(requests.delete(baseURL + "/inventory/AStingThatShouldntBeTakenAsANameOfAnItmeBecasueThatWouldBeWeird"))
+            testFor404(requests.put(baseURL + "/inventory/AStingThatShouldntBeTakenAsANameOfAnItmeBecasueThatWouldBeWeird", json=request))
+            testFor404(requests.post(baseURL + "/inventory/restock/0", json={"unitsAdded": 0}))
+            testFor404(requests.post(baseURL + "/inventory/restock/AStingThatShouldntBeTakenAsANameOfAnItmeBecasueThatWouldBeWeird", json={"unitsAdded": 0}))
 
             #Final check
             getInventory([])
