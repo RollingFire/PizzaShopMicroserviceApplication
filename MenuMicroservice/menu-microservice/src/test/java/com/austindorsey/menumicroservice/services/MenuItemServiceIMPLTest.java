@@ -65,10 +65,10 @@ public class MenuItemServiceIMPLTest {
             .thenReturn(menuItem3.getCatagory())
             .thenReturn(menuItem4.getCatagory());
         when(mockResult.getString("itemName"))
-            .thenReturn(menuItem1.getName())
-            .thenReturn(menuItem2.getName())
-            .thenReturn(menuItem3.getName())
-            .thenReturn(menuItem4.getName());
+            .thenReturn(menuItem1.getItemName())
+            .thenReturn(menuItem2.getItemName())
+            .thenReturn(menuItem3.getItemName())
+            .thenReturn(menuItem4.getItemName());
         when(mockResult.getString("discription"))
             .thenReturn(menuItem1.getDiscription())
             .thenReturn(menuItem2.getDiscription())
@@ -109,7 +109,7 @@ public class MenuItemServiceIMPLTest {
         when(mockResult.getString("catagory"))
             .thenReturn(menuItem.getCatagory());
         when(mockResult.getString("itemName"))
-            .thenReturn(menuItem.getName());
+            .thenReturn(menuItem.getItemName());
         when(mockResult.getString("discription"))
             .thenReturn(menuItem.getDiscription());
         when(mockResult.getDouble("cost"))
@@ -158,7 +158,7 @@ public class MenuItemServiceIMPLTest {
         when(mockResult.getString("catagory"))
             .thenReturn(menuItem.getCatagory());
         when(mockResult.getString("itemName"))
-            .thenReturn(menuItem.getName());
+            .thenReturn(menuItem.getItemName());
         when(mockResult.getString("discription"))
             .thenReturn(menuItem.getDiscription());
         when(mockResult.getDouble("cost"))
@@ -215,8 +215,8 @@ public class MenuItemServiceIMPLTest {
             .thenReturn(menuItemLast.getCatagory())
             .thenReturn(menuItem2Last.getCatagory());
         when(mockResult.getString("itemName"))
-            .thenReturn(menuItemLast.getName())
-            .thenReturn(menuItem2Last.getName());
+            .thenReturn(menuItemLast.getItemName())
+            .thenReturn(menuItem2Last.getItemName());
         when(mockResult.getString("discription"))
             .thenReturn(menuItemLast.getDiscription())
             .thenReturn(menuItem2Last.getDiscription());
@@ -389,7 +389,7 @@ public class MenuItemServiceIMPLTest {
         MenuItem currentItem = new MenuItem(5, "Pasta", "Sausage Vodka Pasta", "Sage Sausage, shell pasta with carimelized shallots in house made vodka sauce. Served with garlic toast.", 18, Date.valueOf("2018-05-6"));
         MenuItem updatedItem = new MenuItem(5, "Pasta", "Sausage Alla Vodka", "Sage Sausage, shell pasta with carimelized shallots in house made vodka sauce. Served with garlic toast.", 18, Date.valueOf("2020-03-19"));
         Map<String,Object> request = new HashMap<String,Object>();
-        request.put("itemName", updatedItem.getName());
+        request.put("itemName", updatedItem.getItemName());
         String expectedSQL = "UPDATE null SET itemName='Sausage Alla Vodka';";
 
         doReturn(updatedItem).when(service).getMenuItemByID(currentItem.getId());
@@ -484,7 +484,7 @@ public class MenuItemServiceIMPLTest {
         Map<String,Object> request = new HashMap<String,Object>();
         request.put("discription", updatedItem.getDiscription());
         request.put("cost", updatedItem.getCost());
-        request.put("itemName", updatedItem.getName());
+        request.put("itemName", updatedItem.getItemName());
         request.put("catagory", updatedItem.getCatagory());
         String expectedSQL = "UPDATE null SET " + 
                                 "catagory='Pasta', " +
@@ -531,7 +531,7 @@ public class MenuItemServiceIMPLTest {
         when(mockResult.getString("catagory"))
             .thenReturn(MenuItem.getCatagory());
         when(mockResult.getString("itemName"))
-            .thenReturn(MenuItem.getName());
+            .thenReturn(MenuItem.getItemName());
         when(mockResult.getString("discription"))
             .thenReturn(MenuItem.getDiscription());
         when(mockResult.getDouble("cost"))
@@ -539,7 +539,7 @@ public class MenuItemServiceIMPLTest {
         when(mockResult.getDate("revisionDate"))
             .thenReturn(MenuItem.getRevisionDate());
 
-        CreateMenuItemRequest itemRequest = new CreateMenuItemRequest(MenuItem.getCatagory(), MenuItem.getName(), MenuItem.getDiscription(), MenuItem.getCost().doubleValue());
+        CreateMenuItemRequest itemRequest = new CreateMenuItemRequest(MenuItem.getCatagory(), MenuItem.getItemName(), MenuItem.getDiscription(), MenuItem.getCost().doubleValue());
         MenuItem returnedItem = service.createNewMenuItem(itemRequest);
 
         verify(mockStatement).executeUpdate(captor.capture());

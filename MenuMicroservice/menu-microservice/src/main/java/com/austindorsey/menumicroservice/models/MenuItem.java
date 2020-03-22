@@ -31,11 +31,11 @@ public class MenuItem {
         this.catagory = catagory;
     }
 
-    public String getName() {
+    public String getItemName() {
         return itemName;
     }
 
-    public void setName(String itemName) {
+    public void setItemName(String itemName) {
         this.itemName = itemName;
     }
 

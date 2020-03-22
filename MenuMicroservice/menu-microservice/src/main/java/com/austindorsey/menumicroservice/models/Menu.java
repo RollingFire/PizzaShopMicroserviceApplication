@@ -19,11 +19,11 @@ public class Menu {
         return id;
     }
 
-    public String getName() {
+    public String getMenuName() {
         return menuName;
     }
 
-    public void setName(String menuName) {
+    public void setMenuName(String menuName) {
         this.menuName = menuName;
     }
 

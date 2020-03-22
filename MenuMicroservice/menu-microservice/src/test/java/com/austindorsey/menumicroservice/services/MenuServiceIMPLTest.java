@@ -58,9 +58,9 @@ public class MenuServiceIMPLTest {
             .thenReturn(menu2.getId())
             .thenReturn(menu3.getId());
         when(mockResult.getString("menuName"))
-            .thenReturn(menu1.getName())
-            .thenReturn(menu2.getName())
-            .thenReturn(menu3.getName());
+            .thenReturn(menu1.getMenuName())
+            .thenReturn(menu2.getMenuName())
+            .thenReturn(menu3.getMenuName());
         when(mockResult.getString("items"))
             .thenReturn(menu1.getItems())
             .thenReturn(menu2.getItems())
@@ -92,7 +92,7 @@ public class MenuServiceIMPLTest {
         when(mockResult.getInt("id"))
             .thenReturn(menu.getId());
         when(mockResult.getString("menuName"))
-            .thenReturn(menu.getName());
+            .thenReturn(menu.getMenuName());
         when(mockResult.getString("items"))
             .thenReturn(menu.getItems());
         when(mockResult.getDate("revisionDate"))
@@ -136,7 +136,7 @@ public class MenuServiceIMPLTest {
         when(mockResult.getInt("id"))
             .thenReturn(menu.getId());
         when(mockResult.getString("menuName"))
-            .thenReturn(menu.getName());
+            .thenReturn(menu.getMenuName());
         when(mockResult.getString("items"))
             .thenReturn(menu.getItems());
         when(mockResult.getDate("revisionDate"))
@@ -180,13 +180,13 @@ public class MenuServiceIMPLTest {
         when(mockResult.getInt("id"))
             .thenReturn(menu.getId());
         when(mockResult.getString("menuName"))
-            .thenReturn(menu.getName());
+            .thenReturn(menu.getMenuName());
         when(mockResult.getString("items"))
             .thenReturn(menu.getItems());
         when(mockResult.getDate("revisionDate"))
             .thenReturn(menu.getRevisionDate());
 
-        Menu returned = service.getCurrentMenuByName(menu.getName());
+        Menu returned = service.getCurrentMenuByName(menu.getMenuName());
 
         assertEquals(menu, returned);
         verify(driverManagerWrapper, times(1)).getConnection(any(), any(), any());
@@ -231,8 +231,8 @@ public class MenuServiceIMPLTest {
             .thenReturn(menuLast.getId())
             .thenReturn(menu2Last.getId());
         when(mockResult.getString("menuName"))
-            .thenReturn(menuLast.getName())
-            .thenReturn(menu2Last.getName());
+            .thenReturn(menuLast.getMenuName())
+            .thenReturn(menu2Last.getMenuName());
         when(mockResult.getString("items"))
             .thenReturn(menuLast.getItems())
             .thenReturn(menu2Last.getItems());
@@ -287,7 +287,7 @@ public class MenuServiceIMPLTest {
         Menu menu2Last = new Menu(1, "General", "{[1,2,4,5]}", Date.valueOf("2020-2-10"));
         Menu[] expected = {menuCurrent, menuLast, menu2Last};
 
-        doReturn(menuCurrent).when(service).getCurrentMenuByName(menuCurrent.getName());
+        doReturn(menuCurrent).when(service).getCurrentMenuByName(menuCurrent.getMenuName());
         Mockito.mock(DriverManagerWrapper.class);
         doReturn(mockConnection).when(driverManagerWrapper).getConnection(any(), any(), any());
         when(mockConnection.createStatement()).thenReturn(mockStatement);
@@ -300,8 +300,8 @@ public class MenuServiceIMPLTest {
             .thenReturn(menuLast.getId())
             .thenReturn(menu2Last.getId());
         when(mockResult.getString("menuName"))
-            .thenReturn(menuLast.getName())
-            .thenReturn(menu2Last.getName());
+            .thenReturn(menuLast.getMenuName())
+            .thenReturn(menu2Last.getMenuName());
         when(mockResult.getString("items"))
             .thenReturn(menuLast.getItems())
             .thenReturn(menu2Last.getItems());
@@ -309,7 +309,7 @@ public class MenuServiceIMPLTest {
             .thenReturn(menuLast.getRevisionDate())
             .thenReturn(menu2Last.getRevisionDate());
 
-        Menu[] returned = service.getMenuHistoryByName(menuCurrent.getName());
+        Menu[] returned = service.getMenuHistoryByName(menuCurrent.getMenuName());
 
         assertArrayEquals(expected, returned);
         verify(driverManagerWrapper, times(1)).getConnection(any(), any(), any());
@@ -321,7 +321,7 @@ public class MenuServiceIMPLTest {
         Menu menuCurrent = new Menu(1, "General", "{[1,2,4,7,8]}", Date.valueOf("2020-3-18"));
         Menu[] expected = {menuCurrent};
 
-        doReturn(menuCurrent).when(service).getCurrentMenuByName(menuCurrent.getName());
+        doReturn(menuCurrent).when(service).getCurrentMenuByName(menuCurrent.getMenuName());
         Mockito.mock(DriverManagerWrapper.class);
         doReturn(mockConnection).when(driverManagerWrapper).getConnection(any(), any(), any());
         when(mockConnection.createStatement()).thenReturn(mockStatement);
@@ -329,7 +329,7 @@ public class MenuServiceIMPLTest {
         when(mockResult.next())
             .thenReturn(false);
 
-        Menu[] returned = service.getMenuHistoryByName(menuCurrent.getName());
+        Menu[] returned = service.getMenuHistoryByName(menuCurrent.getMenuName());
 
         assertArrayEquals(expected, returned);
         verify(driverManagerWrapper, times(1)).getConnection(any(), any(), any());
