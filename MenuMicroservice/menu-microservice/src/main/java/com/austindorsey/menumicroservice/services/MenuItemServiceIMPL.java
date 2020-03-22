@@ -104,7 +104,7 @@ public class MenuItemServiceIMPL implements MenuItemService {
             String url = "jdbc:mysql://" + dbHost + ":" + dbPort + "/" + dbName;
             mysql = driverManagerWrapped.getConnection(url, dbUserName, dbPassword);
             Statement statement = mysql.createStatement();
-            ResultSet result = statement.executeQuery("SELECT * FROM " + historyTableName + " WHERE origenalId='" + origenalId + "';");
+            ResultSet result = statement.executeQuery("SELECT * FROM " + historyTableName + " WHERE origenalId='" + origenalId + "' ORDER BY entryId DESC;");
             while (result.next()) {
                 String catagory = result.getString("catagory");
                 String itemName = result.getString("itemName");
@@ -132,7 +132,7 @@ public class MenuItemServiceIMPL implements MenuItemService {
         for(int i = 0; i < allItems.length; i++) {
             for (int j = 0; j < regexStrings.length; j++) {
                 String regex = "(.*)" + String.format(regexStrings[j], search) + "(.*)";
-                boolean matches = allItems[i].getName().matches(regex);
+                boolean matches = allItems[i].getItemName().matches(regex);
                 if (matches) {
                     searchResaults.get(j).add(allItems[i]);
                     j = regexStrings.length;

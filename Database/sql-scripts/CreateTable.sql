@@ -32,10 +32,12 @@ CREATE TABLE menu (
 );
 
 CREATE TABLE menuHistory (
+  entryId int AUTO_INCREMENT NOT NULL,
   origenalId int,
   menuName text,
   items text,
   revisionDate timestamp DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (entryId),
   FOREIGN KEY (origenalId) REFERENCES menu(id)
 );
 
@@ -72,12 +74,14 @@ CREATE TABLE menuItem (
 );
 
 CREATE TABLE menuItemHistory (
+  entryId int AUTO_INCREMENT NOT NULL,
   origenalId int,
   catagory text,
   itemName text,
   discription text,
   cost decimal(10, 2),
   revisionDate timestamp,
+  PRIMARY KEY (entryId),
   FOREIGN KEY (origenalId) REFERENCES menuItem(id)
 );
 

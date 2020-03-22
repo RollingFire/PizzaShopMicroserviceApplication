@@ -121,7 +121,7 @@ public class MenuServiceIMPL implements MenuService {
             String url = "jdbc:mysql://" + dbHost + ":" + dbPort + "/" + dbName;
             mysql = driverManagerWrapped.getConnection(url, dbUserName, dbPassword);
             Statement statement = mysql.createStatement();
-            ResultSet result = statement.executeQuery("SELECT * FROM " + historyTableName + " WHERE origenalId='" + origenalId + "';");
+            ResultSet result = statement.executeQuery("SELECT * FROM " + historyTableName + " WHERE origenalId='" + origenalId + "' ORDER BY entryId DESC;");
             while (result.next()) {
                 String menuName = result.getString("menuName");
                 String items = result.getString("items");
@@ -149,7 +149,7 @@ public class MenuServiceIMPL implements MenuService {
             String url = "jdbc:mysql://" + dbHost + ":" + dbPort + "/" + dbName;
             mysql = driverManagerWrapped.getConnection(url, dbUserName, dbPassword);
             Statement statement = mysql.createStatement();
-            ResultSet result = statement.executeQuery("SELECT * FROM " + historyTableName + " WHERE menuName LIKE '" + menuName + "';");
+            ResultSet result = statement.executeQuery("SELECT * FROM " + historyTableName + " WHERE menuName LIKE '" + menuName + "' ORDER BY entryId DESC;");
             while (result.next()) {
                 int origenalId = result.getInt("origenalId");
                 String actualMenuName = result.getString("menuName");
