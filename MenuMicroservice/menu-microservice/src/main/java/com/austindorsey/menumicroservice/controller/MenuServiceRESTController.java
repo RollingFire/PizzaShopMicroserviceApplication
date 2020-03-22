@@ -36,8 +36,8 @@ public class MenuServiceRESTController {
     @RequestMapping(value = "/menu", method = RequestMethod.POST)
     ResponseEntity<?> createNewMenu(@RequestBody CreateMenuRequest request) {
         try {
-            Menu newMenu = menuService.createNewMenu(request);
-            return new ResponseEntity<>(newMenu, HttpStatus.CREATED);
+            Menu menu = menuService.createNewMenu(request);
+            return new ResponseEntity<>(menu, HttpStatus.CREATED);
         } catch (Exception e) {
             return new ResponseEntity<>(e, HttpStatus.INTERNAL_SERVER_ERROR);
         }
@@ -46,11 +46,11 @@ public class MenuServiceRESTController {
     @RequestMapping(value = "/menu/{id:^[0-9]+$}", method = RequestMethod.GET)
     ResponseEntity<?> getCurrentMenuById(@PathVariable(value = "id") int id) {
         try {
-            Menu newMenu = menuService.getCurrentMenuById(id);
-            if (newMenu == null) {
-                return new ResponseEntity<>(newMenu, HttpStatus.NOT_FOUND);
+            Menu menu = menuService.getCurrentMenuById(id);
+            if (menu == null) {
+                return new ResponseEntity<>(menu, HttpStatus.NOT_FOUND);
             } else {
-                return new ResponseEntity<>(newMenu, HttpStatus.OK);
+                return new ResponseEntity<>(menu, HttpStatus.OK);
             }
         } catch (Exception e) {
             return new ResponseEntity<>(e, HttpStatus.INTERNAL_SERVER_ERROR);
@@ -62,11 +62,11 @@ public class MenuServiceRESTController {
         try {
             Map<String,Object> updatePairs = new HashMap<String,Object>();
             updatePairs.put("items", request.getItems());
-            Menu newMenu = menuService.updateMenu(id, updatePairs);
-            if (newMenu == null) {
-                return new ResponseEntity<>(newMenu, HttpStatus.NOT_FOUND);
+            Menu menu = menuService.updateMenu(id, updatePairs);
+            if (menu == null) {
+                return new ResponseEntity<>(menu, HttpStatus.NOT_FOUND);
             } else {
-                return new ResponseEntity<>(newMenu, HttpStatus.OK);
+                return new ResponseEntity<>(menu, HttpStatus.OK);
             }
         } catch (Exception e) {
             return new ResponseEntity<>(e, HttpStatus.INTERNAL_SERVER_ERROR);
@@ -76,11 +76,11 @@ public class MenuServiceRESTController {
     @RequestMapping(value = "/menu/{itemName:(?!^\\d+$)^.+$}", method = RequestMethod.GET)
     ResponseEntity<?> getCurrentMenuById(@PathVariable(value = "itemName") String itemName) {
         try {
-            Menu newMenu = menuService.getCurrentMenuByName(itemName);
-            if (newMenu == null) {
-                return new ResponseEntity<>(newMenu, HttpStatus.NOT_FOUND);
+            Menu menu = menuService.getCurrentMenuByName(itemName);
+            if (menu == null) {
+                return new ResponseEntity<>(menu, HttpStatus.NOT_FOUND);
             } else {
-                return new ResponseEntity<>(newMenu, HttpStatus.OK);
+                return new ResponseEntity<>(menu, HttpStatus.OK);
             }
         } catch (Exception e) {
             return new ResponseEntity<>(e, HttpStatus.INTERNAL_SERVER_ERROR);
@@ -92,11 +92,11 @@ public class MenuServiceRESTController {
         try {
             Map<String,Object> updatePairs = new HashMap<String,Object>();
             updatePairs.put("items", request.getItems());
-            Menu newMenu = menuService.updateMenu(itemName, updatePairs);
-            if (newMenu == null) {
-                return new ResponseEntity<>(newMenu, HttpStatus.NOT_FOUND);
+            Menu menu = menuService.updateMenu(itemName, updatePairs);
+            if (menu == null) {
+                return new ResponseEntity<>(menu, HttpStatus.NOT_FOUND);
             } else {
-                return new ResponseEntity<>(newMenu, HttpStatus.OK);
+                return new ResponseEntity<>(menu, HttpStatus.OK);
             }
         } catch (Exception e) {
             return new ResponseEntity<>(e, HttpStatus.INTERNAL_SERVER_ERROR);
@@ -106,11 +106,11 @@ public class MenuServiceRESTController {
     @RequestMapping(value = "/menu/{id:^[0-9]+$}/history", method = RequestMethod.GET)
     ResponseEntity<?> getMenuHistoryById(@PathVariable(value = "id") int id) {
         try {
-            Menu[] newMenu = menuService.getMenuHistoryById(id);
-            if (newMenu == null) {
-                return new ResponseEntity<>(newMenu, HttpStatus.NOT_FOUND);
+            Menu[] menus = menuService.getMenuHistoryById(id);
+            if (menus == null) {
+                return new ResponseEntity<>(menus, HttpStatus.NOT_FOUND);
             } else {
-                return new ResponseEntity<>(newMenu, HttpStatus.OK);
+                return new ResponseEntity<>(menus, HttpStatus.OK);
             }
         } catch (Exception e) {
             return new ResponseEntity<>(e, HttpStatus.INTERNAL_SERVER_ERROR);
@@ -120,11 +120,11 @@ public class MenuServiceRESTController {
     @RequestMapping(value = "/menu/{itemName:(?!^\\d+$)^.+$}/history", method = RequestMethod.GET)
     ResponseEntity<?> getMenuHistoryByName(@PathVariable(value = "itemName") String itemName) {
         try {
-            Menu[] newMenu = menuService.getMenuHistoryByName(itemName);
-            if (newMenu == null) {
-                return new ResponseEntity<>(newMenu, HttpStatus.NOT_FOUND);
+            Menu[] menus = menuService.getMenuHistoryByName(itemName);
+            if (menus == null) {
+                return new ResponseEntity<>(menus, HttpStatus.NOT_FOUND);
             } else {
-                return new ResponseEntity<>(newMenu, HttpStatus.OK);
+                return new ResponseEntity<>(menus, HttpStatus.OK);
             }
         } catch (Exception e) {
             return new ResponseEntity<>(e, HttpStatus.INTERNAL_SERVER_ERROR);

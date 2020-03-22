@@ -60,13 +60,13 @@ public class MenuItemServiceRESTController {
     @RequestMapping(value = "/menuItem/{id:^[0-9]+$}", method = RequestMethod.PUT)
     ResponseEntity<?> updateMenuById(@PathVariable(value = "id") int id,
                                      @RequestParam(value = "catagory", required = false) String catagory,
-                                     @RequestParam(value = "itemName", required = false) String name,
+                                     @RequestParam(value = "itemName", required = false) String itemName,
                                      @RequestParam(value = "discription", required = false) String discription,
                                      @RequestParam(value = "cost", required = false) Number cost) {
         try {
             Map<String,Object> updatePairs = new HashMap<String,Object>();
             if (catagory != null) {updatePairs.put("catagory", catagory);}
-            if (name != null) {updatePairs.put("itemName", name);}
+            if (itemName != null) {updatePairs.put("itemName", itemName);}
             if (discription != null) {updatePairs.put("discription", discription);}
             if (cost != null) {updatePairs.put("cost", cost);}
 
