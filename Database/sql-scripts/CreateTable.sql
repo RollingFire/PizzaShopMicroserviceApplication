@@ -101,16 +101,18 @@ CREATE TABLE placedOrder (
   id int AUTO_INCREMENT NOT NULL,
   customerId int NOT NULL,
   orderStatus text,
-  cost decimal(10, 2),
   PRIMARY KEY (id),
   FOREIGN KEY (customerId) REFERENCES customer(id)
 );
 
 CREATE TABLE orderItem (
+  entryId int AUTO_INCREMENT NOT NULL,
   orderId int NOT NULL,
   menuItem int NOT NULL,
   quantity int NOT NULL DEFAULT 1,
-  status text,
+  orderItemStatus text,
+  cost decimal(10, 2),
+  PRIMARY KEY (entryId),
   FOREIGN KEY (orderId) REFERENCES placedOrder(id),
   FOREIGN KEY (menuItem) REFERENCES menuItem(id)
 );
