@@ -96,6 +96,17 @@ END; //
 DELIMITER ;
 
 
+CREATE TABLE recipe (
+  id int AUTO_INCREMENT NOT NULL,
+  menuItemId int NOT NULL,
+  inventoryItemId int NOT NULL,
+  quantityUsed decimal(10, 6) NOT NULL,
+  PRIMARY KEY (id),
+  FOREIGN KEY (menuItemId) REFERENCES menuItem(id),
+  FOREIGN KEY (inventoryItem) REFERENCES inventory(id)
+);
+
+
 
 CREATE TABLE placedOrder (
   id int AUTO_INCREMENT NOT NULL,
@@ -117,16 +128,6 @@ CREATE TABLE orderItem (
 
 
 
-CREATE TABLE recipe (
-  menuItem int NOT NULL,
-  inventoryItem int NOT NULL,
-  quantityUsed decimal(10, 6) NOT NULL,
-  FOREIGN KEY (menuItem) REFERENCES menuItem(id),
-  FOREIGN KEY (inventoryItem) REFERENCES inventory(id)
-);
-
-
-
 CREATE USER 'inventoryMicroservice' IDENTIFIED BY 'password';
 GRANT SELECT, UPDATE, INSERT, DELETE ON inventory TO inventoryMicroservice;
 
@@ -138,3 +139,6 @@ GRANT SELECT, INSERT, UPDATE ON menu TO menuMicroservice;
 GRANT SELECT, INSERT, UPDATE ON menuItem TO menuMicroservice;
 GRANT SELECT ON menuHistory TO menuMicroservice;
 GRANT SELECT ON menuItemHistory TO menuMicroservice;
+
+CREATE USER 'recipeMicroservice' IDENTIFIED BY 'password';
+GRANT SELECT, INSERT, UPDATE ON recipe TO menuMicroservice;
