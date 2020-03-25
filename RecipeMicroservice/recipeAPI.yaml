@@ -1,0 +1,215 @@
+openapi: 3.0.0
+info:
+  title: Recipe API
+  description: Intereface for Recipe Microservice to edit the MySQL customer table.
+  version: 0.0.1
+
+paths:
+  /recipe:
+    get:
+      description: Returns list of all unique menuItemId.
+      responses:
+        '200':
+          description: Successfully obtained list.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    id:
+                      type: integer
+                    menuItemId:
+                      type: integer
+                    inventoryItemId:
+                      type: integer
+                    quantityUsed:
+                      type: number
+        '500':
+          description: An error occered.
+          content:
+            text/plain:
+              schema:
+                type: string
+                example: Error Message
+    post:
+      description: Create new recipe line item.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                menuItemId:
+                  type: integer
+                inventoryItemId:
+                  type: integer
+                quantityUsed:
+                  type: number
+      responses:
+        '201':
+          description: Successfully created new recipe line item and returning it.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: integer
+                  menuItemId:
+                    type: integer
+                  inventoryItemId:
+                    type: integer
+                  quantityUsed:
+                    type: number
+        '500':
+          description: An error occered.
+          content:
+            text/plain:
+              schema:
+                type: string
+                example: Error Message
+
+
+  /recipe/{menuItemId}:
+    get:
+      parameters:
+        - name: menuItemId
+          in: path
+          required: true
+          description: id of the menuItem
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Reterning items with the menuItemId of menuItemId
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    id:
+                      type: integer
+                    menuItemId:
+                      type: integer
+                    inventoryItemId:
+                      type: integer
+                    quantityUsed:
+                      type: number
+        '404':
+          description: Item not found.
+        '500':
+          description: An error occered.
+          content:
+            text/plain:
+              schema:
+                type: string
+                example: Error Message
+            
+
+  /recipe/ingredient/{id}:
+    get:
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: id of the item in recipe.
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Reterning item with the id of id
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: integer
+                  menuItemId:
+                    type: integer
+                  inventoryItemId:
+                    type: integer
+                  quantityUsed:
+                    type: number
+        '404':
+          description: Item not found.
+        '500':
+          description: An error occered.
+          content:
+            text/plain:
+              schema:
+                type: string
+                example: Error Message
+
+    put:
+      description: Updates the inventoryItemId and quantityUsed at entry where id is id.
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: id of the item in recipe.
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              tpye: object
+              properties:
+                inventoryItemId:
+                  type: integer
+                quantityUsed:
+                  type: number
+      responses:
+        '200':
+          description: Reterning item with the id of id
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: integer
+                  menuItemId:
+                    type: integer
+                  inventoryItemId:
+                    type: integer
+                  quantityUsed:
+                    type: number
+        '404':
+          description: Item not found.
+        '500':
+          description: An error occered.
+          content:
+            text/plain:
+              schema:
+                type: string
+                example: Error Message
+
+    delete:
+      description: Deletes the item with the id of id
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: id of the item in recipe.
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Item deleted.
+        '404':
+          description: Item not found.
+        '500':
+          description: An error occered.
+          content:
+            text/plain:
+              schema:
+                type: string
+                example: Error Message
