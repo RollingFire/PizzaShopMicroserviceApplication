@@ -96,7 +96,7 @@ END; //
 DELIMITER ;
 
 
-CREATE TABLE recipe (
+CREATE TABLE recipeIngredient (
   id int AUTO_INCREMENT NOT NULL,
   menuItemId int NOT NULL,
   inventoryItemId int NOT NULL,
