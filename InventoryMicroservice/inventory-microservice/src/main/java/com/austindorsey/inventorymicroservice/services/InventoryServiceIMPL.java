@@ -54,8 +54,6 @@ public class InventoryServiceIMPL implements InventoryService {
             }
 
             return list.toArray(new InventoryItem[list.size()]);
-        } catch (SQLException e) {
-            throw e;
         } finally {
             if (mysql != null) {
                 mysql.close();
@@ -83,8 +81,6 @@ public class InventoryServiceIMPL implements InventoryService {
                 item = new InventoryItem(id, confirmName, units, unitType, restockAt, restockAmount);
             }
             return item;
-        } catch (SQLException e) {
-            throw e;
         } finally {
             mysql.close();
         }
@@ -110,8 +106,6 @@ public class InventoryServiceIMPL implements InventoryService {
                 item = new InventoryItem(confirmID, name, units, unitType, restockAt, restockAmount);
             }
             return item;
-        } catch (SQLException e) {
-            throw e;
         } finally {
             mysql.close();
         }
@@ -137,8 +131,6 @@ public class InventoryServiceIMPL implements InventoryService {
             else {
                 return -1;
             }
-        } catch (SQLException e) {
-            throw e;
         } finally {
             mysql.close();
         }
@@ -164,8 +156,6 @@ public class InventoryServiceIMPL implements InventoryService {
             else {
                 return -1;
             }
-        } catch (SQLException e) {
-            throw e;
         } finally {
             mysql.close();
         }
@@ -182,8 +172,6 @@ public class InventoryServiceIMPL implements InventoryService {
                 " (itemName, units, unitType, restockAt, restockAmount) VALUES ('" + 
                 item.getName() + "', " + item.getUnits()  + ", '" + item.getUnitType() + "', "  + item.getRestockAt() + "," + item.getRestockAmount() + ");");
             return getItemByName(item.getName());
-        } catch (SQLException e) {
-            throw e;
         } finally {
             mysql.close();
         }
@@ -198,8 +186,6 @@ public class InventoryServiceIMPL implements InventoryService {
             Statement statement = mysql.createStatement();
             statement.executeUpdate("INSERT INTO " + tableName + " (itemName) VALUES ('" + name + "');");
             return getItemByName(name);
-        } catch (SQLException e) {
-            throw e;
         } finally {
             mysql.close();
         }
@@ -214,8 +200,6 @@ public class InventoryServiceIMPL implements InventoryService {
             Statement statement = mysql.createStatement();
             int rowsChanged = statement.executeUpdate("DELETE FROM " + tableName + " WHERE itemName='" + name + "';");
             return rowsChanged;
-        } catch (SQLException e) {
-            throw e;
         } finally {
             mysql.close();
         }
@@ -230,8 +214,6 @@ public class InventoryServiceIMPL implements InventoryService {
             Statement statement = mysql.createStatement();
             int rowsChanged = statement.executeUpdate("DELETE FROM " + tableName + " WHERE id='" + id + "';");
             return rowsChanged;
-        } catch (SQLException e) {
-            throw e;
         } finally {
             mysql.close();
         }
@@ -251,8 +233,6 @@ public class InventoryServiceIMPL implements InventoryService {
                                                               "', restockAmount='" + item.getRestockAmount() +
                                                               "' WHERE itemName='" + name + "';");
             return getItemByName(item.getName());
-        } catch (SQLException e) {
-            throw e;
         } finally {
             mysql.close();
         }
@@ -272,8 +252,6 @@ public class InventoryServiceIMPL implements InventoryService {
                                                               "', restockAmount='" + item.getRestockAmount() +
                                                               "' WHERE id='" + id + "';");
             return getItemByID(id);
-        } catch (SQLException e) {
-            throw e;
         } finally {
             mysql.close();
         }
