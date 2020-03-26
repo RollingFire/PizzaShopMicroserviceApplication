@@ -6,8 +6,6 @@ public class RecipeIngredient {
     int inventoryItemId;
     Number quantityUsed;
 
-    public RecipeIngredient() {}
-
     public RecipeIngredient(int id, int menuItemId, int inventoryItemId, Number quantityUsed) {
         this.id = id;
         this.menuItemId = menuItemId;

@@ -69,7 +69,7 @@ public class  RecipeIngredientServiceIMPL implements RecipeIngredientService {
             while (result.next()) {
                 int id = result.getInt("id");
                 int inventoryItemId = result.getInt("inventoryItemId");
-                Number quantityUsed = result.getInt("quantityUsed");
+                Number quantityUsed = result.getDouble("quantityUsed");
                 RecipeIngredient item = new RecipeIngredient(id, menuItemId, inventoryItemId, quantityUsed);
                 list.add(item);
             }
@@ -113,7 +113,7 @@ public class  RecipeIngredientServiceIMPL implements RecipeIngredientService {
             if (result.next()) {
                 int menuItemId = result.getInt("menuItemId");
                 int inventoryItemId = result.getInt("inventoryItemId");
-                Number quantityUsed = result.getInt("quantityUsed");
+                Number quantityUsed = result.getDouble("quantityUsed");
                 item = new RecipeIngredient(id, menuItemId, inventoryItemId, quantityUsed);
             }
             return item;

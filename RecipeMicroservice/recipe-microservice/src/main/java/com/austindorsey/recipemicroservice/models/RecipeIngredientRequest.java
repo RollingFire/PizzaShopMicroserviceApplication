@@ -4,9 +4,6 @@ public class RecipeIngredientRequest {
     int inventoryItemId;
     Number quantityUsed;
 
-    
-    public RecipeIngredientRequest() {}
-
     public RecipeIngredientRequest(int inventoryItemId, Number quantityUsed) {
         this.inventoryItemId = inventoryItemId;
         this.quantityUsed = quantityUsed;
