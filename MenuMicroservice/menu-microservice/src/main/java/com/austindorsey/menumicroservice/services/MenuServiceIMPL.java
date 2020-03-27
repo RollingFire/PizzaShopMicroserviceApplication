@@ -174,7 +174,8 @@ public class MenuServiceIMPL implements MenuService {
             statement.executeUpdate("INSERT INTO " + tableName + " (menuName, items) VALUES ('" + 
                                 menuRequest.getName() + "', '" + menuRequest.getItems() + "');");
             ResultSet result = statement.executeQuery("SELECT * FROM " + tableName + " WHERE menuName='" + menuRequest.getName() +
-                                                                                      "' AND items='" + menuRequest.getItems() +"';");
+                                                                                      "' AND items='" + menuRequest.getItems() +
+                                                                                      " ORDER BY id DESC LIMIT 1;");
             Menu newItem = null;
             if (result.next()) {
                 int id = result.getInt("id");
