@@ -161,7 +161,8 @@ public class MenuItemServiceIMPL implements MenuItemService {
             ResultSet result = statement.executeQuery("SELECT * FROM " + tableName + " WHERE catagory='" + item.getCatagory() +
                                                                                       "' AND itemName='" + item.getName() +
                                                                                       "' AND discription='" + item.getDiscription() +
-                                                                                      "' AND cost="  + item.getCost().doubleValue() + ";");
+                                                                                      "' AND cost="  + item.getCost().doubleValue() + 
+                                                                                      " ORDER BY id DESC LIMIT 1;");
             MenuItem newItem = null;
             if (result.next()) {
                 int id = result.getInt("id");
