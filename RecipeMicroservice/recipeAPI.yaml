@@ -71,7 +71,6 @@ paths:
                 type: string
                 example: Error Message
             
-  /recipe/{menuItemId}:
     post:
       description: Create new recipe line items.
       parameters:
@@ -168,7 +167,7 @@ paths:
         content:
           application/json:
             schema:
-              tpye: object
+              type: object
               properties:
                 inventoryItemId:
                   type: integer

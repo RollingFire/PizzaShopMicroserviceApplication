@@ -88,17 +88,28 @@ public class  RecipeIngredientServiceIMPL implements RecipeIngredientService {
             String url = "jdbc:mysql://" + dbHost + ":" + dbPort + "/" + dbName;
             mysql = driverManagerWrapped.getConnection(url, dbUserName, dbPassword);
             Statement statement = mysql.createStatement();
+            List<RecipeIngredient> newItems = new ArrayList<>();
             for (int i = 0; i < request.length; i++) {
                 statement.executeUpdate("INSERT INTO " + tableName +
                                 " (menuItemId, inventoryItemId, quantityUsed) VALUES (" + 
                                 menuItemId + "," + request[i].getInventoryItemId() + "," + request[i].getQuantityUsed() + ");");
+                ResultSet result = statement.executeQuery("SELECT * FROM " + tableName +
+                                    " WHERE menuItemId=" + menuItemId + " AND inventoryItemId=" + request[i].getInventoryItemId() + 
+                                    " AND quantityUsed=" + request[i].getQuantityUsed() + " ORDER BY id DESC LIMIT 1;");
+                if (result.next()) {
+                    int id = result.getInt("id");
+                    int inventoryItemId = result.getInt("inventoryItemId");
+                    Number quantityUsed = result.getDouble("quantityUsed");
+                    RecipeIngredient item = new RecipeIngredient(id, menuItemId, inventoryItemId, quantityUsed);
+                    newItems.add(item);
+                }
             }
+            return newItems.toArray(new RecipeIngredient[newItems.size()]);
         } finally {
             if (mysql != null) {
                 mysql.close();
             }
         }
-        return getRecipe(menuItemId);
     }
 
     @Override
@@ -131,7 +142,8 @@ public class  RecipeIngredientServiceIMPL implements RecipeIngredientService {
             String url = "jdbc:mysql://" + dbHost + ":" + dbPort + "/" + dbName;
             mysql = driverManagerWrapped.getConnection(url, dbUserName, dbPassword);
             Statement statement = mysql.createStatement();
-            statement.executeUpdate("UPDATE " + tableName + " SET inventoryItemId=" + request.getInventoryItemId() + " WHERE quantityUsed=" + request.getQuantityUsed() + ";");
+            statement.executeUpdate("UPDATE " + tableName + " SET inventoryItemId=" + request.getInventoryItemId() + 
+                                        ", quantityUsed=" + request.getQuantityUsed() + " WHERE id=" + id + ";");
             return getRecipeIngredient(id);
         } finally {
             mysql.close();

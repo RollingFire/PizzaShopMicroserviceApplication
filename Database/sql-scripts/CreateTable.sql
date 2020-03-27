@@ -103,7 +103,8 @@ CREATE TABLE recipeIngredient (
   quantityUsed decimal(10, 6) NOT NULL,
   PRIMARY KEY (id),
   FOREIGN KEY (menuItemId) REFERENCES menuItem(id),
-  FOREIGN KEY (inventoryItem) REFERENCES inventory(id)
+  FOREIGN KEY (inventoryItemId) REFERENCES inventory(id),
+  UNIQUE(menuItemId,inventoryItemId)
 );
 
 
@@ -141,4 +142,4 @@ GRANT SELECT ON menuHistory TO menuMicroservice;
 GRANT SELECT ON menuItemHistory TO menuMicroservice;
 
 CREATE USER 'recipeMicroservice' IDENTIFIED BY 'password';
-GRANT SELECT, INSERT, UPDATE ON recipe TO menuMicroservice;
+GRANT SELECT, INSERT, UPDATE, DELETE ON recipeIngredient TO recipeMicroservice;

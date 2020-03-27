@@ -175,13 +175,28 @@ public class RecipeIngredientServiceIMPLTest {
                 menuItemId + "," + ingredient2.getInventoryItemId() + "," + ingredient2.getQuantityUsed() + ");";
         String expectedSQL3 = "INSERT INTO null (menuItemId, inventoryItemId, quantityUsed) VALUES (" + 
                 menuItemId + "," + ingredient3.getInventoryItemId() + "," + ingredient3.getQuantityUsed() + ");";
-        RecipeIngredient[] expected = {};
+        RecipeIngredient expectedIngredient = new RecipeIngredient(1, menuItemId, 3, 4.0);
+        RecipeIngredient[] expected = {expectedIngredient, expectedIngredient, expectedIngredient};
         
         doReturn(expected).when(service).getRecipe(menuItemId);
         Mockito.mock(DriverManagerWrapper.class);
         doReturn(mockConnection).when(driverManagerWrapper).getConnection(any(), any(), any());
         when(mockConnection.createStatement()).thenReturn(mockStatement);
         when(mockStatement.executeUpdate(anyString())).thenReturn(1);
+        when(mockStatement.executeQuery(anyString())).thenReturn(mockResult);
+        when(mockResult.next())
+            .thenReturn(true)
+            .thenReturn(true)
+            .thenReturn(true)
+            .thenReturn(false);
+        when(mockResult.getInt("id"))
+            .thenReturn(expectedIngredient.getId());
+        when(mockResult.getInt("menuItemId"))
+            .thenReturn(expectedIngredient.getMenuItemId());
+        when(mockResult.getInt("inventoryItemId"))
+            .thenReturn(expectedIngredient.getInventoryItemId());
+        when(mockResult.getDouble("quantityUsed"))
+            .thenReturn(expectedIngredient.getQuantityUsed().doubleValue());
 
         RecipeIngredient[] returnedRecipes = service.createRecipe(menuItemId, allIngredients);
 
@@ -194,9 +209,10 @@ public class RecipeIngredientServiceIMPLTest {
             assertEquals(capturedSQLs.get(2), expectedSQL3);
         }
 
-        assertEquals(expected, returnedRecipes);
+        assertArrayEquals(expected, returnedRecipes);
         verify(driverManagerWrapper, times(1)).getConnection(any(), any(), any());
         verify(mockConnection, times(1)).createStatement();
+        verify(mockStatement, times(3)).executeQuery(anyString());
     }
     @Test
     public void createRecipe_1Made() throws Exception {
@@ -205,13 +221,28 @@ public class RecipeIngredientServiceIMPLTest {
         int menuItemId = 2;
         String expectedSQL1 = "INSERT INTO null (menuItemId, inventoryItemId, quantityUsed) VALUES (" + 
                 menuItemId + "," + ingredient1.getInventoryItemId() + "," + ingredient1.getQuantityUsed() + ");";
-        RecipeIngredient[] expected = {};
+        RecipeIngredient expectedIngredient = new RecipeIngredient(1, menuItemId, 3, 4.0);
+        RecipeIngredient[] expected = {expectedIngredient};
         
         doReturn(expected).when(service).getRecipe(menuItemId);
         Mockito.mock(DriverManagerWrapper.class);
         doReturn(mockConnection).when(driverManagerWrapper).getConnection(any(), any(), any());
         when(mockConnection.createStatement()).thenReturn(mockStatement);
         when(mockStatement.executeUpdate(anyString())).thenReturn(1);
+        when(mockStatement.executeQuery(anyString())).thenReturn(mockResult);
+        when(mockResult.next())
+            .thenReturn(true)
+            .thenReturn(true)
+            .thenReturn(true)
+            .thenReturn(false);
+        when(mockResult.getInt("id"))
+            .thenReturn(expectedIngredient.getId());
+        when(mockResult.getInt("menuItemId"))
+            .thenReturn(expectedIngredient.getMenuItemId());
+        when(mockResult.getInt("inventoryItemId"))
+            .thenReturn(expectedIngredient.getInventoryItemId());
+        when(mockResult.getDouble("quantityUsed"))
+            .thenReturn(expectedIngredient.getQuantityUsed().doubleValue());
 
         RecipeIngredient[] returnedRecipes = service.createRecipe(menuItemId, allIngredients);
 
@@ -222,9 +253,10 @@ public class RecipeIngredientServiceIMPLTest {
             assertEquals(capturedSQLs.get(0), expectedSQL1);
         }
 
-        assertEquals(expected, returnedRecipes);
+        assertArrayEquals(expected, returnedRecipes);
         verify(driverManagerWrapper, times(1)).getConnection(any(), any(), any());
         verify(mockConnection, times(1)).createStatement();
+        verify(mockStatement, times(1)).executeQuery(anyString());
     }
     @Test
     public void createRecipe_0Made() throws Exception {
@@ -242,9 +274,10 @@ public class RecipeIngredientServiceIMPLTest {
         RecipeIngredient[] returnedRecipes = service.createRecipe(menuItemId, allIngredients);
 
         verify(mockStatement, times(0)).executeUpdate(captor.capture());
-        assertEquals(expected, returnedRecipes);
+        assertArrayEquals(expected, returnedRecipes);
         verify(driverManagerWrapper, times(1)).getConnection(any(), any(), any());
         verify(mockConnection, times(1)).createStatement();
+        verify(mockStatement, times(0)).executeQuery(anyString());
     }
     @Test
     public void getRecipeIngredient_found() throws Exception {
