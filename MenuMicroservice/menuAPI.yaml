@@ -82,7 +82,7 @@ paths:
             tags:
                 - Menu
             parameters:
-                - menuName: id
+                - name: id
                   in: path
                   required: true
                   description: ID of the menu.
@@ -389,22 +389,20 @@ paths:
                     content:
                         application/json:
                             schema: 
-                                type: array
-                                items:
-                                    type: object
-                                    properties:
-                                        id:
-                                            type: integer
-                                        catagory:
-                                            type: string
-                                        itemName:
-                                            type: string
-                                        discription:
-                                            type: string
-                                        cost:
-                                            type: number
-                                        revistionDate:
-                                            type: string
+                                type: object
+                                properties:
+                                    id:
+                                        type: integer
+                                    catagory:
+                                        type: string
+                                    itemName:
+                                        type: string
+                                    discription:
+                                        type: string
+                                    cost:
+                                        type: number
+                                    revistionDate:
+                                        type: string
                 '500':
                     description: An error occered.
                     content:
