@@ -1,0 +1,509 @@
+openapi: 3.0.0
+info:
+  title: Recipe API
+  description: Intereface for Recipe Microservice to edit the MySQL recipe tables.
+  version: 0.0.1
+
+paths:
+    /order:
+        get:
+            description: Get all orders filtered by query params
+            parameters:
+                - name: status
+                  in: query
+                  description: status to filter orders by
+                  required: false
+                  schema:
+                    type: string
+                - name: customerId
+                  in: query
+                  description: customerId to filter orders by
+                  required: false
+                  schema:
+                    type: integer
+            responses:
+                '200':
+                    description: Returning list of orders
+                    content: 
+                        application/json:
+                            schema:
+                                type: array
+                                items:
+                                    type: object
+                                    properties:
+                                        id:
+                                            type: integer
+                                        customerId:
+                                            type: integer
+                                        orderStatus:
+                                            type: string
+                                        datePlaced:
+                                            type: string
+                '500':
+                    description: An error occered.
+                    content:
+                        text/plain:
+                            schema:
+                                type: string
+                                example: Error Message
+        post:
+            description: Create new order with it's menuItems if it is not an empty array.
+            requestBody:
+                required: true
+                content:
+                    application/json:
+                        schema:
+                            type: object
+                            properties:
+                                customerId:
+                                    type: integer
+                                orederItems:
+                                    type: array
+                                    items:
+                                        type: object
+                                        properties:
+                                            menuItemId:
+                                                type: integer
+                                            quantity:
+                                                type: integer
+            responses:
+                '200':
+                    description: Returning created items.
+                    content: 
+                        application/json:
+                            schema:
+                                type: object
+                                properties:
+                                    order:
+                                        type: object
+                                        properties:
+                                            id:
+                                                type: integer
+                                            customerId:
+                                                type: integer
+                                            orderStatus:
+                                                type: string
+                                            datePlaced:
+                                                type: string
+                                    orderItems:
+                                        type: array
+                                        items:
+                                            type: object
+                                            properties:
+                                                id:
+                                                    type: integer
+                                                orderId:
+                                                    type: integer
+                                                menuItemId:
+                                                    type: integer
+                                                quantity:
+                                                    type: integer
+                                                orderItemStatus:
+                                                    type: string
+                                                cost:
+                                                    type: number
+                                                lastRevisionDate:
+                                                    type: string
+                '500':
+                    description: An error occered.
+                    content:
+                        text/plain:
+                            schema:
+                                type: string
+                                example: Error Message
+
+
+    /order/{id}:
+        get:
+            description: Get order by id
+            parameters:
+                - name: id
+                  in: path
+                  required: true
+                  schema:
+                    type: integer
+            responses:
+                '200':
+                    description: Returning item at id.
+                    content: 
+                        application/json:
+                            schema:
+                                type: object
+                                properties:
+                                    id:
+                                        type: integer
+                                    customerId:
+                                        type: integer
+                                    orderStatus:
+                                        type: string
+                                    datePlaced:
+                                        type: string
+                '404':
+                    description: Item not found.
+                '500':
+                    description: An error occered.
+                    content:
+                        text/plain:
+                            schema:
+                                type: string
+                                example: Error Message
+        put:
+            description: Update order by ID
+            parameters:
+                - name: id
+                  in: path
+                  required: true
+                  schema:
+                    type: integer
+            requestBody:
+                required: true
+                content:
+                    application/json:
+                        schema:
+                            type: object
+                            properties:
+                                orderStatus:
+                                    type: string
+            responses:
+                '200':
+                    description: Returning updated item at id.
+                    content: 
+                        application/json:
+                            schema:
+                                type: object
+                                properties:
+                                    id:
+                                        type: integer
+                                    customerId:
+                                        type: integer
+                                    orderStatus:
+                                        type: string
+                                    datePlaced:
+                                        type: string
+                '404':
+                    description: Item not found.
+                '500':
+                    description: An error occered.
+                    content:
+                        text/plain:
+                            schema:
+                                type: string
+                                example: Error Message
+
+    /order/{id}/status:
+        put:
+            description: Update the status of the order at id.
+            parameters:
+                - name: id
+                  in: path
+                  required: true
+                  schema:
+                    type: integer
+            requestBody:
+                required: true
+                content:
+                    text/plain:
+                        schema:
+                            type: string
+                            example: PLACED
+            responses:
+                '200':
+                    description: Returning item at id.
+                    content: 
+                        application/json:
+                            schema:
+                                type: object
+                                properties:
+                                    id:
+                                        type: integer
+                                    customerId:
+                                        type: integer
+                                    orderStatus:
+                                        type: string
+                                    datePlaced:
+                                        type: string
+                '404':
+                    description: Item not found.
+                '500':
+                    description: An error occered.
+                    content:
+                        text/plain:
+                            schema:
+                                type: string
+                                example: Error Message
+
+
+    /order/items/{orderId}:
+        get:
+            description: Get order items by order id
+            parameters:
+                - name: orderId
+                  in: path
+                  required: true
+                  schema:
+                    type: integer
+            responses:
+                '200':
+                    description: Returning created items.
+                    content: 
+                        application/json:
+                            schema:
+                                type: array
+                                items:
+                                    type: object
+                                    properties:
+                                        id:
+                                            type: integer
+                                        orderId:
+                                            type: integer
+                                        menuItemId:
+                                            type: integer
+                                        quantity:
+                                            type: integer
+                                        orderItemStatus:
+                                            type: string
+                                        cost:
+                                            type: number
+                                        lastRevisionDate:
+                                            type: string
+                '404':
+                    description: Item not found.
+                '500':
+                    description: An error occered.
+                    content:
+                        text/plain:
+                            schema:
+                                type: string
+                                example: Error Message
+        post:
+            description: Add order item to the order
+            parameters:
+                - name: orderId
+                  in: path
+                  required: true
+                  schema:
+                    type: integer
+            requestBody:
+                required: true
+                content:
+                    application/json:
+                        schema:
+                            type: object
+                            properties:
+                                orderId:
+                                    type: integer
+                                menuItemId:
+                                    type: integer
+                                quantity:
+                                    type: integer
+                                orderItemStatus:
+                                    type: string
+            responses:
+                '200':
+                    description: Returning created items.
+                    content: 
+                        application/json:
+                            schema:
+                                type: object
+                                properties:
+                                    id:
+                                        type: integer
+                                    orderId:
+                                        type: integer
+                                    menuItemId:
+                                        type: integer
+                                    quantity:
+                                        type: integer
+                                    orderItemStatus:
+                                        type: string
+                                    cost:
+                                        type: number
+                                    lastRevisionDate:
+                                        type: string
+                '500':
+                    description: An error occered.
+                    content:
+                        text/plain:
+                            schema:
+                                type: string
+                                example: Error Message
+
+    /orderItem/{id}:
+        get:
+            description: Get order item by id
+            parameters:
+                - name: id
+                  in: path
+                  required: true
+                  schema:
+                    type: integer
+            responses:
+                '200':
+                    description: Returning order item at id.
+                    content: 
+                        application/json:
+                            schema:
+                                type: object
+                                properties:
+                                    id:
+                                        type: integer
+                                    orderId:
+                                        type: integer
+                                    menuItemId:
+                                        type: integer
+                                    quantity:
+                                        type: integer
+                                    orderItemStatus:
+                                        type: string
+                                    cost:
+                                        type: number
+                                    lastRevisionDate:
+                                        type: string
+                '404':
+                    description: Item not found.
+                '500':
+                    description: An error occered.
+                    content:
+                        text/plain:
+                            schema:
+                                type: string
+                                example: Error Message
+        put:
+            description: Update order item by id
+            parameters:
+                - name: id
+                  in: path
+                  required: true
+                  schema:
+                    type: integer
+            requestBody:
+                required: true
+                content:
+                    application/json:
+                        schema:
+                            type: object
+                            properties:
+                                quantity:
+                                    type: integer
+                                orderItemStatus:
+                                    type: string
+            responses:
+                '200':
+                    description: Returning order item at id.
+                    content: 
+                        application/json:
+                            schema:
+                                type: object
+                                properties:
+                                    id:
+                                        type: integer
+                                    orderId:
+                                        type: integer
+                                    menuItemId:
+                                        type: integer
+                                    quantity:
+                                        type: integer
+                                    orderItemStatus:
+                                        type: string
+                                    cost:
+                                        type: number
+                                    lastRevisionDate:
+                                        type: string
+                '404':
+                    description: Item not found.
+                '500':
+                    description: An error occered.
+                    content:
+                        text/plain:
+                            schema:
+                                type: string
+                                example: Error Message
+
+    /orderItem/{id}/status:
+        put:
+            description: Updates status of the order item at id
+            parameters:
+                - name: id
+                  in: path
+                  required: true
+                  schema:
+                    type: integer
+            requestBody:
+                required: true
+                content:
+                    text/plain:
+                        schema:
+                            type: string
+                            example: PLACED
+            responses:
+                '200':
+                    description: Returning order item at id.
+                    content: 
+                        application/json:
+                            schema:
+                                type: object
+                                properties:
+                                    id:
+                                        type: integer
+                                    orderId:
+                                        type: integer
+                                    menuItemId:
+                                        type: integer
+                                    quantity:
+                                        type: integer
+                                    orderItemStatus:
+                                        type: string
+                                    cost:
+                                        type: number
+                                    lastRevisionDate:
+                                        type: string
+                '404':
+                    description: Item not found.
+                '500':
+                    description: An error occered.
+                    content:
+                        text/plain:
+                            schema:
+                                type: string
+                                example: Error Message
+
+    /orderItem/{orderItemStatus}:
+        get:
+            description: Get order items by status
+            parameters:
+                - name: orderItemStatus
+                  in: path
+                  required: true
+                  schema:
+                    type: string
+            responses:
+                '200':
+                    description: Returning order items with the status of orderItemStatus.
+                    content: 
+                        application/json:
+                            schema:
+                                type: array
+                                items:
+                                    type: object
+                                    properties:
+                                        id:
+                                            type: integer
+                                        orderId:
+                                            type: integer
+                                        menuItemId:
+                                            type: integer
+                                        quantity:
+                                            type: integer
+                                        orderItemStatus:
+                                            type: string
+                                        cost:
+                                            type: number
+                                        lastRevisionDate:
+                                            type: string
+                '500':
+                    description: An error occered.
+                    content:
+                        text/plain:
+                            schema:
+                                type: string
+                                example: Error Message

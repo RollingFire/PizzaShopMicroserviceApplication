@@ -113,21 +113,35 @@ CREATE TABLE placedOrder (
   id int AUTO_INCREMENT NOT NULL,
   customerId int NOT NULL,
   orderStatus text,
+  datePlaced timestamp DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (id),
   FOREIGN KEY (customerId) REFERENCES customer(id)
 );
 
+
 CREATE TABLE orderItem (
-  entryId int AUTO_INCREMENT NOT NULL,
+  id int AUTO_INCREMENT NOT NULL,
   orderId int NOT NULL,
-  menuItem int NOT NULL,
+  menuItemId int NOT NULL,
   quantity int NOT NULL DEFAULT 1,
   orderItemStatus text,
   cost decimal(10, 2),
-  PRIMARY KEY (entryId),
+  lastRevisionDate timestamp DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (id),
   FOREIGN KEY (orderId) REFERENCES placedOrder(id),
   FOREIGN KEY (menuItem) REFERENCES menuItem(id)
 );
+
+
+DELIMITER //
+CREATE TRIGGER `orderItem_changeRevisionDate`
+BEFORE UPDATE ON `orderItem` FOR EACH ROW
+BEGIN
+  IF ((NEW.menuItemId != OLD.menuItemId) OR (NEW.quantity != OLD.quantity)) THEN
+    SET NEW.lastRevisionDate = CURRENT_TIMESTAMP;
+  END IF;
+END; //
+DELIMITER ;
 
 
 
