@@ -159,3 +159,7 @@ GRANT SELECT ON menuItemHistory TO menuMicroservice;
 
 CREATE USER 'recipeMicroservice' IDENTIFIED BY 'password';
 GRANT SELECT, INSERT, UPDATE, DELETE ON recipeIngredient TO recipeMicroservice;
+
+CREATE USER 'orderMicroservice' IDENTIFIED BY 'password';
+GRANT SELECT, INSERT, UPDATE ON placedOrder TO orderMicroservice;
+GRANT SELECT, INSERT, UPDATE ON orderItem TO orderMicroservice;

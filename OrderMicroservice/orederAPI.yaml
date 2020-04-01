@@ -57,6 +57,9 @@ paths:
                             properties:
                                 customerId:
                                     type: integer
+                                orderItemStatus:
+                                    type:
+                                        string
                                 orederItems:
                                     type: array
                                     items:

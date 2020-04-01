@@ -1,12 +1,52 @@
 package com.austindorsey.ordermicroservice.modal;
 
+import java.net.URI;
+import java.net.http.HttpClient;
+import java.net.http.HttpRequest;
+import java.net.http.HttpResponse;
+import java.util.Map;
+
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.ObjectMapper;
+
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.PropertySource;
+
+@PropertySource("classpath:api.properties")
 public class OrderItemUpdateRequest {
+    int menuItemId;
     int quantity;
     String orderItemStatus;
+    double totalCost;
 
-    public OrderItemUpdateRequest(int quantity, String orderItemStatus) {
+    @Value("${api.host.menu}")
+    private String menuHost;
+    @Value("${api.port.menu}")
+    private String menuPort;
+
+    public OrderItemUpdateRequest(int menuItemId, int quantity, String orderItemStatus) {
+        this.menuItemId = menuItemId;
         this.quantity = quantity;
         this.orderItemStatus = orderItemStatus;
+    }
+
+    public void updateTotalCost() throws Exception {
+        String url = "http://" + menuHost + ":" + menuPort + "/menuItem/" + menuItemId;
+        HttpClient client = HttpClient.newHttpClient();
+        HttpRequest request = HttpRequest.newBuilder()
+                .GET()
+                .uri(URI.create(url))
+                .build();
+        HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
+        if (response.statusCode() == 200) { 
+            System.out.println(response.body());
+            ObjectMapper objectMapper = new ObjectMapper();
+            Map<String, Object> menuItem = objectMapper.readValue(response.body(), new TypeReference<Map<String,Object>>(){});
+            Double perItemCost = (double) menuItem.get("cost");
+            this.totalCost = perItemCost * this.quantity;
+        } else {
+            throw new Exception("Status code at " + url + " was " + response.statusCode());
+        }
     }
 
     public int getQuantity() {

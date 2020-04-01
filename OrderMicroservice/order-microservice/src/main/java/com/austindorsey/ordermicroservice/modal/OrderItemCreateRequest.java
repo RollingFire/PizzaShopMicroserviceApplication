@@ -1,16 +1,65 @@
 package com.austindorsey.ordermicroservice.modal;
 
+import java.net.URI;
+import java.net.http.HttpClient;
+import java.net.http.HttpRequest;
+import java.net.http.HttpResponse;
+import java.util.Map;
+
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.ObjectMapper;
+
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.PropertySource;
+
+@PropertySource("classpath:api.properties")
 public class OrderItemCreateRequest {
     int orderId;
     int menuItemId;
     int quantity;
     String orderItemStatus;
+    double totalCost;
 
-    public OrderItemCreateRequest(int orderId, int menuItemId, int quantity, String orderItemStatus) {
+    @Value("${api.host.menu}")
+    private String menuHost;
+    @Value("${api.port.menu}")
+    private String menuPort;
+
+    public OrderItemCreateRequest(int orderId, int menuItemId, int quantity, String orderItemStatus) throws Exception {
         this.orderId = orderId;
         this.menuItemId = menuItemId;
         this.quantity = quantity;
         this.orderItemStatus = orderItemStatus;
+        updateTotalCost();
+    }
+
+    public String getSQLInsertStatement(String tableName) {
+        return "INSERT INTO null (orderId, menuItemId, quantity, orderItemStatus, cost) VALUES (" + 
+                        orderId + ", " +
+                        menuItemId + ", " +
+                        quantity + ", " +
+                        orderItemStatus + ", " +
+                        totalCost + ", " +
+                        ");";
+    }
+
+    public void updateTotalCost() throws Exception {
+        String url = "http://" + menuHost + ":" + menuPort + "/menuItem/" + menuItemId;
+        HttpClient client = HttpClient.newHttpClient();
+        HttpRequest request = HttpRequest.newBuilder()
+                .GET()
+                .uri(URI.create(url))
+                .build();
+        HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
+        if (response.statusCode() == 200) { 
+            System.out.println(response.body());
+            ObjectMapper objectMapper = new ObjectMapper();
+            Map<String, Object> menuItem = objectMapper.readValue(response.body(), new TypeReference<Map<String,Object>>(){});
+            Double perItemCost = (double) menuItem.get("cost");
+            this.totalCost = perItemCost * this.quantity;
+        } else {
+            throw new Exception("Status code at " + url + " was " + response.statusCode());
+        }
     }
 
     public int getOrderId() {
@@ -33,8 +82,9 @@ public class OrderItemCreateRequest {
         return quantity;
     }
 
-    public void setQuantity(int quantity) {
+    public void setQuantity(int quantity) throws Exception {
         this.quantity = quantity;
+        updateTotalCost();
     }
 
     public String getOrderItemStatus() {
@@ -45,10 +95,17 @@ public class OrderItemCreateRequest {
         this.orderItemStatus = orderItemStatus;
     }
 
+    public double getTotalCost() {
+        return totalCost;
+    }
+
     @Override
     public int hashCode() {
         final int prime = 31;
         int result = 1;
+        long temp;
+        temp = Double.doubleToLongBits(totalCost);
+        result = prime * result + (int) (temp ^ (temp >>> 32));
         result = prime * result + menuItemId;
         result = prime * result + orderId;
         result = prime * result + ((orderItemStatus == null) ? 0 : orderItemStatus.hashCode());
@@ -65,6 +122,8 @@ public class OrderItemCreateRequest {
         if (getClass() != obj.getClass())
             return false;
         OrderItemCreateRequest other = (OrderItemCreateRequest) obj;
+        if (Double.doubleToLongBits(totalCost) != Double.doubleToLongBits(other.totalCost))
+            return false;
         if (menuItemId != other.menuItemId)
             return false;
         if (orderId != other.orderId)
@@ -81,7 +140,7 @@ public class OrderItemCreateRequest {
 
     @Override
     public String toString() {
-        return "OrderItemCreateRequest [menuItemId=" + menuItemId + ", orderId=" + orderId + ", orderItemStatus="
-                + orderItemStatus + ", quantity=" + quantity + "]";
+        return "OrderItemCreateRequest [totalCost=" + totalCost + ", menuItemId=" + menuItemId + ", orderId=" + orderId
+                + ", orderItemStatus=" + orderItemStatus + ", quantity=" + quantity + "]";
     }
 }
