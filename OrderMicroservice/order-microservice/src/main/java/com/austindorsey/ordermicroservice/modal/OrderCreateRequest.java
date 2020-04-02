@@ -16,8 +16,7 @@ public class OrderCreateRequest {
     public String getOrderSQLInsertStatement(String tableName) {
         return "INSERT INTO " + tableName + " (customerId, orderStatus) VALUES (" + 
                         customerId + ", '" +
-                        orderStatus + "', " +
-                        ");";
+                        orderStatus + "');";
     }
 
     public String getSQLSelectStatement(String tableName) {

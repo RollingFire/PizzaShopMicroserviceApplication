@@ -28,10 +28,14 @@ public class OrderItemUpdateRequest {
         this.orderItemStatus = orderItemStatus;
     }
 
-    public String getSQLUpdateStatement(String tableName, int menuItemId) throws Exception {
-        return "UPDATE" + tableName + " SET quantity=" + this.quantity
-                        + ", orderItemStatus=" + this.orderItemStatus
-                        + ", totalCost=" + getTotalCost(menuItemId);
+    public String getSQLUpdateStatement(String tableName, int menuItemId) {
+        try {
+            return "UPDATE" + tableName + " SET quantity=" + this.quantity
+                            + ", orderItemStatus=" + this.orderItemStatus
+                            + ", totalCost=" + getTotalCost(menuItemId);
+        } catch (Exception e) {
+            return null;
+        }
     }
 
     public double getTotalCost(int menuItemId) throws Exception {

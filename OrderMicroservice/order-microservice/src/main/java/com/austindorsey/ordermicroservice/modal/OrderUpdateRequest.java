@@ -8,7 +8,7 @@ public class OrderUpdateRequest {
     }
 
     public String getSQLUpdateStatement(String tableName, int id) {
-        return "UPDATE" + tableName + " SET orderStatus='" + this.orderStatus + "' WHERE id=" + id + ";";
+        return "UPDATE " + tableName + " SET orderStatus='" + this.orderStatus + "' WHERE id=" + id + ";";
     }
 
     public String getOrderStatus() {
