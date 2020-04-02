@@ -52,7 +52,6 @@ public class OrderItem {
 
     public void setQuantity(int quantity) {
         this.quantity = quantity;
-        updateCost();
     }
 
     public String getOrderItemStatus() {
@@ -65,10 +64,6 @@ public class OrderItem {
 
     public Number getCost() {
         return cost;
-    }
-
-    public void updateCost() {
-        // TODO - Update cost with menu call times quantity.
     }
 
     public Date getLastRevisionDate() {

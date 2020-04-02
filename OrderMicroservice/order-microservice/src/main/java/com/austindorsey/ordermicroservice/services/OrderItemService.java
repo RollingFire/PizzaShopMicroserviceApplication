@@ -7,7 +7,7 @@ import com.austindorsey.ordermicroservice.modal.OrderItemCreateRequest;
 import com.austindorsey.ordermicroservice.modal.OrderItemUpdateRequest;
 
 public interface OrderItemService {
-    public OrderItem[] getOrderItemByOrderId(int orderId) throws SQLException, ClassNotFoundException;
+    public OrderItem[] getOrderItemsByOrderId(int orderId) throws SQLException, ClassNotFoundException;
     public OrderItem addOrderItemToOrderId(int orderId, OrderItemCreateRequest request) throws SQLException, ClassNotFoundException;
     public OrderItem getOrderItemById(int id) throws SQLException, ClassNotFoundException;
     public OrderItem updateOrderItemById(int id, OrderItemUpdateRequest request) throws SQLException, ClassNotFoundException;

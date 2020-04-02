@@ -10,6 +10,8 @@ import java.util.List;
 
 import com.austindorsey.ordermicroservice.modal.Order;
 import com.austindorsey.ordermicroservice.modal.OrderCreateRequest;
+import com.austindorsey.ordermicroservice.modal.OrderItem;
+import com.austindorsey.ordermicroservice.modal.OrderItemCreateRequest;
 import com.austindorsey.ordermicroservice.modal.OrderUpdateRequest;
 import com.austindorsey.ordermicroservice.modal.OrderWithItems;
 
@@ -33,26 +35,14 @@ public class OrderServiceIMPL implements OrderService {
     private String dbPassword;
     @Value("${mysql.database}")
     private String dbName;
-    @Value("${mysql.tableName.inventory}")
-    private String tableName;
+    @Value("${mysql.tableName.order}")
+    private String tableNameOrder;
+    @Value("${mysql.tableName.orderItem}")
+    private String tableNameOrderItem;
     private Connection mysql;
 
     @Autowired private DriverManagerWrapper driverManagerWrapped;
-
-    @Override
-    public Order[] getOrders() throws SQLException, ClassNotFoundException {
-        return getOrders(null, null);
-    }
-
-    @Override
-    public Order[] getOrders(Integer customerId) throws SQLException, ClassNotFoundException {
-        return getOrders(null, customerId);
-    }
-
-    @Override
-    public Order[] getOrders(String status) throws SQLException, ClassNotFoundException {
-        return getOrders(status, null);
-    }
+    @Autowired private OrderItemService orderItemService;
 
     @Override
     public Order[] getOrders(String status, Integer customerId) throws SQLException, ClassNotFoundException {
@@ -73,7 +63,7 @@ public class OrderServiceIMPL implements OrderService {
             String url = "jdbc:mysql://" + dbHost + ":" + dbPort + "/" + dbName;
             mysql = driverManagerWrapped.getConnection(url, dbUserName, dbPassword);
             Statement statement = mysql.createStatement();
-            ResultSet result = statement.executeQuery("SELECT * FROM " + tableName + filterQuary + ";");
+            ResultSet result = statement.executeQuery("SELECT * FROM " + tableNameOrder + filterQuary + ";");
             List<Order> list = new ArrayList<>();
             while (result.next()) {
                 int id = result.getInt("id");
@@ -92,49 +82,88 @@ public class OrderServiceIMPL implements OrderService {
 
     @Override
     public OrderWithItems postOrder(OrderCreateRequest request) throws SQLException, ClassNotFoundException {
-        // try {
-        //     Class.forName("com.mysql.cj.jdbc.Driver");
-        //     String url = "jdbc:mysql://" + dbHost + ":" + dbPort + "/" + dbName;
-        //     mysql = driverManagerWrapped.getConnection(url, dbUserName, dbPassword);
-        //     Statement statement = mysql.createStatement();
-        //     statement.executeUpdate("INSERT INTO " + tableName);
+        try {
+            Class.forName("com.mysql.cj.jdbc.Driver");
+            String url = "jdbc:mysql://" + dbHost + ":" + dbPort + "/" + dbName;
+            mysql = driverManagerWrapped.getConnection(url, dbUserName, dbPassword);
+            Statement statement = mysql.createStatement();
+            int rowsCreated = statement.executeUpdate(request.getOrderSQLInsertStatement(tableNameOrder));
+            if (rowsCreated > 0) {
+                ResultSet result = statement.executeQuery(request.getSQLSelectStatement(tableNameOrder));
+                if (result.next()) {
+                    int id = result.getInt("id");
+                    int OrderCustomerId = result.getInt("customerId");
+                    String orderStatus = result.getString("orderStatus");
+                    Date datePlaced = result.getDate("datePlaced");
+                    Order order = new Order(id, OrderCustomerId, orderStatus, datePlaced);
 
 
-            
-        //     List<Order> list = new ArrayList<>();
-        //     if (result.next()) {
-        //         int id = result.getInt("id");
-        //         int OrderCustomerId = result.getInt("customerId");
-        //         String orderStatus = result.getString("orderStatus");
-        //         Date datePlaced = result.getDate("datePlaced");
-        //         list.add(new Order(id, OrderCustomerId, orderStatus, datePlaced));
-        //     }
-        //     return list.toArray(new Order[list.size()]);
-        // } finally {
-        //     if (mysql != null) {
-        //         mysql.close();
-        //     }
-        // }
-        // TODO Auto-generated method stub
-        return null;
+                    List<OrderItem> items = new ArrayList<>();
+                    for (OrderItemCreateRequest item : request.getOrderItems()) {
+                        items.add(orderItemService.addOrderItemToOrderId(order.getId(), item));
+                    }
+                    return new OrderWithItems(order, items.toArray(new OrderItem[items.size()]));
+                }
+            }
+            return null;
+        } finally {
+            if (mysql != null) {
+                mysql.close();
+            }
+        }
     }
 
     @Override
     public Order getOrderById(int id) throws SQLException, ClassNotFoundException {
-        // TODO Auto-generated method stub
-        return null;
+        try {
+            Class.forName("com.mysql.cj.jdbc.Driver");
+            String url = "jdbc:mysql://" + dbHost + ":" + dbPort + "/" + dbName;
+            mysql = driverManagerWrapped.getConnection(url, dbUserName, dbPassword);
+            Statement statement = mysql.createStatement();
+            ResultSet result = statement.executeQuery("SELECT * FROM " + tableNameOrder + " WHERE id=" + id + ";");
+            if (result.next()) {
+                int OrderCustomerId = result.getInt("customerId");
+                String orderStatus = result.getString("orderStatus");
+                Date datePlaced = result.getDate("datePlaced");
+                return new Order(id, OrderCustomerId, orderStatus, datePlaced);
+            }
+            return null;
+        } finally {
+            if (mysql != null) {
+                mysql.close();
+            }
+        }
     }
 
     @Override
     public Order updateOrderById(int id, OrderUpdateRequest request) throws SQLException, ClassNotFoundException {
-        // TODO Auto-generated method stub
-        return null;
+        try {
+            Class.forName("com.mysql.cj.jdbc.Driver");
+            String url = "jdbc:mysql://" + dbHost + ":" + dbPort + "/" + dbName;
+            mysql = driverManagerWrapped.getConnection(url, dbUserName, dbPassword);
+            Statement statement = mysql.createStatement();
+            statement.executeUpdate(request.getSQLUpdateStatement(tableNameOrder, id));
+            return getOrderById(id);
+        } finally {
+            if (mysql != null) {
+                mysql.close();
+            }
+        }
     }
 
     @Override
     public Order updateOrderStatusById(int id, String status) throws SQLException, ClassNotFoundException {
-        // TODO Auto-generated method stub
-        return null;
+        try {
+            Class.forName("com.mysql.cj.jdbc.Driver");
+            String url = "jdbc:mysql://" + dbHost + ":" + dbPort + "/" + dbName;
+            mysql = driverManagerWrapped.getConnection(url, dbUserName, dbPassword);
+            Statement statement = mysql.createStatement();
+            statement.executeUpdate("UPDATE " + tableNameOrder + " SET orderStatus='" + status + "' WHERE id=" + id + ";");
+            return getOrderById(id);
+        } finally {
+            if (mysql != null) {
+                mysql.close();
+            }
+        }
     }
-    
 }
