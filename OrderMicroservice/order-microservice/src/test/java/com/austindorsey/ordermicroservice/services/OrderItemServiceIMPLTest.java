@@ -149,6 +149,7 @@ public class OrderItemServiceIMPLTest {
         verify(mockStatement, times(1)).executeQuery(anyString());
     }
     
+    // TODO addOrderItemToOrderId
     // @Test
     // public void addOrderItemToOrderId() throws Exception {
     //     OrderItem item1 = new OrderItem(1, 2, 3, 4, "PLACED", 20.14, Date.valueOf("2012-3-31"));
@@ -257,6 +258,7 @@ public class OrderItemServiceIMPLTest {
         verify(mockStatement, times(1)).executeQuery(anyString());
     }
 
+    // TODO updateOrderItemById
     // @Test
     // public void updateOrderItemById() throws Exception {
     //     OrderItem oldItem = new OrderItem(1, 2, 3, 4, "PLACED", 20.14, Date.valueOf("2012-3-31"));
