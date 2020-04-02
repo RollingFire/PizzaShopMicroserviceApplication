@@ -7,6 +7,10 @@ public class OrderUpdateRequest {
         this.orderStatus = orderStatus.toUpperCase();
     }
 
+    public String getSQLUpdateStatement(String tableName, int id) {
+        return "UPDATE" + tableName + " SET orderStatus='" + this.orderStatus + "' WHERE id=" + id + ";";
+    }
+
     public String getOrderStatus() {
         return orderStatus;
     }

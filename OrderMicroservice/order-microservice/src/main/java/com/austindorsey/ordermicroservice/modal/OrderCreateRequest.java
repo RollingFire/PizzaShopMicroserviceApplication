@@ -5,12 +5,25 @@ import java.util.Arrays;
 public class OrderCreateRequest {
     int customerId;
     String orderStatus;
-    OrderItem[] orderItems;
+    OrderItemCreateRequest[] orderItems;
 
-    public OrderCreateRequest(int customerId, String orderStatus, OrderItem[] orderItems) {
+    public OrderCreateRequest(int customerId, String orderStatus, OrderItemCreateRequest[] orderItems) {
         this.customerId = customerId;
         this.orderStatus = orderStatus.toUpperCase();
         this.orderItems = orderItems;
+    }
+
+    public String getOrderSQLInsertStatement(String tableName) {
+        return "INSERT INTO " + tableName + " (customerId, orderStatus) VALUES (" + 
+                        customerId + ", '" +
+                        orderStatus + "', " +
+                        ");";
+    }
+
+    public String getSQLSelectStatement(String tableName) {
+        return "SELECT * FROM " + tableName + " WHERE customerId=" + customerId + 
+                                            "AND orderStatus='" + orderStatus +
+                                           "';";
     }
 
     public int getCustomerId() {
@@ -29,11 +42,11 @@ public class OrderCreateRequest {
         this.orderStatus = orderStatus.toUpperCase();
     }
 
-    public OrderItem[] getOrderItems() {
+    public OrderItemCreateRequest[] getOrderItems() {
         return orderItems;
     }
 
-    public void setOrderItems(OrderItem[] orderItems) {
+    public void setOrderItems(OrderItemCreateRequest[] orderItems) {
         this.orderItems = orderItems;
     }
 

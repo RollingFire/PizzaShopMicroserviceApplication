@@ -14,7 +14,6 @@ import org.springframework.context.annotation.PropertySource;
 
 @PropertySource("classpath:api.properties")
 public class OrderItemUpdateRequest {
-    int menuItemId;
     int quantity;
     String orderItemStatus;
     double totalCost;
@@ -24,13 +23,18 @@ public class OrderItemUpdateRequest {
     @Value("${api.port.menu}")
     private String menuPort;
 
-    public OrderItemUpdateRequest(int menuItemId, int quantity, String orderItemStatus) {
-        this.menuItemId = menuItemId;
+    public OrderItemUpdateRequest(int quantity, String orderItemStatus) {
         this.quantity = quantity;
         this.orderItemStatus = orderItemStatus;
     }
 
-    public void updateTotalCost() throws Exception {
+    public String getSQLUpdateStatement(String tableName, int menuItemId) throws Exception {
+        return "UPDATE" + tableName + " SET quantity=" + this.quantity
+                        + ", orderItemStatus=" + this.orderItemStatus
+                        + ", totalCost=" + getTotalCost(menuItemId);
+    }
+
+    public double getTotalCost(int menuItemId) throws Exception {
         String url = "http://" + menuHost + ":" + menuPort + "/menuItem/" + menuItemId;
         HttpClient client = HttpClient.newHttpClient();
         HttpRequest request = HttpRequest.newBuilder()
@@ -43,7 +47,7 @@ public class OrderItemUpdateRequest {
             ObjectMapper objectMapper = new ObjectMapper();
             Map<String, Object> menuItem = objectMapper.readValue(response.body(), new TypeReference<Map<String,Object>>(){});
             Double perItemCost = (double) menuItem.get("cost");
-            this.totalCost = perItemCost * this.quantity;
+            return perItemCost * this.quantity;
         } else {
             throw new Exception("Status code at " + url + " was " + response.statusCode());
         }

@@ -11,6 +11,7 @@ import java.sql.Statement;
 import com.austindorsey.ordermicroservice.modal.Order;
 import com.austindorsey.ordermicroservice.modal.OrderCreateRequest;
 import com.austindorsey.ordermicroservice.modal.OrderItem;
+import com.austindorsey.ordermicroservice.modal.OrderItemCreateRequest;
 import com.austindorsey.ordermicroservice.modal.OrderUpdateRequest;
 import com.austindorsey.ordermicroservice.modal.OrderWithItems;
 
@@ -129,8 +130,9 @@ public class OrderServiceIMPLTest {
     @Test
     public void postOrder_0Items() throws Exception {
         Order expectedOrder = new Order(1, 2, "PLACED", Date.valueOf("2012-3-31"));
+        OrderItemCreateRequest[] itemRequests = {};
         OrderItem[] items = {};
-        OrderCreateRequest request = new OrderCreateRequest(2, "PLACED", items);
+        OrderCreateRequest request = new OrderCreateRequest(2, "PLACED", itemRequests);
         String expectedSQL = "INSERT INTO null (customerId, orderItemStatus) VALUES (" +
                             expectedOrder.getCustomerId() + ", '" +
                             expectedOrder.getOrderStatus() + "');";
@@ -150,7 +152,10 @@ public class OrderServiceIMPLTest {
         OrderItem item1 = new OrderItem(1, 2, 3, 4, "PLACED", 20.14, Date.valueOf("2012-3-31"));
         OrderItem item2 = new OrderItem(2, 2, 4, 5, "PROCESSING", 10.80, Date.valueOf("2012-3-20"));
         OrderItem[] items = {item1, item2};
-        OrderCreateRequest request = new OrderCreateRequest(2, "PLACED", items);
+        OrderItemCreateRequest item1Request = new OrderItemCreateRequest(2, 3, 4, "PLACED");
+        OrderItemCreateRequest item2Request = new OrderItemCreateRequest(2, 4, 5, "PROCESSING");
+        OrderItemCreateRequest[] itemRequests = {item1Request, item2Request};
+        OrderCreateRequest request = new OrderCreateRequest(2, "PLACED", itemRequests);
         String expectedSQL = "INSERT INTO null (customerId, orderItemStatus) VALUES (" +
                             expectedOrder.getCustomerId() + ", '" +
                             expectedOrder.getOrderStatus() + "');";

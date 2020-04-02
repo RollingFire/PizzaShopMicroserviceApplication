@@ -34,13 +34,21 @@ public class OrderItemCreateRequest {
     }
 
     public String getSQLInsertStatement(String tableName) {
-        return "INSERT INTO null (orderId, menuItemId, quantity, orderItemStatus, cost) VALUES (" + 
+        return "INSERT INTO " + tableName + " (orderId, menuItemId, quantity, orderItemStatus, cost) VALUES (" + 
                         orderId + ", " +
                         menuItemId + ", " +
                         quantity + ", " +
                         orderItemStatus + ", " +
                         totalCost + ", " +
                         ");";
+    }
+
+    public String getSQLSelectStatement(String tableName) {
+        return "SELECT * FROM " + tableName + " WHERE orderId=" + orderId + 
+                                            "AND menuItemId=" + menuItemId +
+                                            "AND quantity=" + quantity +
+                                            "AND orderItemStatus='" + orderItemStatus +
+                                           "'AND cost=" + totalCost;
     }
 
     public void updateTotalCost() throws Exception {
