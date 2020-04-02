@@ -4,6 +4,6 @@ import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
 @SpringBootTest
-public class OrderItemCreateRequestTest {
-    // TODO Write test for updateTotalCost
+public class OrderItemUpdateRequestTest {
+    // TODO Write test for getTotalCost
 }
