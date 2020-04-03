@@ -9,31 +9,26 @@ import java.util.Map;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.PropertySource;
 
-@PropertySource("classpath:api.properties")
 public class OrderItemUpdateRequest {
     int quantity;
     String orderItemStatus;
     double totalCost;
 
-    @Value("${api.host.menu}")
-    private String menuHost;
-    @Value("${api.port.menu}")
-    private String menuPort;
+    private String menuHost = "pizza-menu-api";
+    private String menuPort = "9095";
 
     public OrderItemUpdateRequest(int quantity, String orderItemStatus) {
         this.quantity = quantity;
         this.orderItemStatus = orderItemStatus.toUpperCase();
     }
 
-    public String getSQLUpdateStatement(String tableName, int menuItemId) {
+    public String getSQLUpdateStatement(int id, String tableName, int menuItemId) {
         try {
-            return "UPDATE" + tableName + " SET quantity=" + this.quantity
-                            + ", orderItemStatus=" + this.orderItemStatus
-                            + ", totalCost=" + getTotalCost(menuItemId);
+            return "UPDATE " + tableName + " SET quantity=" + this.quantity
+                            + ", orderItemStatus='" + this.orderItemStatus
+                            + "', cost=" + getTotalCost(menuItemId)
+                            + " WHERE id=" + id + ";";
         } catch (Exception e) {
             return null;
         }

@@ -23,7 +23,6 @@ import org.springframework.stereotype.Service;
 
 @Service
 @PropertySource("classpath:database.properties")
-@PropertySource("classpath:api.properties")
 public class OrderServiceIMPL implements OrderService {
     
     @Value("${mysql.host}")

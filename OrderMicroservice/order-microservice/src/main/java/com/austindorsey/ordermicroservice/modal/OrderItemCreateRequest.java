@@ -6,16 +6,11 @@ import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 import java.util.Map;
 
-import javax.annotation.PostConstruct;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.PropertySource;
 
-@PropertySource("classpath:api.properties")
 public class OrderItemCreateRequest {
     int orderId;
     int menuItemId;
@@ -23,20 +18,14 @@ public class OrderItemCreateRequest {
     String orderItemStatus;
     double totalCost;
 
-    @Value("${api.host.menu}")
-    private String menuHost;
-    @Value("${api.port.menu}")
-    private String menuPort;
+    private String menuHost = "pizza-menu-api";
+    private String menuPort = "9095";
 
     public OrderItemCreateRequest(int orderId, int menuItemId, int quantity, String orderItemStatus) throws Exception {
         this.orderId = orderId;
         this.menuItemId = menuItemId;
         this.quantity = quantity;
         this.orderItemStatus = orderItemStatus.toUpperCase();
-    }
-    
-    @PostConstruct
-    private void postConstruct() throws Exception {
         updateTotalCost();
     }
 
@@ -58,8 +47,6 @@ public class OrderItemCreateRequest {
                                            "' AND cost=" + totalCost + 
                                             "ORDER BY id DESC LIMIT 1;";
     }
-
-    // SELECT * FROM orderItem WHERE orderId=10 AND menuItemId=1 AND quantity=1 AND orderItemStatus LIKE 'ITEM' AND cost=0.0;
 
     public void updateTotalCost() throws Exception {
         String url = "http://" + menuHost + ":" + menuPort + "/menuItem/" + menuItemId;
@@ -113,21 +100,19 @@ public class OrderItemCreateRequest {
         this.orderItemStatus = orderItemStatus;
     }
 
-    public double getTotalCost() {
-        return totalCost;
-    }
-
     @Override
     public int hashCode() {
         final int prime = 31;
         int result = 1;
-        long temp;
-        temp = Double.doubleToLongBits(totalCost);
-        result = prime * result + (int) (temp ^ (temp >>> 32));
+        result = prime * result + ((menuHost == null) ? 0 : menuHost.hashCode());
         result = prime * result + menuItemId;
+        result = prime * result + ((menuPort == null) ? 0 : menuPort.hashCode());
         result = prime * result + orderId;
         result = prime * result + ((orderItemStatus == null) ? 0 : orderItemStatus.hashCode());
         result = prime * result + quantity;
+        long temp;
+        temp = Double.doubleToLongBits(totalCost);
+        result = prime * result + (int) (temp ^ (temp >>> 32));
         return result;
     }
 
@@ -140,9 +125,17 @@ public class OrderItemCreateRequest {
         if (getClass() != obj.getClass())
             return false;
         OrderItemCreateRequest other = (OrderItemCreateRequest) obj;
-        if (Double.doubleToLongBits(totalCost) != Double.doubleToLongBits(other.totalCost))
+        if (menuHost == null) {
+            if (other.menuHost != null)
+                return false;
+        } else if (!menuHost.equals(other.menuHost))
             return false;
         if (menuItemId != other.menuItemId)
+            return false;
+        if (menuPort == null) {
+            if (other.menuPort != null)
+                return false;
+        } else if (!menuPort.equals(other.menuPort))
             return false;
         if (orderId != other.orderId)
             return false;
@@ -153,12 +146,15 @@ public class OrderItemCreateRequest {
             return false;
         if (quantity != other.quantity)
             return false;
+        if (Double.doubleToLongBits(totalCost) != Double.doubleToLongBits(other.totalCost))
+            return false;
         return true;
     }
 
     @Override
     public String toString() {
-        return "OrderItemCreateRequest [totalCost=" + totalCost + ", menuItemId=" + menuItemId + ", orderId=" + orderId
-                + ", orderItemStatus=" + orderItemStatus + ", quantity=" + quantity + "]";
+        return "OrderItemCreateRequest [menuHost=" + menuHost + ", menuItemId=" + menuItemId + ", menuPort=" + menuPort
+                + ", orderId=" + orderId + ", orderItemStatus=" + orderItemStatus + ", quantity=" + quantity
+                + ", totalCost=" + totalCost + "]";
     }
 }

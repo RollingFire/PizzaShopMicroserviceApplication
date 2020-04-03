@@ -19,7 +19,6 @@ import org.springframework.stereotype.Service;
 
 @Service
 @PropertySource("classpath:database.properties")
-@PropertySource("classpath:api.properties")
 public class OrderItemServiceIMPL implements OrderItemService {
 
     @Value("${mysql.host}")
@@ -121,9 +120,8 @@ public class OrderItemServiceIMPL implements OrderItemService {
     @Override
     public OrderItem updateOrderItemById(int id, OrderItemUpdateRequest request)
             throws SQLException, ClassNotFoundException {
-
+        String sql = request.getSQLUpdateStatement(id, tableNameOrderItem, getOrderItemById(id).getMenuItemId());
         
-        String sql = request.getSQLUpdateStatement(tableNameOrderItem, getOrderItemById(id).getMenuItemId());
         //To build the update sql, the request calls the menuAPI. If that fails, the sql is null.
         if (sql == null) { 
             return null;
@@ -135,7 +133,7 @@ public class OrderItemServiceIMPL implements OrderItemService {
             mysql = driverManagerWrapped.getConnection(url, dbUserName, dbPassword);
             Statement statement = mysql.createStatement();
             getOrderItemById(id).getMenuItemId();
-            statement.executeUpdate(request.getSQLUpdateStatement(tableNameOrderItem, getOrderItemById(id).getMenuItemId()));
+            statement.executeUpdate(request.getSQLUpdateStatement(id, tableNameOrderItem, getOrderItemById(id).getMenuItemId()));
             return getOrderItemById(id);
         } finally {
             if (mysql != null) {
