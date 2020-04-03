@@ -1,7 +1,7 @@
 openapi: 3.0.0
 info:
-  title: Recipe API
-  description: Intereface for Recipe Microservice to edit the MySQL recipe tables.
+  title: Order API
+  description: Intereface for Order Microservice to edit the MySQL recipe tables.
   version: 0.0.1
 
 paths:

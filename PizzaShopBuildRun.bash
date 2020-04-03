@@ -18,7 +18,7 @@ winpty docker run -d -t --name pizza-shop-auto-restocker pizza-shop-auto-restock
 docker run -d --name pizza-customer-api -p 9092:9092 pizza-shop-customer-api
 docker run -d --name pizza-menu-api -p 9095:9095 pizza-shop-menu-api
 docker run -d --name pizza-recipe-api -p 9096:9096 pizza-shop-recipe-api
-docker run -d --name pizza-order-api -p 9094:9094 pizza-shop-recipe-api
+docker run -d --name pizza-order-api -p 9094:9094 pizza-shop-order-api
 
 docker network create pizza-shop
 docker network connect pizza-shop pizza-mysql

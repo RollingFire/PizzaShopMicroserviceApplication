@@ -129,7 +129,7 @@ CREATE TABLE orderItem (
   lastRevisionDate timestamp DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (id),
   FOREIGN KEY (orderId) REFERENCES placedOrder(id),
-  FOREIGN KEY (menuItem) REFERENCES menuItem(id)
+  FOREIGN KEY (menuItemId) REFERENCES menuItem(id)
 );
 
 

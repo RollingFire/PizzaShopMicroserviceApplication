@@ -70,7 +70,7 @@ public class OrderRESTController {
     }
 
     @RequestMapping(value = "/order/{id}", method = RequestMethod.PUT)
-    ResponseEntity<?> getOrderById(@PathVariable(value = "id") int id,
+    ResponseEntity<?> updateOrderById(@PathVariable(value = "id") int id,
                                    @RequestBody OrderUpdateRequest request) {
         try {
             Order responce = orderService.updateOrderById(id, request);
@@ -84,7 +84,7 @@ public class OrderRESTController {
         }
     }
 
-    @RequestMapping(value = "/order/{id}", method = RequestMethod.PUT)
+    @RequestMapping(value = "/order/{id}/status", method = RequestMethod.PUT)
     ResponseEntity<?> updateOrderStatusById(@PathVariable(value = "id") int id,
                                    @RequestBody String status) {
         try {
@@ -110,7 +110,7 @@ public class OrderRESTController {
     }
 
     @RequestMapping(value = "/order/items/{orderId}", method = RequestMethod.POST)
-    ResponseEntity<?> getOrderItemsByOrderId(@PathVariable(value = "orderId") int orderId,
+    ResponseEntity<?> addOrderItemToOrderId(@PathVariable(value = "orderId") int orderId,
                                             @RequestBody OrderItemCreateRequest request) {
         try {
             OrderItem responce = orderItemService.addOrderItemToOrderId(orderId, request);
