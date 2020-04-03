@@ -74,7 +74,7 @@ public class MenuItemServiceIMPL implements MenuItemService {
             mysql = driverManagerWrapped.getConnection(url, dbUserName, dbPassword);
             MenuItem item = null;
             Statement statement = mysql.createStatement();
-            ResultSet result = statement.executeQuery("SELECT * FROM " + tableName + " WHERE id='" + id + "';");
+            ResultSet result = statement.executeQuery("SELECT * FROM " + tableName + " WHERE id=" + id + ";");
             if (result.next()) {
                 String catagory = result.getString("catagory");
                 String itemName = result.getString("itemName");
@@ -190,7 +190,6 @@ public class MenuItemServiceIMPL implements MenuItemService {
                 Statement statement = mysql.createStatement();
 
                 String sql = "UPDATE " + tableName + " SET ";
-                System.out.println(updatePairs.keySet());
                 for (String key : updatePairs.keySet()) {
                     sql = sql.replace(";", ", ");
                     if (updatePairs.get(key) instanceof String) {
@@ -199,6 +198,7 @@ public class MenuItemServiceIMPL implements MenuItemService {
                         sql += key + "=" + updatePairs.get(key) + ";";
                     }
                 }
+                sql = sql.replace(";", " WHERE id=" + id + ";");
                 statement.executeUpdate(sql);
             }
             return getMenuItemByID(id);
