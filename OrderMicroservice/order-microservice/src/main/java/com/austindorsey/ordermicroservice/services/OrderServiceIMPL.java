@@ -11,7 +11,6 @@ import java.util.List;
 import com.austindorsey.ordermicroservice.modal.Order;
 import com.austindorsey.ordermicroservice.modal.OrderCreateRequest;
 import com.austindorsey.ordermicroservice.modal.OrderItem;
-import com.austindorsey.ordermicroservice.modal.OrderItemCreateRequest;
 import com.austindorsey.ordermicroservice.modal.OrderItemCreateRequestShort;
 import com.austindorsey.ordermicroservice.modal.OrderUpdateRequest;
 import com.austindorsey.ordermicroservice.modal.OrderWithItems;
