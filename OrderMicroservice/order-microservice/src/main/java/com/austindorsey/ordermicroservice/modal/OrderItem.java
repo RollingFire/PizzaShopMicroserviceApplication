@@ -17,7 +17,7 @@ public class OrderItem {
         this.orderId = orderId;
         this.menuItemId = menuItemId;
         this.quantity = quantity;
-        this.orderItemStatus = orderItemStatus;
+        this.orderItemStatus = orderItemStatus.toUpperCase();
         this.cost = cost;
         this.lastRevisionDate = lastRevisionDate;
     }

@@ -10,6 +10,7 @@ import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.PropertySource;
 
 @PropertySource("classpath:api.properties")
@@ -25,7 +26,7 @@ public class OrderItemUpdateRequest {
 
     public OrderItemUpdateRequest(int quantity, String orderItemStatus) {
         this.quantity = quantity;
-        this.orderItemStatus = orderItemStatus;
+        this.orderItemStatus = orderItemStatus.toUpperCase();
     }
 
     public String getSQLUpdateStatement(String tableName, int menuItemId) {

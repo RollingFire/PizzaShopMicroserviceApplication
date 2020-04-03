@@ -167,7 +167,7 @@ public class OrderItemServiceIMPL implements OrderItemService {
             String url = "jdbc:mysql://" + dbHost + ":" + dbPort + "/" + dbName;
             mysql = driverManagerWrapped.getConnection(url, dbUserName, dbPassword);
             Statement statement = mysql.createStatement();
-            ResultSet result = statement.executeQuery("SELECT * FROM " + tableNameOrderItem + " WHERE orderItemStatus LIKE " + status +  ";");
+            ResultSet result = statement.executeQuery("SELECT * FROM " + tableNameOrderItem + " WHERE orderItemStatus LIKE '" + status +  "';");
             List<OrderItem> list = new ArrayList<>();
             while (result.next()) {
                 int id = result.getInt("id");

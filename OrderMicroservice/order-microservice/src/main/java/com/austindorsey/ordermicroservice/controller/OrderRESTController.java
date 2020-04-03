@@ -4,6 +4,7 @@ import com.austindorsey.ordermicroservice.modal.Order;
 import com.austindorsey.ordermicroservice.modal.OrderCreateRequest;
 import com.austindorsey.ordermicroservice.modal.OrderItem;
 import com.austindorsey.ordermicroservice.modal.OrderItemCreateRequest;
+import com.austindorsey.ordermicroservice.modal.OrderItemCreateRequestShort;
 import com.austindorsey.ordermicroservice.modal.OrderUpdateRequest;
 import com.austindorsey.ordermicroservice.modal.OrderWithItems;
 import com.austindorsey.ordermicroservice.services.OrderItemService;
@@ -30,10 +31,9 @@ public class OrderRESTController {
 
     @RequestMapping(value = "/order", method = RequestMethod.GET)
     ResponseEntity<?> getOrders(@RequestParam(value = "status", required = false) String status,
-                                @RequestParam(value = "customerId", required = false) int customerId) {
+                                @RequestParam(value = "customerId", required = false) Integer customerId) {
         try {
-            Order[] orders = null;
-            orders = orderService.getOrders(status, customerId);
+            Order[] orders = orderService.getOrders(status, customerId);
             return new ResponseEntity<>(orders, HttpStatus.OK);
         } catch (Exception e) {
             return new ResponseEntity<>(e, HttpStatus.INTERNAL_SERVER_ERROR);
@@ -43,10 +43,9 @@ public class OrderRESTController {
     @RequestMapping(value = "/order", method = RequestMethod.POST)
     ResponseEntity<?> postOrder(@RequestBody OrderCreateRequest request) {
         try {
-            OrderWithItems responce = null;
-            responce = orderService.postOrder(request);
-            if (responce == null) {
-                return new ResponseEntity<>(responce, HttpStatus.CREATED);
+            OrderWithItems responce = orderService.postOrder(request);
+            if (responce != null) {
+                    return new ResponseEntity<>(responce, HttpStatus.CREATED);
             } else {
                 return new ResponseEntity<>("Unknown Issue, failed to create order.", HttpStatus.INTERNAL_SERVER_ERROR);
             }
@@ -59,7 +58,7 @@ public class OrderRESTController {
     ResponseEntity<?> getOrderById(@PathVariable(value = "id") int id) {
         try {
             Order responce = orderService.getOrderById(id);
-            if (responce == null) {
+            if (responce != null) {
                 return new ResponseEntity<>(responce, HttpStatus.OK);
             } else {
                 return new ResponseEntity<>(HttpStatus.NOT_FOUND);
@@ -74,7 +73,7 @@ public class OrderRESTController {
                                    @RequestBody OrderUpdateRequest request) {
         try {
             Order responce = orderService.updateOrderById(id, request);
-            if (responce == null) {
+            if (responce != null) {
                 return new ResponseEntity<>(responce, HttpStatus.OK);
             } else {
                 return new ResponseEntity<>(HttpStatus.NOT_FOUND);
@@ -89,7 +88,7 @@ public class OrderRESTController {
                                    @RequestBody String status) {
         try {
             Order responce = orderService.updateOrderStatusById(id, status);
-            if (responce == null) {
+            if (responce != null) {
                 return new ResponseEntity<>(responce, HttpStatus.OK);
             } else {
                 return new ResponseEntity<>(HttpStatus.NOT_FOUND);
@@ -111,10 +110,10 @@ public class OrderRESTController {
 
     @RequestMapping(value = "/order/items/{orderId}", method = RequestMethod.POST)
     ResponseEntity<?> addOrderItemToOrderId(@PathVariable(value = "orderId") int orderId,
-                                            @RequestBody OrderItemCreateRequest request) {
+                                            @RequestBody OrderItemCreateRequestShort request) {
         try {
-            OrderItem responce = orderItemService.addOrderItemToOrderId(orderId, request);
-            return new ResponseEntity<>(responce, HttpStatus.OK);
+            OrderItem responce = orderItemService.addOrderItemToOrderId(orderId, request.toOrderItemCreateRequest(orderId));
+            return new ResponseEntity<>(responce, HttpStatus.CREATED);
         } catch (Exception e) {
             return new ResponseEntity<>(e, HttpStatus.INTERNAL_SERVER_ERROR);
         }

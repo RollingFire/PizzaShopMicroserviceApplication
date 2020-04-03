@@ -319,7 +319,7 @@ public class OrderItemServiceIMPLTest {
         OrderItem item2 = new OrderItem(2, 3, 4, 5, "FULFILLED", 10.80, Date.valueOf("2012-3-20"));
         OrderItem item3 = new OrderItem(3, 4, 5, 6, "FULFILLED", 5.67, Date.valueOf("2012-2-12"));
         OrderItem[] expected = {item1, item2, item3};
-        String expectedSQL = "SELECT * FROM null WHERE orderItemStatus LIKE " + item1.getOrderItemStatus() + ";";
+        String expectedSQL = "SELECT * FROM null WHERE orderItemStatus LIKE '" + item1.getOrderItemStatus() + "';";
 
         Mockito.mock(DriverManagerWrapper.class);
         doReturn(mockConnection).when(driverManagerWrapper).getConnection(any(), any(), any());
@@ -374,7 +374,7 @@ public class OrderItemServiceIMPLTest {
     public void getOrderItemsByStatus_1found() throws Exception {
         OrderItem item1 = new OrderItem(1, 2, 3, 4, "FULFILLED", 20.14, Date.valueOf("2012-3-31"));
         OrderItem[] expected = {item1};
-        String expectedSQL = "SELECT * FROM null WHERE orderItemStatus LIKE " + item1.getOrderItemStatus() + ";";
+        String expectedSQL = "SELECT * FROM null WHERE orderItemStatus LIKE '" + item1.getOrderItemStatus() + "';";
 
         Mockito.mock(DriverManagerWrapper.class);
         doReturn(mockConnection).when(driverManagerWrapper).getConnection(any(), any(), any());
@@ -413,7 +413,7 @@ public class OrderItemServiceIMPLTest {
     public void getOrderItemsByStatus_0found() throws Exception {
         String status = "StatusThatDoesntExits.doesntExist.com";
         OrderItem[] expected = {};
-        String expectedSQL = "SELECT * FROM null WHERE orderItemStatus LIKE " + status + ";";
+        String expectedSQL = "SELECT * FROM null WHERE orderItemStatus LIKE '" + status + "';";
 
         Mockito.mock(DriverManagerWrapper.class);
         doReturn(mockConnection).when(driverManagerWrapper).getConnection(any(), any(), any());

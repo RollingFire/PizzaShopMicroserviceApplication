@@ -6,10 +6,13 @@ import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 import java.util.Map;
 
+import javax.annotation.PostConstruct;
+
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.PropertySource;
 
 @PropertySource("classpath:api.properties")
@@ -29,7 +32,11 @@ public class OrderItemCreateRequest {
         this.orderId = orderId;
         this.menuItemId = menuItemId;
         this.quantity = quantity;
-        this.orderItemStatus = orderItemStatus;
+        this.orderItemStatus = orderItemStatus.toUpperCase();
+    }
+    
+    @PostConstruct
+    private void postConstruct() throws Exception {
         updateTotalCost();
     }
 
@@ -37,19 +44,22 @@ public class OrderItemCreateRequest {
         return "INSERT INTO " + tableName + " (orderId, menuItemId, quantity, orderItemStatus, cost) VALUES (" + 
                         orderId + ", " +
                         menuItemId + ", " +
-                        quantity + ", " +
-                        orderItemStatus + ", " +
-                        totalCost + ", " +
+                        quantity + ", '" +
+                        orderItemStatus + "', " +
+                        totalCost +
                         ");";
     }
 
     public String getSQLSelectStatement(String tableName) {
         return "SELECT * FROM " + tableName + " WHERE orderId=" + orderId + 
-                                            "AND menuItemId=" + menuItemId +
-                                            "AND quantity=" + quantity +
-                                            "AND orderItemStatus='" + orderItemStatus +
-                                           "'AND cost=" + totalCost;
+                                            " AND menuItemId=" + menuItemId +
+                                            " AND quantity=" + quantity +
+                                            " AND orderItemStatus LIKE '" + orderItemStatus +
+                                           "' AND cost=" + totalCost + 
+                                            "ORDER BY id DESC LIMIT 1;";
     }
+
+    // SELECT * FROM orderItem WHERE orderId=10 AND menuItemId=1 AND quantity=1 AND orderItemStatus LIKE 'ITEM' AND cost=0.0;
 
     public void updateTotalCost() throws Exception {
         String url = "http://" + menuHost + ":" + menuPort + "/menuItem/" + menuItemId;

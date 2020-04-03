@@ -12,6 +12,7 @@ import com.austindorsey.ordermicroservice.modal.Order;
 import com.austindorsey.ordermicroservice.modal.OrderCreateRequest;
 import com.austindorsey.ordermicroservice.modal.OrderItem;
 import com.austindorsey.ordermicroservice.modal.OrderItemCreateRequest;
+import com.austindorsey.ordermicroservice.modal.OrderItemCreateRequestShort;
 import com.austindorsey.ordermicroservice.modal.OrderUpdateRequest;
 import com.austindorsey.ordermicroservice.modal.OrderWithItems;
 
@@ -48,7 +49,7 @@ public class OrderServiceIMPL implements OrderService {
     public Order[] getOrders(String status, Integer customerId) throws SQLException, ClassNotFoundException {
         String filterQuary = "";
         if (status != null) {
-            filterQuary = " WHERE status LIKE " + status;
+            filterQuary = " WHERE orderStatus LIKE '" + status + "'";
         }
         if (customerId != null) {
             if (filterQuary == "") {
@@ -81,7 +82,7 @@ public class OrderServiceIMPL implements OrderService {
     }
 
     @Override
-    public OrderWithItems postOrder(OrderCreateRequest request) throws SQLException, ClassNotFoundException {
+    public OrderWithItems postOrder(OrderCreateRequest request) throws Exception {
         try {
             Class.forName("com.mysql.cj.jdbc.Driver");
             String url = "jdbc:mysql://" + dbHost + ":" + dbPort + "/" + dbName;
@@ -99,8 +100,8 @@ public class OrderServiceIMPL implements OrderService {
 
 
                     List<OrderItem> items = new ArrayList<>();
-                    for (OrderItemCreateRequest item : request.getOrderItems()) {
-                        items.add(orderItemService.addOrderItemToOrderId(order.getId(), item));
+                    for (OrderItemCreateRequestShort item : request.getOrderItems()) {
+                        items.add(orderItemService.addOrderItemToOrderId(order.getId(), item.toOrderItemCreateRequest(order.getId())));
                     }
                     return new OrderWithItems(order, items.toArray(new OrderItem[items.size()]));
                 }

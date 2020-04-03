@@ -24,7 +24,7 @@ public class OrderItemRESTController {
     ResponseEntity<?> getOrders(@PathVariable(value = "id") int id) {
         try {
             OrderItem orders = orderItemService.getOrderItemById(id);
-            if (orders == null) {
+            if (orders != null) {
                 return new ResponseEntity<>(orders, HttpStatus.OK);
             } else {
                 return new ResponseEntity<>(HttpStatus.NOT_FOUND);
@@ -39,7 +39,7 @@ public class OrderItemRESTController {
                                 @RequestBody OrderItemUpdateRequest request) {
         try {
             OrderItem orders = orderItemService.updateOrderItemById(id, request);
-            if (orders == null) {
+            if (orders != null) {
                 return new ResponseEntity<>(orders, HttpStatus.OK);
             } else {
                 return new ResponseEntity<>(HttpStatus.NOT_FOUND);
@@ -54,7 +54,7 @@ public class OrderItemRESTController {
                                 @RequestBody String status) {
         try {
             OrderItem orders = orderItemService.updateOrderItemStatusById(id, status);
-            if (orders == null) {
+            if (orders != null) {
                 return new ResponseEntity<>(orders, HttpStatus.OK);
             } else {
                 return new ResponseEntity<>(HttpStatus.NOT_FOUND);
@@ -65,7 +65,7 @@ public class OrderItemRESTController {
     }
 
     @RequestMapping(value = "/orderItem/{orderItemStatus:(?!^\\d+$)^.+$}", method = RequestMethod.GET)
-    ResponseEntity<?> getOrders(@PathVariable(value = "status") String status) {
+    ResponseEntity<?> getOrders(@PathVariable(value = "orderItemStatus") String status) {
         try {
             OrderItem[] orders = orderItemService.getOrderItemsByStatus(status);
             return new ResponseEntity<>(orders, HttpStatus.OK);

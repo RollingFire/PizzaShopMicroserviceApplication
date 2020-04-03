@@ -57,10 +57,10 @@ paths:
                             properties:
                                 customerId:
                                     type: integer
-                                orderItemStatus:
+                                orderStatus:
                                     type:
                                         string
-                                orederItems:
+                                orderItems:
                                     type: array
                                     items:
                                         type: object
@@ -69,6 +69,8 @@ paths:
                                                 type: integer
                                             quantity:
                                                 type: integer
+                                            orderItemStatus:
+                                                type: string
             responses:
                 '200':
                     description: Returning created items.
@@ -293,8 +295,6 @@ paths:
                         schema:
                             type: object
                             properties:
-                                orderId:
-                                    type: integer
                                 menuItemId:
                                     type: integer
                                 quantity:
