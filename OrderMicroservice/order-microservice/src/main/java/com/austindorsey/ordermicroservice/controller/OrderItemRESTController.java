@@ -20,7 +20,7 @@ public class OrderItemRESTController {
     @Autowired
     private OrderItemService orderItemService;
 
-    @RequestMapping(value = "/orderItem/{id}", method = RequestMethod.GET)
+    @RequestMapping(value = "/orderItem/{id:^[0-9]+$}", method = RequestMethod.GET)
     ResponseEntity<?> getOrders(@PathVariable(value = "id") int id) {
         try {
             OrderItem orders = orderItemService.getOrderItemById(id);
@@ -59,6 +59,16 @@ public class OrderItemRESTController {
             } else {
                 return new ResponseEntity<>(HttpStatus.NOT_FOUND);
             }
+        } catch (Exception e) {
+            return new ResponseEntity<>(e, HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    @RequestMapping(value = "/orderItem/{orderItemStatus:(?!^\\d+$)^.+$}", method = RequestMethod.GET)
+    ResponseEntity<?> getOrders(@PathVariable(value = "status") String status) {
+        try {
+            OrderItem[] orders = orderItemService.getOrderItemsByStatus(status);
+            return new ResponseEntity<>(orders, HttpStatus.OK);
         } catch (Exception e) {
             return new ResponseEntity<>(e, HttpStatus.INTERNAL_SERVER_ERROR);
         }
