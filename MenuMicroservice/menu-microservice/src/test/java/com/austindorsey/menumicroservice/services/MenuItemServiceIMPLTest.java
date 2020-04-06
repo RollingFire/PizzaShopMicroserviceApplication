@@ -367,7 +367,7 @@ public class MenuItemServiceIMPLTest {
         MenuItem updatedItem = new MenuItem(5, "Pasta", "Sausage Alla Vodka", "Sage Sausage, shell pasta with carimelized shallots in house made vodka sauce. Served with garlic toast.", 18, Date.valueOf("2020-03-19"));
         Map<String,Object> request = new HashMap<String,Object>();
         request.put("catagory", updatedItem.getCatagory());
-        String expectedSQL = "UPDATE null SET catagory='Pasta';";
+        String expectedSQL = "UPDATE null SET catagory='Pasta' WHERE id=5;";
 
         doReturn(updatedItem).when(service).getMenuItemByID(currentItem.getId());
         Mockito.mock(DriverManagerWrapper.class);
@@ -390,7 +390,7 @@ public class MenuItemServiceIMPLTest {
         MenuItem updatedItem = new MenuItem(5, "Pasta", "Sausage Alla Vodka", "Sage Sausage, shell pasta with carimelized shallots in house made vodka sauce. Served with garlic toast.", 18, Date.valueOf("2020-03-19"));
         Map<String,Object> request = new HashMap<String,Object>();
         request.put("itemName", updatedItem.getItemName());
-        String expectedSQL = "UPDATE null SET itemName='Sausage Alla Vodka';";
+        String expectedSQL = "UPDATE null SET itemName='Sausage Alla Vodka' WHERE id=5;";
 
         doReturn(updatedItem).when(service).getMenuItemByID(currentItem.getId());
         Mockito.mock(DriverManagerWrapper.class);
@@ -413,7 +413,7 @@ public class MenuItemServiceIMPLTest {
         MenuItem updatedItem = new MenuItem(5, "Pasta", "Sausage Alla Vodka", "Sage Sausage, shell pasta with carimelized shallots in house made vodka sauce. Served with garlic toast.", 18, Date.valueOf("2020-03-19"));
         Map<String,Object> request = new HashMap<String,Object>();
         request.put("discription", updatedItem.getDiscription());
-        String expectedSQL = "UPDATE null SET discription='Sage Sausage, shell pasta with carimelized shallots in house made vodka sauce. Served with garlic toast.';";
+        String expectedSQL = "UPDATE null SET discription='Sage Sausage, shell pasta with carimelized shallots in house made vodka sauce. Served with garlic toast.' WHERE id=5;";
 
         doReturn(updatedItem).when(service).getMenuItemByID(currentItem.getId());
         Mockito.mock(DriverManagerWrapper.class);
@@ -436,7 +436,7 @@ public class MenuItemServiceIMPLTest {
         MenuItem updatedItem = new MenuItem(5, "Pasta", "Sausage Alla Vodka", "Sage Sausage, shell pasta with carimelized shallots in house made vodka sauce. Served with garlic toast.", 18, Date.valueOf("2020-03-19"));
         Map<String,Object> request = new HashMap<String,Object>();
         request.put("cost", updatedItem.getCost());
-        String expectedSQL = "UPDATE null SET cost=18;";
+        String expectedSQL = "UPDATE null SET cost=18 WHERE id=5;";
 
         doReturn(updatedItem).when(service).getMenuItemByID(currentItem.getId());
         Mockito.mock(DriverManagerWrapper.class);
@@ -460,7 +460,7 @@ public class MenuItemServiceIMPLTest {
         Map<String,Object> request = new HashMap<String,Object>();
         request.put("discription", updatedItem.getDiscription());
         request.put("cost", updatedItem.getCost());
-        String expectedSQL = "UPDATE null SET discription='Sage Sausage, shell pasta with carimelized shallots in house made vodka sauce. Served with garlic toast.', cost=18;";
+        String expectedSQL = "UPDATE null SET discription='Sage Sausage, shell pasta with carimelized shallots in house made vodka sauce. Served with garlic toast.', cost=18 WHERE id=5;";
 
         doReturn(updatedItem).when(service).getMenuItemByID(currentItem.getId());
         Mockito.mock(DriverManagerWrapper.class);
@@ -491,7 +491,7 @@ public class MenuItemServiceIMPLTest {
                                 "itemName='Sausage Alla Vodka', " +
                                 "discription='Sage Sausage, shell pasta with carimelized shallots in house made vodka sauce. Served with garlic toast.', " +
                                 "cost=18" +
-                                ";";
+                                " WHERE id=5;";
 
         doReturn(updatedItem).when(service).getMenuItemByID(currentItem.getId());
         Mockito.mock(DriverManagerWrapper.class);
