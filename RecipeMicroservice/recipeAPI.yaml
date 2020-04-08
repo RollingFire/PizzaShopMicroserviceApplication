@@ -70,7 +70,6 @@ paths:
               schema:
                 type: string
                 example: Error Message
-            
     post:
       description: Create new recipe line items.
       parameters:
@@ -117,6 +116,30 @@ paths:
                 type: string
                 example: Error Message
               
+  /recipe/{menuItemId}/fire:
+    post:
+      description: Removes the number of units from each ingrediant for the recipe from the inventory stock.
+      parameters:
+        - name: menuItemId
+          in: path
+          required: true
+          description: id of the menuItem
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Updated inventory stock
+        '404':
+          description: Item not found.
+        '500':
+          description: An error occered.
+          content:
+            text/plain:
+              schema:
+                type: string
+                example: Error Message
+
+
               
   /recipe/ingredient/{id}:
     get:
@@ -152,7 +175,6 @@ paths:
               schema:
                 type: string
                 example: Error Message
-
     put:
       description: Updates the inventoryItemId and quantityUsed at entry where id is id.
       parameters:
@@ -198,7 +220,6 @@ paths:
               schema:
                 type: string
                 example: Error Message
-
     delete:
       description: Deletes the item with the id of id
       parameters:
@@ -211,6 +232,29 @@ paths:
       responses:
         '200':
           description: Item deleted.
+        '404':
+          description: Item not found.
+        '500':
+          description: An error occered.
+          content:
+            text/plain:
+              schema:
+                type: string
+                example: Error Message
+
+  /recipe/ingredient/{id}/fire:
+    post:
+      description: Removes the number of units from the ingrediant from the inventory stock.
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: id of the item in recipe.
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Updated inventory stock
         '404':
           description: Item not found.
         '500':

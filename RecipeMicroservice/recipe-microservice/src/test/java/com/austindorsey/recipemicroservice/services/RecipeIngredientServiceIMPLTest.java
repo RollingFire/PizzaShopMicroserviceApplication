@@ -3,9 +3,12 @@ package com.austindorsey.recipemicroservice.services;
 import static org.mockito.Mockito.when;
 import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.fail;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.any;
+import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.doReturn;
+import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 
@@ -14,6 +17,7 @@ import java.sql.ResultSet;
 import java.sql.Statement;
 import java.util.List;
 
+import com.austindorsey.recipemicroservice.exceptions.InventoryAPIError;
 import com.austindorsey.recipemicroservice.models.RecipeIngredient;
 import com.austindorsey.recipemicroservice.models.RecipeIngredientRequest;
 
@@ -27,8 +31,9 @@ import org.springframework.boot.test.context.SpringBootTest;
 
 @SpringBootTest
 public class RecipeIngredientServiceIMPLTest {
-    @InjectMocks private RecipeIngredientService service = Mockito.spy(RecipeIngredientServiceIMPL.class);
+    @InjectMocks private RecipeIngredientServiceIMPL service = Mockito.spy(RecipeIngredientServiceIMPL.class);
     @InjectMocks private DriverManagerWrapper driverManagerWrapper = Mockito.spy(DriverManagerWrapper.class);
+    @InjectMocks private InventoryAPIInterface inventoryInterface = Mockito.mock(InventoryAPIInterface.class);
     @Mock private Connection mockConnection;
     @Mock private Statement mockStatement;
     @Mock private ResultSet mockResult;
@@ -322,5 +327,84 @@ public class RecipeIngredientServiceIMPLTest {
         verify(driverManagerWrapper, times(1)).getConnection(any(), any(), any());
         verify(mockConnection, times(1)).createStatement();
         verify(mockStatement, times(1)).executeQuery(anyString());
+    }
+
+    @Test
+    public void fireRecipe_success() throws Exception {
+        RecipeIngredient ingredient1 = new RecipeIngredient(1, 6, 1, 1.0);
+        RecipeIngredient ingredient4 = new RecipeIngredient(4, 6, 3, 8.0);
+        RecipeIngredient ingredient5 = new RecipeIngredient(5, 6, 3, 0.5);
+        RecipeIngredient[] allIngredients = {ingredient1, ingredient4, ingredient5};
+
+        doReturn(allIngredients).when(service).getRecipe(ingredient1.getMenuItemId());
+
+        doNothing().when(service).fireRecipeIngredient(ingredient1);
+        doNothing().when(service).fireRecipeIngredient(ingredient4);
+        doNothing().when(service).fireRecipeIngredient(ingredient5);
+
+        service.fireRecipe(ingredient1.getMenuItemId());
+
+        verify(service, times(3)).fireRecipeIngredient(any());
+    }
+    @Test
+    public void fireRecipe_halfwayFail_reverted() throws Exception {
+        RecipeIngredient ingredient1 = new RecipeIngredient(1, 6, 1, 1.0);
+        RecipeIngredient ingredient4 = new RecipeIngredient(4, 6, 3, 8.0);
+        RecipeIngredient ingredient5 = new RecipeIngredient(5, 6, 3, 0.5);
+        RecipeIngredient[] allIngredients = {ingredient1, ingredient4, ingredient5};
+
+        doReturn(allIngredients).when(service).getRecipe(ingredient1.getMenuItemId());
+
+        //Normal opportation
+        doNothing().when(service).fireRecipeIngredient(ingredient1);
+        doThrow(new InventoryAPIError(InventoryAPIError.FailureType.ITEM_FAILED, "")).when(service).fireRecipeIngredient(ingredient4);
+
+        //Revert changes
+        doReturn(200).when(inventoryInterface).removeUnitsFromInventory(ingredient1.getInventoryItemId(), -ingredient1.getQuantityUsed().doubleValue());
+        //doReturn(200).when(inventoryInterface).removeUnitsFromInventory(any(), any());
+
+        try {
+            service.fireRecipe(ingredient1.getMenuItemId());
+            fail("InventoryAPIError error wasn't thrown.");
+        } catch (InventoryAPIError e) {
+            assertEquals(InventoryAPIError.FailureType.REVERTED, e.getFailureType());
+            verify(service, times(1)).fireRecipeIngredient(ingredient1);
+            verify(service, times(1)).fireRecipeIngredient(ingredient4);
+            verify(service, times(0)).fireRecipeIngredient(ingredient5);
+            verify(inventoryInterface, times(1)).removeUnitsFromInventory(ingredient1.getInventoryItemId(), -ingredient1.getQuantityUsed().doubleValue());
+            verify(inventoryInterface, times(0)).removeUnitsFromInventory(ingredient4.getInventoryItemId(), -ingredient4.getQuantityUsed().doubleValue());
+            verify(inventoryInterface, times(0)).removeUnitsFromInventory(ingredient5.getInventoryItemId(), -ingredient5.getQuantityUsed().doubleValue());
+        }
+    }
+    @Test
+    public void fireRecipe_halfwayFail_failedToReverted() throws Exception {
+        RecipeIngredient ingredient1 = new RecipeIngredient(1, 6, 1, 1.0);
+        RecipeIngredient ingredient4 = new RecipeIngredient(4, 6, 3, 8.0);
+        RecipeIngredient ingredient5 = new RecipeIngredient(5, 6, 3, 0.5);
+        RecipeIngredient[] allIngredients = {ingredient1, ingredient4, ingredient5};
+
+        doReturn(allIngredients).when(service).getRecipe(ingredient1.getMenuItemId());
+
+        //Normal opportation
+        doNothing().when(service).fireRecipeIngredient(ingredient1);
+        doNothing().when(service).fireRecipeIngredient(ingredient4);
+        doThrow(new InventoryAPIError(InventoryAPIError.FailureType.ITEM_FAILED, "")).when(service).fireRecipeIngredient(ingredient5);
+
+        //Revert changes
+        doReturn(200).when(inventoryInterface).removeUnitsFromInventory(ingredient4.getInventoryItemId(), -ingredient4.getQuantityUsed().doubleValue());
+        doThrow(new InventoryAPIError(InventoryAPIError.FailureType.UNREVERTED, "")).when(inventoryInterface).removeUnitsFromInventory(ingredient1.getInventoryItemId(), -ingredient1.getQuantityUsed().doubleValue());
+
+        try {
+            service.fireRecipe(ingredient1.getMenuItemId());
+            fail("InventoryAPIError error wasn't thrown.");
+        } catch (InventoryAPIError e) {
+            assertEquals(InventoryAPIError.FailureType.UNREVERTED, e.getFailureType());
+            verify(service, times(1)).fireRecipeIngredient(ingredient1);
+            verify(service, times(1)).fireRecipeIngredient(ingredient4);
+            verify(service, times(1)).fireRecipeIngredient(ingredient5);
+            verify(inventoryInterface, times(1)).removeUnitsFromInventory(ingredient1.getInventoryItemId(), -ingredient1.getQuantityUsed().doubleValue());
+            verify(inventoryInterface, times(1)).removeUnitsFromInventory(ingredient4.getInventoryItemId(), -ingredient4.getQuantityUsed().doubleValue());
+            verify(inventoryInterface, times(0)).removeUnitsFromInventory(ingredient5.getInventoryItemId(), -ingredient5.getQuantityUsed().doubleValue());
+        }
     }
 }

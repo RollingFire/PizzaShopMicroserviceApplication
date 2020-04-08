@@ -8,6 +8,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import com.austindorsey.recipemicroservice.exceptions.InventoryAPIError;
 import com.austindorsey.recipemicroservice.models.RecipeIngredient;
 import com.austindorsey.recipemicroservice.models.RecipeIngredientRequest;
 
@@ -35,6 +36,7 @@ public class  RecipeIngredientServiceIMPL implements RecipeIngredientService {
     private Connection mysql;
 
     @Autowired private DriverManagerWrapper driverManagerWrapped;
+    @Autowired private InventoryAPIInterface inventoryInterface;
 
     @Override
     public int[] getUniqueMenuItemIds() throws SQLException, ClassNotFoundException  {
@@ -164,4 +166,48 @@ public class  RecipeIngredientServiceIMPL implements RecipeIngredientService {
         }
     }
 
+    @Override
+    public void fireRecipe(int menuItemId) throws InventoryAPIError, ClassNotFoundException, SQLException {
+        RecipeIngredient[] recipeIngredients = getRecipe(menuItemId);
+        int i = 0;
+        try {
+            for (; i < recipeIngredients.length; i++) {
+                fireRecipeIngredient(recipeIngredients[i]);
+            }
+        } catch (InventoryAPIError e) {
+            try {
+                for (; i > 0; i--) {
+                    inventoryInterface.removeUnitsFromInventory(recipeIngredients[i-1].getInventoryItemId(), -recipeIngredients[i-1].getQuantityUsed().doubleValue());
+                }
+                throw new InventoryAPIError(InventoryAPIError.FailureType.REVERTED, "Failed to fire the recipe. Any changes that were made were reverted.");
+            } catch (InventoryAPIError e2) {
+                throw e2;
+            } catch (Exception e2) {
+                throw new InventoryAPIError(InventoryAPIError.FailureType.UNREVERTED, "Failed to fire the recipe. There were also errors reveting changed. " + 
+                                                                                "Ingredients that were not reverted were: " + Arrays.copyOfRange(recipeIngredients, 0, i));
+            }
+        }
+    }
+
+    @Override
+    public void fireRecipeIngredient(int recipeIngredientId) throws InventoryAPIError, ClassNotFoundException, SQLException {
+        fireRecipeIngredient(getRecipeIngredient(recipeIngredientId));
+    }
+
+    public void fireRecipeIngredient(RecipeIngredient recipeIngredient) throws InventoryAPIError {
+        try {
+            int returnedStatusCode = inventoryInterface.removeUnitsFromInventory(recipeIngredient.getInventoryItemId(), recipeIngredient.getQuantityUsed().doubleValue());
+            if (returnedStatusCode != 200) {
+                throw new InventoryAPIError(InventoryAPIError.FailureType.ITEM_FAILED, "Failed to remove " + recipeIngredient.getQuantityUsed().doubleValue() +
+                                                                " units from the inventory item with the id " + recipeIngredient.getInventoryItemId() + 
+                                                                " The status code was " + returnedStatusCode);
+            }
+        } catch (InventoryAPIError e) {
+            throw e;
+        } catch (Exception e) {
+            throw new InventoryAPIError(InventoryAPIError.FailureType.ITEM_FAILED, "Failed to remove " + recipeIngredient.getQuantityUsed().doubleValue() +
+                                                            " units from the inventory item with the id " + recipeIngredient.getInventoryItemId() +
+                                                            " Error was " + e.getMessage());
+        }
+    }
 }

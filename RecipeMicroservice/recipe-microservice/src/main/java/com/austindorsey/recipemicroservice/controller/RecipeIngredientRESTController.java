@@ -1,5 +1,6 @@
 package com.austindorsey.recipemicroservice.controller;
 
+import com.austindorsey.recipemicroservice.exceptions.InventoryAPIError;
 import com.austindorsey.recipemicroservice.models.RecipeIngredient;
 import com.austindorsey.recipemicroservice.models.RecipeIngredientRequest;
 import com.austindorsey.recipemicroservice.services.RecipeIngredientService;
@@ -57,6 +58,18 @@ public class RecipeIngredientRESTController {
         }
     }
 
+    @RequestMapping(value = "/recipe/{menuItemId}/fire", method = RequestMethod.POST)
+    ResponseEntity<?> fireRecipe(@PathVariable(value = "menuItemId") int menuItemId) {
+        try {
+            recipeService.fireRecipe(menuItemId);
+            return new ResponseEntity<>(HttpStatus.OK);
+        } catch (InventoryAPIError e) {
+            return new ResponseEntity<>(e, HttpStatus.INTERNAL_SERVER_ERROR);
+        } catch (Exception e) {
+            return new ResponseEntity<>(e, HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
     @RequestMapping(value = "/recipe/ingredient/{id}", method = RequestMethod.GET)
     ResponseEntity<?> getRecipeIngredient(@PathVariable(value = "id") int id) {
         try {
@@ -94,6 +107,16 @@ public class RecipeIngredientRESTController {
             } else {
                 return new ResponseEntity<>(HttpStatus.NOT_FOUND);
             }
+        } catch (Exception e) {
+            return new ResponseEntity<>(e, HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    @RequestMapping(value = "/recipe/ingredient/{id}/fire", method = RequestMethod.POST)
+    ResponseEntity<?> fireRecipeIngredient(@PathVariable(value = "id") int id) {
+        try {
+            recipeService.fireRecipeIngredient(id);
+            return new ResponseEntity<>(HttpStatus.OK);
         } catch (Exception e) {
             return new ResponseEntity<>(e, HttpStatus.INTERNAL_SERVER_ERROR);
         }
