@@ -23,7 +23,7 @@ public class MenuServiceRESTController {
     @Autowired
     private MenuService menuService;
 
-    @RequestMapping(value = "/menu", method = RequestMethod.GET)
+    @RequestMapping(value = "/api/menu", method = RequestMethod.GET)
     ResponseEntity<?> getMenus() {
         try {
             Menu[] menus = menuService.getMenus();
@@ -33,7 +33,7 @@ public class MenuServiceRESTController {
         }
     }
 
-    @RequestMapping(value = "/menu", method = RequestMethod.POST)
+    @RequestMapping(value = "/api/menu", method = RequestMethod.POST)
     ResponseEntity<?> createNewMenu(@RequestBody CreateMenuRequest request) {
         try {
             Menu menu = menuService.createNewMenu(request);
@@ -43,7 +43,7 @@ public class MenuServiceRESTController {
         }
     }
 
-    @RequestMapping(value = "/menu/{id:^[0-9]+$}", method = RequestMethod.GET)
+    @RequestMapping(value = "/api/menu/{id:^[0-9]+$}", method = RequestMethod.GET)
     ResponseEntity<?> getCurrentMenuById(@PathVariable(value = "id") int id) {
         try {
             Menu menu = menuService.getCurrentMenuById(id);
@@ -57,7 +57,7 @@ public class MenuServiceRESTController {
         }
     }
 
-    @RequestMapping(value = "/menu/{id:^[0-9]+$}", method = RequestMethod.PUT)
+    @RequestMapping(value = "/api/menu/{id:^[0-9]+$}", method = RequestMethod.PUT)
     ResponseEntity<?> updateMenuById(@PathVariable(value = "id") int id, @RequestBody UpdateMenuRequest request) {
         try {
             Map<String,Object> updatePairs = new HashMap<String,Object>();
@@ -73,7 +73,7 @@ public class MenuServiceRESTController {
         }
     }
     
-    @RequestMapping(value = "/menu/{itemName:(?!^\\d+$)^.+$}", method = RequestMethod.GET)
+    @RequestMapping(value = "/api/menu/{itemName:(?!^\\d+$)^.+$}", method = RequestMethod.GET)
     ResponseEntity<?> getCurrentMenuById(@PathVariable(value = "itemName") String itemName) {
         try {
             Menu menu = menuService.getCurrentMenuByName(itemName);
@@ -87,7 +87,7 @@ public class MenuServiceRESTController {
         }
     }
     
-    @RequestMapping(value = "/menu/{itemName:(?!^\\d+$)^.+$}", method = RequestMethod.PUT)
+    @RequestMapping(value = "/api/menu/{itemName:(?!^\\d+$)^.+$}", method = RequestMethod.PUT)
     ResponseEntity<?> updateMenuByName(@PathVariable(value = "itemName") String itemName, @RequestBody UpdateMenuRequest request) {
         try {
             Map<String,Object> updatePairs = new HashMap<String,Object>();
@@ -103,7 +103,7 @@ public class MenuServiceRESTController {
         }
     }
 
-    @RequestMapping(value = "/menu/{id:^[0-9]+$}/history", method = RequestMethod.GET)
+    @RequestMapping(value = "/api/menu/{id:^[0-9]+$}/history", method = RequestMethod.GET)
     ResponseEntity<?> getMenuHistoryById(@PathVariable(value = "id") int id) {
         try {
             Menu[] menus = menuService.getMenuHistoryById(id);
@@ -117,7 +117,7 @@ public class MenuServiceRESTController {
         }
     }
 
-    @RequestMapping(value = "/menu/{itemName:(?!^\\d+$)^.+$}/history", method = RequestMethod.GET)
+    @RequestMapping(value = "/api/menu/{itemName:(?!^\\d+$)^.+$}/history", method = RequestMethod.GET)
     ResponseEntity<?> getMenuHistoryByName(@PathVariable(value = "itemName") String itemName) {
         try {
             Menu[] menus = menuService.getMenuHistoryByName(itemName);
