@@ -23,7 +23,7 @@ public class MenuItemServiceRESTController {
     @Autowired
     private MenuItemService menuItemService;
 
-    @RequestMapping(value = "/menuItem", method = RequestMethod.GET)
+    @RequestMapping(value = "/api/menuItem", method = RequestMethod.GET)
     ResponseEntity<?> getMenus() {
         try {
             MenuItem[] menus = menuItemService.getMenuItems();
@@ -33,7 +33,7 @@ public class MenuItemServiceRESTController {
         }
     }
 
-    @RequestMapping(value = "/menuItem", method = RequestMethod.POST)
+    @RequestMapping(value = "/api/menuItem", method = RequestMethod.POST)
     ResponseEntity<?> createNewMenu(@RequestBody CreateMenuItemRequest request) {
         try {
             MenuItem newMenu = menuItemService.createNewMenuItem(request);
@@ -43,7 +43,7 @@ public class MenuItemServiceRESTController {
         }
     }
 
-    @RequestMapping(value = "/menuItem/{id:^[0-9]+$}", method = RequestMethod.GET)
+    @RequestMapping(value = "/api/menuItem/{id:^[0-9]+$}", method = RequestMethod.GET)
     ResponseEntity<?> getMenuItemByID(@PathVariable(value = "id") int id) {
         try {
             MenuItem newMenu = menuItemService.getMenuItemByID(id);
@@ -57,7 +57,7 @@ public class MenuItemServiceRESTController {
         }
     }
 
-    @RequestMapping(value = "/menuItem/{id:^[0-9]+$}", method = RequestMethod.PUT)
+    @RequestMapping(value = "/api/menuItem/{id:^[0-9]+$}", method = RequestMethod.PUT)
     ResponseEntity<?> updateMenuById(@PathVariable(value = "id") int id,
                                      @RequestParam(value = "catagory", required = false) String catagory,
                                      @RequestParam(value = "itemName", required = false) String itemName,
@@ -81,7 +81,7 @@ public class MenuItemServiceRESTController {
         }
     }
     
-    @RequestMapping(value = "/menuItem/{itemName:(?!^\\d+$)^.+$}", method = RequestMethod.GET)
+    @RequestMapping(value = "/api/menuItem/{itemName:(?!^\\d+$)^.+$}", method = RequestMethod.GET)
     ResponseEntity<?> searchMenuItemsByName(@PathVariable(value = "itemName") String itemName) {
         try {
             MenuItem[] newMenu = menuItemService.searchMenuItemsByName(itemName);
@@ -95,7 +95,7 @@ public class MenuItemServiceRESTController {
         }
     }
 
-    @RequestMapping(value = "/menuItem/{id:^[0-9]+$}/history", method = RequestMethod.GET)
+    @RequestMapping(value = "/api/menuItem/{id:^[0-9]+$}/history", method = RequestMethod.GET)
     ResponseEntity<?> getMenuItemHistoryById(@PathVariable(value = "id") int id) {
         try {
             MenuItem[] newMenu = menuItemService.getMenuItemHistoryById(id);
