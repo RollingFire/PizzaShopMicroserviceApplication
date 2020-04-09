@@ -1,0 +1,5 @@
+<div class=navbar-container>
+    <div *ngFor="let tab of getTabs()" id="tab_{{tab.name}}" [ngClass]="{'active': isActive(tab.href)}">
+        <a href={{tab.href}}>{{tab.name}}</a>
+    </div>
+</div>

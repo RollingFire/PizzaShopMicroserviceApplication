@@ -1,0 +1,12 @@
+{
+    "api/menuItem/*": {
+        "target": "http://localhost:9095",
+        "secure": false,
+        "logLevel": "debug"
+    },
+    "api/menu/*": {
+        "target": "http://localhost:9095",
+        "secure": false,
+        "logLevel": "debug"
+    }
+}
