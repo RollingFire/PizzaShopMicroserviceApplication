@@ -14,6 +14,7 @@ import java.sql.Date;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -29,7 +30,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 
 @SpringBootTest
 public class MenuServiceIMPLTest {
-    @InjectMocks private MenuService service = Mockito.spy(MenuServiceIMPL.class);
+    @InjectMocks private MenuServiceIMPL service = Mockito.spy(MenuServiceIMPL.class);
     @InjectMocks private DriverManagerWrapper driverManagerWrapper = Mockito.spy(DriverManagerWrapper.class);
     @Mock private Connection mockConnection;
     @Mock private Statement mockStatement;
@@ -38,9 +39,9 @@ public class MenuServiceIMPLTest {
 
     @Test
     public void getMenus_3Fourd() throws SQLException, ClassNotFoundException {
-        Menu menu1 = new Menu(1, "General", "{[1,2,4,5,6,7]}", Date.valueOf("2020-3-18"));
-        Menu menu2 = new Menu(2, "Weekend", "{[1,2,5,6,7,12]}", Date.valueOf("2020-1-12"));
-        Menu menu3 = new Menu(3, "Christmas", "{[11,21,41,42,43]}", Date.valueOf("2019-12-18"));
+        Menu menu1 = new Menu(1, "General", new int[]{1,2,4,5,6,7}, Date.valueOf("2020-3-18"));
+        Menu menu2 = new Menu(2, "Weekend", new int[]{1,2,5,6,7,12}, Date.valueOf("2020-1-12"));
+        Menu menu3 = new Menu(3, "Christmas", new int[]{11,21,41,42,43}, Date.valueOf("2019-12-18"));
         Menu[] expected = {menu1, menu2, menu3};
 
         
@@ -62,9 +63,9 @@ public class MenuServiceIMPLTest {
             .thenReturn(menu2.getMenuName())
             .thenReturn(menu3.getMenuName());
         when(mockResult.getString("items"))
-            .thenReturn(menu1.getItems())
-            .thenReturn(menu2.getItems())
-            .thenReturn(menu3.getItems());
+            .thenReturn(Arrays.toString(menu1.getItems()))
+            .thenReturn(Arrays.toString(menu2.getItems()))
+            .thenReturn(Arrays.toString(menu3.getItems()));
         when(mockResult.getDate("revisionDate"))
             .thenReturn(menu1.getRevisionDate())
             .thenReturn(menu2.getRevisionDate())
@@ -79,7 +80,7 @@ public class MenuServiceIMPLTest {
     }
     @Test
     public void getMenus_1Fourd() throws SQLException, ClassNotFoundException {
-        Menu menu = new Menu(1, "General", "{[1,2,4,5,6,7]}", Date.valueOf("2020-3-18"));
+        Menu menu = new Menu(1, "General", new int[]{1,2,4,5,6,7}, Date.valueOf("2020-3-18"));
         Menu[] expected = {menu};
 
         Mockito.mock(DriverManagerWrapper.class);
@@ -94,7 +95,7 @@ public class MenuServiceIMPLTest {
         when(mockResult.getString("menuName"))
             .thenReturn(menu.getMenuName());
         when(mockResult.getString("items"))
-            .thenReturn(menu.getItems());
+            .thenReturn(Arrays.toString(menu.getItems()));
         when(mockResult.getDate("revisionDate"))
             .thenReturn(menu.getRevisionDate());
 
@@ -125,7 +126,7 @@ public class MenuServiceIMPLTest {
     }
     @Test
     public void getCurrentMenuById_found() throws SQLException, ClassNotFoundException {
-        Menu menu = new Menu(1, "General", "{[1,2,4,5,6,7]}", Date.valueOf("2020-3-18"));
+        Menu menu = new Menu(1, "General", new int[]{1,2,4,5,6,7}, Date.valueOf("2020-3-18"));
 
         Mockito.mock(DriverManagerWrapper.class);
         doReturn(mockConnection).when(driverManagerWrapper).getConnection(any(), any(), any());
@@ -138,7 +139,7 @@ public class MenuServiceIMPLTest {
         when(mockResult.getString("menuName"))
             .thenReturn(menu.getMenuName());
         when(mockResult.getString("items"))
-            .thenReturn(menu.getItems());
+            .thenReturn(Arrays.toString(menu.getItems()));
         when(mockResult.getDate("revisionDate"))
             .thenReturn(menu.getRevisionDate());
 
@@ -169,7 +170,8 @@ public class MenuServiceIMPLTest {
     }
     @Test
     public void getCurrentMenuByName_found() throws SQLException, ClassNotFoundException {
-        Menu menu = new Menu(1, "General", "{[1,2,4,5,6,7]}", Date.valueOf("2020-3-18"));
+        Menu menu = new Menu(1, "General", new int[]{1,2,4,5,6,7}, Date.valueOf("2020-3-18"));
+
 
         Mockito.mock(DriverManagerWrapper.class);
         doReturn(mockConnection).when(driverManagerWrapper).getConnection(any(), any(), any());
@@ -182,7 +184,7 @@ public class MenuServiceIMPLTest {
         when(mockResult.getString("menuName"))
             .thenReturn(menu.getMenuName());
         when(mockResult.getString("items"))
-            .thenReturn(menu.getItems());
+            .thenReturn(Arrays.toString(menu.getItems()));
         when(mockResult.getDate("revisionDate"))
             .thenReturn(menu.getRevisionDate());
 
@@ -213,9 +215,9 @@ public class MenuServiceIMPLTest {
     }
     @Test
     public void getMenuHistoryById_historyFound() throws SQLException, ClassNotFoundException {
-        Menu menuCurrent = new Menu(1, "General", "{[1,2,4,7,8]}", Date.valueOf("2020-3-18"));
-        Menu menuLast = new Menu(1, "General", "{[1,2,4,5,7]}", Date.valueOf("2020-2-28"));
-        Menu menu2Last = new Menu(1, "General", "{[1,2,4,5]}", Date.valueOf("2020-2-10"));
+        Menu menuCurrent = new Menu(1, "General", new int[]{1,2,4,7,8}, Date.valueOf("2020-3-18"));
+        Menu menuLast = new Menu(1, "General", new int[]{1,2,4,5,7}, Date.valueOf("2020-2-28"));
+        Menu menu2Last = new Menu(1, "General", new int[]{1,2,4,5}, Date.valueOf("2020-2-10"));
         Menu[] expected = {menuCurrent, menuLast, menu2Last};
 
         doReturn(menuCurrent).when(service).getCurrentMenuById(menuCurrent.getId());
@@ -234,8 +236,8 @@ public class MenuServiceIMPLTest {
             .thenReturn(menuLast.getMenuName())
             .thenReturn(menu2Last.getMenuName());
         when(mockResult.getString("items"))
-            .thenReturn(menuLast.getItems())
-            .thenReturn(menu2Last.getItems());
+            .thenReturn(Arrays.toString(menuLast.getItems()))
+            .thenReturn(Arrays.toString(menu2Last.getItems()));
         when(mockResult.getDate("revisionDate"))
             .thenReturn(menuLast.getRevisionDate())
             .thenReturn(menu2Last.getRevisionDate());
@@ -249,7 +251,7 @@ public class MenuServiceIMPLTest {
     }
     @Test
     public void getMenuHistoryById_onlyCurrent() throws SQLException, ClassNotFoundException {
-        Menu menuCurrent = new Menu(1, "General", "{[1,2,4,7,8]}", Date.valueOf("2020-3-18"));
+        Menu menuCurrent = new Menu(1, "General", new int[]{1,2,4,7,8}, Date.valueOf("2020-3-18"));
         Menu[] expected = {menuCurrent};
 
         doReturn(menuCurrent).when(service).getCurrentMenuById(menuCurrent.getId());
@@ -282,9 +284,9 @@ public class MenuServiceIMPLTest {
     }
     @Test
     public void getMenuHistoryByName_historyFound() throws SQLException, ClassNotFoundException {
-        Menu menuCurrent = new Menu(1, "General", "{[1,2,4,7,8]}", Date.valueOf("2020-3-18"));
-        Menu menuLast = new Menu(1, "General", "{[1,2,4,5,7]}", Date.valueOf("2020-2-28"));
-        Menu menu2Last = new Menu(1, "General", "{[1,2,4,5]}", Date.valueOf("2020-2-10"));
+        Menu menuCurrent = new Menu(1, "General", new int[]{1,2,4,7,8}, Date.valueOf("2020-3-18"));
+        Menu menuLast = new Menu(1, "General", new int[]{1,2,4,5,7}, Date.valueOf("2020-2-28"));
+        Menu menu2Last = new Menu(1, "General", new int[]{1,2,4,5}, Date.valueOf("2020-2-10"));
         Menu[] expected = {menuCurrent, menuLast, menu2Last};
 
         doReturn(menuCurrent).when(service).getCurrentMenuByName(menuCurrent.getMenuName());
@@ -303,8 +305,8 @@ public class MenuServiceIMPLTest {
             .thenReturn(menuLast.getMenuName())
             .thenReturn(menu2Last.getMenuName());
         when(mockResult.getString("items"))
-            .thenReturn(menuLast.getItems())
-            .thenReturn(menu2Last.getItems());
+            .thenReturn(Arrays.toString(menuLast.getItems()))
+            .thenReturn(Arrays.toString(menu2Last.getItems()));
         when(mockResult.getDate("revisionDate"))
             .thenReturn(menuLast.getRevisionDate())
             .thenReturn(menu2Last.getRevisionDate());
@@ -318,7 +320,7 @@ public class MenuServiceIMPLTest {
     }
     @Test
     public void getMenuHistoryByName_onlyCurrent() throws SQLException, ClassNotFoundException {
-        Menu menuCurrent = new Menu(1, "General", "{[1,2,4,7,8]}", Date.valueOf("2020-3-18"));
+        Menu menuCurrent = new Menu(1, "General", new int[]{1,2,4,7,8}, Date.valueOf("2020-3-18"));
         Menu[] expected = {menuCurrent};
 
         doReturn(menuCurrent).when(service).getCurrentMenuByName(menuCurrent.getMenuName());
@@ -351,7 +353,7 @@ public class MenuServiceIMPLTest {
     }
     @Test
     public void updateMenu_noUpdate() throws SQLException, ClassNotFoundException {
-        Menu startMenu = new Menu(1, "General", "{[1,2,4,7,8]}", Date.valueOf("2019-2-12"));
+        Menu startMenu = new Menu(1, "General", new int[]{1,2,4,7,8}, Date.valueOf("2019-2-12"));
         Map<String,Object> request = new HashMap<String,Object>();
 
         doReturn(startMenu).when(service).getCurrentMenuById(startMenu.getId());
@@ -365,11 +367,11 @@ public class MenuServiceIMPLTest {
     }
     @Test
     public void updateMenu_itemsUpdate() throws SQLException, ClassNotFoundException {
-        Menu startMenu = new Menu(1, "General", "{[1,2,4,7,8]}", Date.valueOf("2019-2-12"));
-        Menu endMenu = new Menu(1, "General", "{[1,2,4,7,8,12]}", Date.valueOf("2020-3-18"));
+        Menu startMenu = new Menu(1, "General", new int[]{1,2,4,7,8}, Date.valueOf("2019-2-12"));
+        Menu endMenu = new Menu(1, "General", new int[]{1,2,4,7,8,12}, Date.valueOf("2020-3-18"));
         Map<String,Object> request = new HashMap<String,Object>();
         request.put("items", endMenu.getItems());
-        String expectedSQL = "UPDATE null SET items='" + endMenu.getItems() + "' WHERE id=" + endMenu.getId() + ";";
+        String expectedSQL = "UPDATE null SET items='" + Arrays.toString(endMenu.getItems()) + "' WHERE id=" + endMenu.getId() + ";";
 
         doReturn(endMenu).when(service).getCurrentMenuById(startMenu.getId());
         doReturn(mockConnection).when(driverManagerWrapper).getConnection(any(), any(), any());
@@ -387,5 +389,21 @@ public class MenuServiceIMPLTest {
         verify(driverManagerWrapper, times(1)).getConnection(any(), any(), any());
         verify(mockConnection, times(1)).createStatement();
         verify(mockStatement, times(1)).executeUpdate(anyString());
+    }
+
+    @Test
+    public void sqlStringToIntArray_normal() {
+        int[] expected = {1,2,3,4};
+        int[] returned = service.sqlStringToIntArray(Arrays.toString(expected));
+
+        assertArrayEquals(expected, returned);
+    }
+
+    @Test
+    public void sqlStringToIntArray_empty() {
+        int[] expected = {};
+        int[] returned = service.sqlStringToIntArray(Arrays.toString(expected));
+
+        assertArrayEquals(expected, returned);
     }
 }

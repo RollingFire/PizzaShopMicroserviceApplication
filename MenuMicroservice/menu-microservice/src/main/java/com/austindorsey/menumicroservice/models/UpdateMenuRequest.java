@@ -1,9 +1,9 @@
 package com.austindorsey.menumicroservice.models;
 
 public class UpdateMenuRequest {
-    String items;
+    int[] items;
 
-    public UpdateMenuRequest(String items) {
+    public UpdateMenuRequest(int[] items) {
         this.items = items;
     }
     
@@ -11,11 +11,11 @@ public class UpdateMenuRequest {
         this.items = null;
     }
 
-    public String getItems() {
+    public int[] getItems() {
         return items;
     }
 
-    public void setItems(String items) {
+    public void setItems(int[] items) {
         this.items = items;
     }
 }
