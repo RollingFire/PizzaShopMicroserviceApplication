@@ -10,7 +10,12 @@ import { Menu } from 'src/app/core/models/menu';
 export class MenuComponent implements OnInit {
 
   menus: Menu[];
-  currentMenu: Menu;
+  currentMenu: Menu = {
+    id: 0,
+    menuName: "",
+    items: "",
+    revisionDate: ""
+  };
 
   constructor(private menuApiCallerService: MenuAPICallerService) {
     menuApiCallerService.getMenus().subscribe(
