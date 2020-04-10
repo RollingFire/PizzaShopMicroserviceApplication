@@ -6,6 +6,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Map;
 
 import com.austindorsey.menumicroservice.models.CreateMenuRequest;
@@ -51,7 +52,7 @@ public class MenuServiceIMPL implements MenuService {
             while (result.next()) {
                 int id = result.getInt("id");
                 String menuName = result.getString("menuName");
-                String items = result.getString("items");
+                int[] items = sqlStringToIntArray(result.getString("items"));
                 Date revisionDate = result.getDate("revisionDate");
                 Menu item = new Menu(id, menuName, items, revisionDate);
                 list.add(item);
@@ -75,7 +76,7 @@ public class MenuServiceIMPL implements MenuService {
             ResultSet result = statement.executeQuery("SELECT * FROM " + tableName + " WHERE id='" + id + "';");
             if (result.next()) {
                 String menuName = result.getString("menuName");
-                String items = result.getString("items");
+                int[] items = sqlStringToIntArray(result.getString("items"));
                 Date revisionDate = result.getDate("revisionDate");
                 item = new Menu(id, menuName, items, revisionDate);
             }
@@ -97,7 +98,7 @@ public class MenuServiceIMPL implements MenuService {
             if (result.next()) {
                 int id = result.getInt("id");
                 String actualMenuName = result.getString("menuName");
-                String items = result.getString("items");
+                int[] items = sqlStringToIntArray(result.getString("items"));
                 Date revisionDate = result.getDate("revisionDate");
                 item = new Menu(id, actualMenuName, items, revisionDate);
             }
@@ -124,7 +125,7 @@ public class MenuServiceIMPL implements MenuService {
             ResultSet result = statement.executeQuery("SELECT * FROM " + historyTableName + " WHERE origenalId='" + origenalId + "' ORDER BY entryId DESC;");
             while (result.next()) {
                 String menuName = result.getString("menuName");
-                String items = result.getString("items");
+                int[] items = sqlStringToIntArray(result.getString("items"));
                 Date revisionDate = result.getDate("revisionDate");
                 Menu item = new Menu(origenalId, menuName, items, revisionDate);
                 history.add(item);
@@ -153,7 +154,7 @@ public class MenuServiceIMPL implements MenuService {
             while (result.next()) {
                 int origenalId = result.getInt("origenalId");
                 String actualMenuName = result.getString("menuName");
-                String items = result.getString("items");
+                int[] items = sqlStringToIntArray(result.getString("items"));
                 Date revisionDate = result.getDate("revisionDate");
                 Menu item = new Menu(origenalId, actualMenuName, items, revisionDate);
                 history.add(item);
@@ -172,15 +173,15 @@ public class MenuServiceIMPL implements MenuService {
             mysql = driverManagerWrapped.getConnection(url, dbUserName, dbPassword);
             Statement statement = mysql.createStatement();
             statement.executeUpdate("INSERT INTO " + tableName + " (menuName, items) VALUES ('" + 
-                                menuRequest.getName() + "', '" + menuRequest.getItems() + "');");
+                                menuRequest.getName() + "', '" + Arrays.toString(menuRequest.getItems()) + "');");
             ResultSet result = statement.executeQuery("SELECT * FROM " + tableName + " WHERE menuName='" + menuRequest.getName() +
-                                                                                      "' AND items='" + menuRequest.getItems() +
-                                                                                      "' ORDER BY id DESC LIMIT 1;");
+                                                                                      "' AND items='" + Arrays.toString(menuRequest.getItems()) +
+                                                                                      " ORDER BY id DESC LIMIT 1;");
             Menu newItem = null;
             if (result.next()) {
                 int id = result.getInt("id");
                 String menuName = result.getString("menuName");
-                String items = result.getString("items");
+                int[] items = sqlStringToIntArray(result.getString("items"));
                 Date revisionDate = result.getDate("revisionDate");
                 newItem = new Menu(id, menuName, items, revisionDate);
             }
@@ -204,6 +205,8 @@ public class MenuServiceIMPL implements MenuService {
                     sql = sql.replace("$", ", ");
                     if (updatePairs.get(key) instanceof String) {
                         sql += key + "='" + updatePairs.get(key) + "'$";
+                    } else if (updatePairs.get(key) instanceof int[]) {
+                        sql += key + "='" + Arrays.toString((int[]) updatePairs.get(key)) + "'$";
                     } else {
                         sql += key + "=" + updatePairs.get(key) + "$";
                     }
@@ -228,4 +231,16 @@ public class MenuServiceIMPL implements MenuService {
         }
     }
 
+    public int[] sqlStringToIntArray(String sqlValue) {
+        sqlValue = sqlValue.replaceAll("[\\[$|\\]$|\\s]", "");
+        if (sqlValue.length() == 0) {
+            return new int[]{};
+        }
+        String[] strSplit = sqlValue.split(",");
+        int[] array = new int[strSplit.length];
+        for (int i = 0; i < strSplit.length; i++) {
+            array[i] = Integer.valueOf(strSplit[i]);
+        }
+        return array;
+    }
 }

@@ -25,8 +25,9 @@ paths:
                                         menuName:
                                             type: string
                                         items:
-                                            type: String
-                                            example: "[1,2,3]"
+                                            type: array
+                                            items:
+                                                type: integer
                                         revistionDate:
                                             type: string
                 '500':
@@ -50,8 +51,9 @@ paths:
                                 menuName:
                                     type: string
                                 items:
-                                    type: String
-                                    example: "[1,2,3]"
+                                    type: array
+                                    items:
+                                        type: integer
             responses:
                 '201':
                     description: Successfully created menu.
@@ -65,8 +67,9 @@ paths:
                                     menuName:
                                         type: string
                                     items:
-                                        type: String
-                                        example: "[1,2,3]"
+                                        type: array
+                                        items:
+                                            type: integer
                                     revistionDate:
                                         type: string
                 '500':
@@ -101,8 +104,9 @@ paths:
                                     menuName:
                                         type: string
                                     items:
-                                        type: String
-                                        example: "[1,2,3]"
+                                        type: array
+                                        items:
+                                            type: integer
                                     revistionDate:
                                         type: string
                 '404':
@@ -133,8 +137,9 @@ paths:
                             type: object
                             properties:
                                 items:
-                                    type: String
-                                    example: "[1,2,3]"
+                                    type: array
+                                    items:
+                                        type: integer
 
             responses:
                 '200':
@@ -149,8 +154,9 @@ paths:
                                     menuName:
                                         type: string
                                     items:
-                                        type: String
-                                        example: "[1,2,3]"
+                                        type: array
+                                        items:
+                                            type: integer
                                     revistionDate:
                                         type: string
                 '404':
@@ -187,8 +193,9 @@ paths:
                                     menuName:
                                         type: string
                                     items:
-                                        type: String
-                                        example: "[1,2,3]"
+                                        type: array
+                                        items:
+                                            type: integer
                                     revistionDate:
                                         type: string
                 '404':
@@ -219,8 +226,9 @@ paths:
                             type: object
                             properties:
                                 items:
-                                    type: String
-                                    example: "[1,2,3]"
+                                    type: array
+                                    items:
+                                        type: integer
             responses:
                 '200':
                     description: Successfully updated and returning menus.
@@ -234,8 +242,9 @@ paths:
                                     menuName:
                                         type: string
                                     items:
-                                        type: String
-                                        example: "[1,2,3]"
+                                        type: array
+                                        items:
+                                            type: integer
                                     revistionDate:
                                         type: string
                 '404':
@@ -274,8 +283,9 @@ paths:
                                         menuName:
                                             type: string
                                         items:
-                                            type: String
-                                            example: "[1,2,3]"
+                                            type: array
+                                            items:
+                                                type: integer
                                         revistionDate:
                                             type: string
                 '404':
@@ -314,8 +324,9 @@ paths:
                                         menuName:
                                             type: string
                                         items:
-                                            type: String
-                                            example: "[1,2,3]"
+                                            type: array
+                                            items:
+                                                type: integer
                                         revistionDate:
                                             type: string
                 '404':
