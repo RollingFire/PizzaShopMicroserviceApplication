@@ -1,14 +1,15 @@
 package com.austindorsey.menumicroservice.models;
 
 import java.sql.Date;
+import java.util.Arrays;
 
 public class Menu {
     int id;
     String menuName;
-    String items;
+    int[] items;
     Date revisionDate;
 
-    public Menu(int id, String menuName, String items, Date revisionDate) {
+    public Menu(int id, String menuName, int[] items, Date revisionDate) {
         this.id = id;
         this.menuName = menuName;
         this.items = items;
@@ -27,11 +28,11 @@ public class Menu {
         this.menuName = menuName;
     }
 
-    public String getItems() {
+    public int[] getItems() {
         return items;
     }
 
-    public void setItems(String items) {
+    public void setItems(int[] items) {
         this.items = items;
     }
 
@@ -41,7 +42,8 @@ public class Menu {
 
     @Override
     public String toString() {
-        return "Menu [id=" + id + ", items=" + items + ", menuName=" + menuName + ", revisionDate=" + revisionDate + "]";
+        return "Menu [id=" + id + ", items=" + items + ", menuName=" + menuName + ", revisionDate=" + revisionDate
+                + "]";
     }
 
     @Override
@@ -49,7 +51,7 @@ public class Menu {
         final int prime = 31;
         int result = 1;
         result = prime * result + id;
-        result = prime * result + ((items == null) ? 0 : items.hashCode());
+        result = prime * result + Arrays.hashCode(items);
         result = prime * result + ((menuName == null) ? 0 : menuName.hashCode());
         result = prime * result + ((revisionDate == null) ? 0 : revisionDate.hashCode());
         return result;
@@ -66,10 +68,7 @@ public class Menu {
         Menu other = (Menu) obj;
         if (id != other.id)
             return false;
-        if (items == null) {
-            if (other.items != null)
-                return false;
-        } else if (!items.equals(other.items))
+        if (!Arrays.equals(items, other.items))
             return false;
         if (menuName == null) {
             if (other.menuName != null)

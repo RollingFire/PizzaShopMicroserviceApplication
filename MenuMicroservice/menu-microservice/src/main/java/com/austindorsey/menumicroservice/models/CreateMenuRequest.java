@@ -2,7 +2,7 @@ package com.austindorsey.menumicroservice.models;
 
 public class CreateMenuRequest {
     String menuName;
-    String items;
+    int[] items;
 
     public String getName() {
         return menuName;
@@ -12,15 +12,15 @@ public class CreateMenuRequest {
         this.menuName = menuName;
     }
 
-    public String getItems() {
+    public int[] getItems() {
         return items;
     }
 
-    public void setItems(String items) {
+    public void setItems(int[] items) {
         this.items = items;
     }
 
-    public CreateMenuRequest(String menuName, String items) {
+    public CreateMenuRequest(String menuName, int[] items) {
         this.menuName = menuName;
         this.items = items;
     }
