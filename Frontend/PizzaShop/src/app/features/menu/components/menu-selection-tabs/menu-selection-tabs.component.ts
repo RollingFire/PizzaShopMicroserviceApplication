@@ -1,4 +1,5 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Input, EventEmitter, Output } from '@angular/core';
+import { Menu } from 'src/app/core/models/menu';
 
 @Component({
   selector: 'app-menu-selection-tabs',
@@ -6,25 +7,15 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./menu-selection-tabs.component.scss']
 })
 export class MenuSelectionTabsComponent implements OnInit {
-
-  menus: any[] = [
-    {
-      "id": 0,
-      "menuName": "Lunch",
-      "items": "[1,2,3]",
-      "revistionDate": "03-04-20"
-    },
-    {
-      "id": 1,
-      "menuName": "Dinner",
-      "items": "[4,5,6]",
-      "revistionDate": "03-10-20"
-    }
-  ];
+  @Input() menus: Menu[];
+  @Output() tabClicked = new EventEmitter<number>();
 
   constructor() { }
 
   ngOnInit(): void {
   }
 
+  clickTab(id: number): void {
+    this.tabClicked.emit(id);
+  }
 }

@@ -1,7 +1,7 @@
 <div class="tabContainer" id="menuDisplayTabContatiner">
     <ul>
-        <li *ngFor="let menu of menus">
-            <a>{{menu.menuName}}</a>
+        <li *ngFor="let menu of menus" id="menuTab_{{menu.id}}">
+            <button (click)="clickTab(menu.id)">{{menu.menuName}}</button>
         </li>
     </ul>
 </div>

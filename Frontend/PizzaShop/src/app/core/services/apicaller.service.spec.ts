@@ -1,13 +1,13 @@
 import { TestBed } from '@angular/core/testing';
 
-import { APICallerService } from './apicaller.service';
+import { MenuAPICallerService } from './menuapicaller.service';
 
 describe('APICallerService', () => {
-  let service: APICallerService;
+  let service: MenuAPICallerService;
 
   beforeEach(() => {
     TestBed.configureTestingModule({});
-    service = TestBed.inject(APICallerService);
+    service = TestBed.inject(MenuAPICallerService);
   });
 
   it('should be created', () => {

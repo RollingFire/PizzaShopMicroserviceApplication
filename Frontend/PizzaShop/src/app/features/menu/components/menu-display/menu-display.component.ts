@@ -1,5 +1,7 @@
-import { Component, OnInit } from '@angular/core';
-import { APICallerService } from 'src/app/core/services/apicaller.service';
+import { Component, OnInit, Input } from '@angular/core';
+import { MenuAPICallerService } from 'src/app/core/services/menuapicaller.service';
+import { Menu } from 'src/app/core/models/menu';
+
 
 @Component({
   selector: 'app-menu-display',
@@ -7,15 +9,20 @@ import { APICallerService } from 'src/app/core/services/apicaller.service';
   styleUrls: ['./menu-display.component.scss']
 })
 export class MenuDisplayComponent implements OnInit {
+  @Input() currentMenu: Menu;
 
-  menu: any;
-  
-  constructor(private apiCallerService: APICallerService) {
-    apiCallerService.getRequest("http://localhost:9095/menuItem/1").subscribe(
-      data => console.log(data),
-      error => console.log(error)
-    );
+  constructor(private apiCallerService: MenuAPICallerService) {
+    // this.currentMenu.items
+    // apiCallerService.getMenuItemById().subscribe(
+    //   data => this.menu = {
+    //     "itemName": data.itemName,
+    //     "cost": data.cost,
+    //     "discription": data.discription
+    //   },
+    //   error => console.log(error)
+    // );
   }
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+  }
 }

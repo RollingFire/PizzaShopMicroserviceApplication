@@ -175,7 +175,7 @@ public class MenuServiceIMPL implements MenuService {
                                 menuRequest.getName() + "', '" + menuRequest.getItems() + "');");
             ResultSet result = statement.executeQuery("SELECT * FROM " + tableName + " WHERE menuName='" + menuRequest.getName() +
                                                                                       "' AND items='" + menuRequest.getItems() +
-                                                                                      " ORDER BY id DESC LIMIT 1;");
+                                                                                      "' ORDER BY id DESC LIMIT 1;");
             Menu newItem = null;
             if (result.next()) {
                 int id = result.getInt("id");

@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import { MenuAPICallerService } from 'src/app/core/services/menuapicaller.service';
+import { Menu } from 'src/app/core/models/menu';
 
 @Component({
   selector: 'app-menu',
@@ -7,8 +9,26 @@ import { Component, OnInit } from '@angular/core';
 })
 export class MenuComponent implements OnInit {
 
-  constructor() {}
+  menus: Menu[];
+  currentMenu: Menu;
 
-  ngOnInit(): void {}
+  constructor(private menuApiCallerService: MenuAPICallerService) {
+    menuApiCallerService.getMenus().subscribe(
+      data => {this.menus = data, this.currentMenu = data[0]},
+      error => console.log(error),
+    );
+  }
 
+  ngOnInit(): void {
+  }
+
+  changeMenu(menuID): void {
+    var newMenuSelection;
+    this.menus.forEach( function(menu) {
+      if (menu.id === menuID) {
+        newMenuSelection = menu;
+      }
+    })
+    this.currentMenu = newMenuSelection
+  }
 }
