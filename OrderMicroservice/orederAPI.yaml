@@ -5,7 +5,7 @@ info:
   version: 0.0.1
 
 paths:
-    /order:
+    /api/order:
         get:
             description: Get all orders filtered by query params
             parameters:
@@ -117,8 +117,7 @@ paths:
                                 type: string
                                 example: Error Message
 
-
-    /order/{id}:
+    /api/order/{id}:
         get:
             description: Get order by id
             parameters:
@@ -195,7 +194,7 @@ paths:
                                 type: string
                                 example: Error Message
 
-    /order/{id}/status:
+    /api/order/{id}/status:
         put:
             description: Update the status of the order at id.
             parameters:
@@ -238,7 +237,7 @@ paths:
                                 example: Error Message
 
 
-    /order/items/{orderId}:
+    /api/order/items/{orderId}:
         get:
             description: Get order items by order id
             parameters:
@@ -331,7 +330,7 @@ paths:
                                 type: string
                                 example: Error Message
 
-    /orderItem/{id}:
+    /api/orderItem/{id}:
         get:
             description: Get order item by id
             parameters:
@@ -422,7 +421,7 @@ paths:
                                 type: string
                                 example: Error Message
 
-    /orderItem/{id}/status:
+    /api/orderItem/{id}/status:
         put:
             description: Updates status of the order item at id
             parameters:
@@ -470,7 +469,7 @@ paths:
                                 type: string
                                 example: Error Message
 
-    /orderItem/{orderItemStatus}:
+    /api/orderItem/{orderItemStatus}:
         get:
             description: Get order items by status
             parameters:

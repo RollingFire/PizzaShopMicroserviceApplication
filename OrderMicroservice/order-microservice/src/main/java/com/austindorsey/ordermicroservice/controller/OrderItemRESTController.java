@@ -20,7 +20,7 @@ public class OrderItemRESTController {
     @Autowired
     private OrderItemService orderItemService;
 
-    @RequestMapping(value = "/orderItem/{id:^[0-9]+$}", method = RequestMethod.GET)
+    @RequestMapping(value = "/api/orderItem/{id:^[0-9]+$}", method = RequestMethod.GET)
     ResponseEntity<?> getOrders(@PathVariable(value = "id") int id) {
         try {
             OrderItem orders = orderItemService.getOrderItemById(id);
@@ -34,7 +34,7 @@ public class OrderItemRESTController {
         }
     }
 
-    @RequestMapping(value = "/orderItem/{id}", method = RequestMethod.PUT)
+    @RequestMapping(value = "/api/orderItem/{id}", method = RequestMethod.PUT)
     ResponseEntity<?> updateOrderItemById(@PathVariable(value = "id") int id,
                                 @RequestBody OrderItemUpdateRequest request) {
         try {
@@ -49,7 +49,7 @@ public class OrderItemRESTController {
         }
     }
 
-    @RequestMapping(value = "/orderItem/{id}/status", method = RequestMethod.PUT)
+    @RequestMapping(value = "/api/orderItem/{id}/status", method = RequestMethod.PUT)
     ResponseEntity<?> updateOrderItemStatusById(@PathVariable(value = "id") int id,
                                 @RequestBody String status) {
         try {
@@ -64,7 +64,7 @@ public class OrderItemRESTController {
         }
     }
 
-    @RequestMapping(value = "/orderItem/{orderItemStatus:(?!^\\d+$)^.+$}", method = RequestMethod.GET)
+    @RequestMapping(value = "/api/orderItem/{orderItemStatus:(?!^\\d+$)^.+$}", method = RequestMethod.GET)
     ResponseEntity<?> getOrders(@PathVariable(value = "orderItemStatus") String status) {
         try {
             OrderItem[] orders = orderItemService.getOrderItemsByStatus(status);

@@ -28,7 +28,7 @@ public class OrderRESTController {
     @Autowired
     private OrderItemService orderItemService;
 
-    @RequestMapping(value = "/order", method = RequestMethod.GET)
+    @RequestMapping(value = "/api/order", method = RequestMethod.GET)
     ResponseEntity<?> getOrders(@RequestParam(value = "status", required = false) String status,
                                 @RequestParam(value = "customerId", required = false) Integer customerId) {
         try {
@@ -39,7 +39,7 @@ public class OrderRESTController {
         }
     }
 
-    @RequestMapping(value = "/order", method = RequestMethod.POST)
+    @RequestMapping(value = "/api/order", method = RequestMethod.POST)
     ResponseEntity<?> postOrder(@RequestBody OrderCreateRequest request) {
         try {
             OrderWithItems responce = orderService.postOrder(request);
@@ -53,7 +53,7 @@ public class OrderRESTController {
         }
     }
 
-    @RequestMapping(value = "/order/{id}", method = RequestMethod.GET)
+    @RequestMapping(value = "/api/order/{id}", method = RequestMethod.GET)
     ResponseEntity<?> getOrderById(@PathVariable(value = "id") int id) {
         try {
             Order responce = orderService.getOrderById(id);
@@ -67,7 +67,7 @@ public class OrderRESTController {
         }
     }
 
-    @RequestMapping(value = "/order/{id}", method = RequestMethod.PUT)
+    @RequestMapping(value = "/api/order/{id}", method = RequestMethod.PUT)
     ResponseEntity<?> updateOrderById(@PathVariable(value = "id") int id,
                                    @RequestBody OrderUpdateRequest request) {
         try {
@@ -82,7 +82,7 @@ public class OrderRESTController {
         }
     }
 
-    @RequestMapping(value = "/order/{id}/status", method = RequestMethod.PUT)
+    @RequestMapping(value = "/api/order/{id}/status", method = RequestMethod.PUT)
     ResponseEntity<?> updateOrderStatusById(@PathVariable(value = "id") int id,
                                    @RequestBody String status) {
         try {
@@ -97,7 +97,7 @@ public class OrderRESTController {
         }
     }
 
-    @RequestMapping(value = "/order/items/{orderId}", method = RequestMethod.GET)
+    @RequestMapping(value = "/api/order/items/{orderId}", method = RequestMethod.GET)
     ResponseEntity<?> getOrderItemsByOrderId(@PathVariable(value = "orderId") int orderId) {
         try {
             OrderItem[] responce = orderItemService.getOrderItemsByOrderId(orderId);
@@ -107,7 +107,7 @@ public class OrderRESTController {
         }
     }
 
-    @RequestMapping(value = "/order/items/{orderId}", method = RequestMethod.POST)
+    @RequestMapping(value = "/api/order/items/{orderId}", method = RequestMethod.POST)
     ResponseEntity<?> addOrderItemToOrderId(@PathVariable(value = "orderId") int orderId,
                                             @RequestBody OrderItemCreateRequestShort request) {
         try {
