@@ -20,7 +20,7 @@ public class InventoryServiceRESTController {
     @Autowired
     private InventoryService inventoryService;
 
-    @RequestMapping(value = "/inventory", method = RequestMethod.GET)
+    @RequestMapping(value = "/api/inventory", method = RequestMethod.GET)
     ResponseEntity<?> getInventory() {
         try {
             InventoryItem[] inventory = null;
@@ -87,7 +87,7 @@ public class InventoryServiceRESTController {
         }
     }
 
-    @RequestMapping(value = "/inventory", method = RequestMethod.POST)
+    @RequestMapping(value = "/api/inventory", method = RequestMethod.POST)
     ResponseEntity<?> addItemToInventory(@RequestBody InventoryItemRequest request) {
         try{
             InventoryItem item = new InventoryItem(request);
