@@ -5,7 +5,7 @@ info:
   version: 0.0.1
 
 paths:
-  /recipe:
+  /api/recipe:
     get:
       description: Returns list of all unique menuItemId.
       responses:
@@ -34,7 +34,7 @@ paths:
                 type: string
                 example: Error Message
  
-  /recipe/{menuItemId}:
+  /api/recipe/{menuItemId}:
     get:
       parameters:
         - name: menuItemId
@@ -116,7 +116,7 @@ paths:
                 type: string
                 example: Error Message
               
-  /recipe/{menuItemId}/fire:
+  /api/recipe/{menuItemId}/fire:
     post:
       description: Removes the number of units from each ingrediant for the recipe from the inventory stock.
       parameters:
@@ -141,7 +141,7 @@ paths:
 
 
               
-  /recipe/ingredient/{id}:
+  /api/recipe/ingredient/{id}:
     get:
       parameters:
         - name: id
@@ -242,7 +242,7 @@ paths:
                 type: string
                 example: Error Message
 
-  /recipe/ingredient/{id}/fire:
+  /api/recipe/ingredient/{id}/fire:
     post:
       description: Removes the number of units from the ingrediant from the inventory stock.
       parameters:

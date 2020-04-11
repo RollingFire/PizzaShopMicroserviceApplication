@@ -20,7 +20,7 @@ public class RecipeIngredientRESTController {
     @Autowired
     private RecipeIngredientService recipeService;
 
-    @RequestMapping(value = "/recipe", method = RequestMethod.GET)
+    @RequestMapping(value = "/api/recipe", method = RequestMethod.GET)
     ResponseEntity<?> getUniqueMenuItemIds() {
         try {
             int[] menusItemIds = recipeService.getUniqueMenuItemIds();
@@ -30,7 +30,7 @@ public class RecipeIngredientRESTController {
         }
     }
 
-    @RequestMapping(value = "/recipe/{menuItemId}", method = RequestMethod.GET)
+    @RequestMapping(value = "/api/recipe/{menuItemId}", method = RequestMethod.GET)
     ResponseEntity<?> getRecipe(@PathVariable(value = "menuItemId") int menuItemId) {
         try {
             RecipeIngredient[] recipeIngredients = recipeService.getRecipe(menuItemId);
@@ -44,7 +44,7 @@ public class RecipeIngredientRESTController {
         }
     }
 
-    @RequestMapping(value = "/recipe/{menuItemId}", method = RequestMethod.POST)
+    @RequestMapping(value = "/api/recipe/{menuItemId}", method = RequestMethod.POST)
     ResponseEntity<?> createRecipe(@PathVariable(value = "menuItemId") int menuItemId, @RequestBody RecipeIngredientRequest[] requestBody) {
         try {
             RecipeIngredient[] recipeIngredients = recipeService.createRecipe(menuItemId, requestBody);
@@ -58,7 +58,7 @@ public class RecipeIngredientRESTController {
         }
     }
 
-    @RequestMapping(value = "/recipe/{menuItemId}/fire", method = RequestMethod.POST)
+    @RequestMapping(value = "/api/recipe/{menuItemId}/fire", method = RequestMethod.POST)
     ResponseEntity<?> fireRecipe(@PathVariable(value = "menuItemId") int menuItemId) {
         try {
             recipeService.fireRecipe(menuItemId);
@@ -70,7 +70,7 @@ public class RecipeIngredientRESTController {
         }
     }
 
-    @RequestMapping(value = "/recipe/ingredient/{id}", method = RequestMethod.GET)
+    @RequestMapping(value = "/api/recipe/ingredient/{id}", method = RequestMethod.GET)
     ResponseEntity<?> getRecipeIngredient(@PathVariable(value = "id") int id) {
         try {
             RecipeIngredient recipeIngredients = recipeService.getRecipeIngredient(id);
@@ -84,7 +84,7 @@ public class RecipeIngredientRESTController {
         }
     }
 
-    @RequestMapping(value = "/recipe/ingredient/{id}", method = RequestMethod.PUT)
+    @RequestMapping(value = "/api/recipe/ingredient/{id}", method = RequestMethod.PUT)
     ResponseEntity<?> updateRecipeIngredient(@PathVariable(value = "id") int id, @RequestBody RecipeIngredientRequest requestBody) {
         try {
             RecipeIngredient recipeIngredients = recipeService.updateRecipeIngredient(id, requestBody);
@@ -98,7 +98,7 @@ public class RecipeIngredientRESTController {
         }
     }
 
-    @RequestMapping(value = "/recipe/ingredient/{id}", method = RequestMethod.DELETE)
+    @RequestMapping(value = "/api/recipe/ingredient/{id}", method = RequestMethod.DELETE)
     ResponseEntity<?> removeIngredientFromRecipe(@PathVariable(value = "id") int id) {
         try {
             int rowsDeleted = recipeService.removeIngredientFromRecipe(id);
@@ -112,7 +112,7 @@ public class RecipeIngredientRESTController {
         }
     }
 
-    @RequestMapping(value = "/recipe/ingredient/{id}/fire", method = RequestMethod.POST)
+    @RequestMapping(value = "/api/recipe/ingredient/{id}/fire", method = RequestMethod.POST)
     ResponseEntity<?> fireRecipeIngredient(@PathVariable(value = "id") int id) {
         try {
             recipeService.fireRecipeIngredient(id);
