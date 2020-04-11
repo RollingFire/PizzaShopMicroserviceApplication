@@ -31,7 +31,7 @@ public class InventoryServiceRESTController {
         }
     }
 
-    @RequestMapping(value = "/inventory/{id:^[0-9]+$}", method = RequestMethod.GET)
+    @RequestMapping(value = "/api/inventory/{id:^[0-9]+$}", method = RequestMethod.GET)
     ResponseEntity<?> getItemByID(@PathVariable(value = "id") int id) {
         try {
             InventoryItem item = inventoryService.getItemByID(id);
@@ -45,7 +45,7 @@ public class InventoryServiceRESTController {
         }
     }
 
-    @RequestMapping(value = "/inventory/{itemName:(?!^\\d+$)^.+$}", method = RequestMethod.GET)
+    @RequestMapping(value = "/api/inventory/{itemName:(?!^\\d+$)^.+$}", method = RequestMethod.GET)
     ResponseEntity<?> getItemByName(@PathVariable(value = "itemName") String itemName) {
         try {
             InventoryItem item = inventoryService.getItemByName(itemName);
@@ -59,7 +59,7 @@ public class InventoryServiceRESTController {
         }
     }
 
-    @RequestMapping(value = "/inventory/restock/{id:^[0-9]+$}", method = RequestMethod.POST)
+    @RequestMapping(value = "/api/inventory/restock/{id:^[0-9]+$}", method = RequestMethod.POST)
     ResponseEntity<?> restockItemByID(@PathVariable(value = "id") int id, @RequestBody RestockRequest request) {
         try {
             double newAmount = inventoryService.restockItemByID(id, request.getUnitsAddedDouble());
@@ -73,7 +73,7 @@ public class InventoryServiceRESTController {
         }
     }
 
-    @RequestMapping(value = "/inventory/restock/{itemName:(?!^\\d+$)^.+$}", method = RequestMethod.POST)
+    @RequestMapping(value = "/api/inventory/restock/{itemName:(?!^\\d+$)^.+$}", method = RequestMethod.POST)
     ResponseEntity<?> restockItemByName(@PathVariable(value = "itemName") String itemName, @RequestBody RestockRequest request) {
         try {
             double newAmount = inventoryService.restockItemByName(itemName, request.getUnitsAddedDouble());
@@ -98,7 +98,7 @@ public class InventoryServiceRESTController {
         }
     }
 
-    @RequestMapping(value = "/inventory/{itemName:(?!^\\d+$)^.+$}", method = RequestMethod.POST)
+    @RequestMapping(value = "/api/inventory/{itemName:(?!^\\d+$)^.+$}", method = RequestMethod.POST)
     ResponseEntity<?> addItemToInventory(@PathVariable(value = "itemName") String itemName) {
         try {
             InventoryItem savedItem = inventoryService.addItemToInventory(itemName);
@@ -108,7 +108,7 @@ public class InventoryServiceRESTController {
         }
     }
 
-    @RequestMapping(value = "/inventory/{id:^[0-9]+$}", method = RequestMethod.DELETE)
+    @RequestMapping(value = "/api/inventory/{id:^[0-9]+$}", method = RequestMethod.DELETE)
     ResponseEntity<?> removeItemFromInventoryByID(@PathVariable(value = "id") int id) {
         try {
             int rowsChanged = inventoryService.removeItemFromInventoryByID(id);
@@ -123,7 +123,7 @@ public class InventoryServiceRESTController {
     }
 
 
-    @RequestMapping(value = "/inventory/{itemName:(?!^\\d+$)^.+$}", method = RequestMethod.DELETE)
+    @RequestMapping(value = "/api/inventory/{itemName:(?!^\\d+$)^.+$}", method = RequestMethod.DELETE)
     ResponseEntity<?> removeItemFromInventoryByName(@PathVariable(value = "itemName") String itemName) {
         try {
             int rowsChanged = inventoryService.removeItemFromInventoryByName(itemName);
@@ -137,7 +137,7 @@ public class InventoryServiceRESTController {
         }
     }
 
-    @RequestMapping(value = "/inventory/{id:^[0-9]+$}", method = RequestMethod.PUT)
+    @RequestMapping(value = "/api/inventory/{id:^[0-9]+$}", method = RequestMethod.PUT)
     ResponseEntity<?> updateItemInInventoryByID(@PathVariable(value = "id") int id, @RequestBody InventoryItemRequest request) {
         try {
             InventoryItem item = new InventoryItem(request);
@@ -153,7 +153,7 @@ public class InventoryServiceRESTController {
     }
 
 
-    @RequestMapping(value = "/inventory/{itemName:(?!^\\d+$)^.+$}", method = RequestMethod.PUT)
+    @RequestMapping(value = "/api/inventory/{itemName:(?!^\\d+$)^.+$}", method = RequestMethod.PUT)
     ResponseEntity<?> updateItemInInventoryByName(@PathVariable(value = "itemName") String itemName, @RequestBody InventoryItemRequest request) {
         try{
             InventoryItem item = new InventoryItem(request);

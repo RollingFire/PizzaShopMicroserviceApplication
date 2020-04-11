@@ -5,7 +5,7 @@ info:
   version: 0.0.1
 
 paths:
-  /inventory:
+  /api/inventory:
     get:
       summary: Returns a list of inventory items.
       responses:
@@ -84,7 +84,7 @@ paths:
                 type: string
                 example: Error Message
 
-  /inventory/{id}:
+  /api/inventory/{id}:
     get:
       summary: Returns the inventory item.
       parameters:
@@ -198,7 +198,7 @@ paths:
                 type: string
                 example: Error Message
 
-  /inventory/{name}:
+  /api/inventory/{name}:
     get:
       summary: Returns the inventory item.
       parameters:
@@ -350,7 +350,7 @@ paths:
                 type: string
                 example: Error Message
 
-  /inventory/restock/{id}:
+  /api/inventory/restock/{id}:
     post:
       summary: Restocks the inventory item.
       parameters:
@@ -387,7 +387,7 @@ paths:
                 type: string
                 example: Error Message
 
-  /inventory/restock/{name}:
+  /api/inventory/restock/{name}:
     post:
       summary: Restocks the inventory item.
       parameters:
