@@ -22,22 +22,22 @@ def loadConfig():
 
 def checkDatabaseInitial():
     try:
-        response = requests.get(baseURL + "/customer")
+        response = requests.get(baseURL + "/api/customer")
         if response.status_code == 200:
             customers = response.json()
             if customers == []:
                 firstName = "Paul"
                 lastName = "Blart"
                 queryPerams = "?firstName=" + firstName + "&lastName=" + lastName
-                response = requests.post(baseURL + "/customer" + queryPerams)
+                response = requests.post(baseURL + "/api/customer" + queryPerams)
                 if response.status_code == 201:
-                    response = requests.get(baseURL + "/customer/1")
+                    response = requests.get(baseURL + "/api/customer/1")
                     if response.status_code == 200:
                         customer = response.json()
                         if customer["firstName"] == firstName and customer["lastName"] == lastName:
-                            response = requests.delete(baseURL + "/customer/1")
+                            response = requests.delete(baseURL + "/api/customer/1")
                             if response.status_code == 200:
-                                response = requests.get(baseURL + "/customer")
+                                response = requests.get(baseURL + "/api/customer")
                                 if response.status_code == 200:
                                     customers = response.json()
                                     if customers == []:
@@ -58,7 +58,7 @@ def addCustomer(expected, firstName=None, lastName=None, wantedStatus=None):
                 queryPeram = "/?"
             queryPeram += "&lastName=" + lastName
 
-        response = requests.post(baseURL + "/customer" + queryPeram)
+        response = requests.post(baseURL + "/api/customer" + queryPeram)
         if response.status_code == 201 and wantedStatus == None:
             item = response.json()
             if item == expected:
@@ -83,7 +83,7 @@ def getInventory(expected, firstName=None, lastName=None, wantedStatus=None):
                 queryPeram = "/?"
             queryPeram += "&lastName=" + lastName
 
-        response = requests.get(baseURL + "/customer" + queryPeram)
+        response = requests.get(baseURL + "/api/customer" + queryPeram)
         if response.status_code == 200:
             item = response.json()
             if item == expected:
@@ -100,7 +100,7 @@ def getInventory(expected, firstName=None, lastName=None, wantedStatus=None):
 
 def getCustomerByID(expected, id, wantedStatus=None):
     try:
-        response = requests.get(baseURL + "/customer/" + str(id))
+        response = requests.get(baseURL + "/api/customer/" + str(id))
         if response.status_code == 200:
             item = response.json()
             if item == expected:
@@ -117,7 +117,7 @@ def getCustomerByID(expected, id, wantedStatus=None):
 
 def incrementOrderCount(expected, id, wantedStatus=None):
     try:
-        response = requests.post(baseURL + "/customer/" + str(id))
+        response = requests.post(baseURL + "/api/customer/" + str(id))
         if response.status_code == 200:
             item = response.json()
             if item == expected:
@@ -134,9 +134,9 @@ def incrementOrderCount(expected, id, wantedStatus=None):
 
 def deleteCustomer(id, wantedStatus=None):
     try:
-        response = requests.delete(baseURL + "/customer/" + str(id))
+        response = requests.delete(baseURL + "/api/customer/" + str(id))
         if response.status_code == 200:
-            response = requests.get(baseURL + "/customer/" + str(id))
+            response = requests.get(baseURL + "/api/customer/" + str(id))
             if response.status_code == 404:
                 print("TEST PASSED - deleteCustomer")
             else:
@@ -159,7 +159,7 @@ def changeName(expected, id, firstName=None, lastName=None, wantedStatus=None):
                 queryPeram = "/?"
             queryPeram += "&lastName=" + lastName
 
-        response = requests.put(baseURL + "/customer/" + str(id) + queryPeram)
+        response = requests.put(baseURL + "/api/customer/" + str(id) + queryPeram)
         if response.status_code == 200:
             item = response.text
             if item == expected:

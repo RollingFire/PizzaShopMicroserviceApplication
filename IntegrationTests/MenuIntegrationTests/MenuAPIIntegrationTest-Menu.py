@@ -23,9 +23,9 @@ def loadConfig():
 def createMenu(menu):
     try:
         requestBody = {"menuName": menu['menuName'], "items": menu['items']}
-        response = requests.post(baseURL + "/menu", json=requestBody)
+        response = requests.post(baseURL + "/api/menu", json=requestBody)
         if response.status_code == 201:
-            response = requests.get(baseURL + "/menu")
+            response = requests.get(baseURL + "/api/menu")
             if response.status_code == 200:
                 menu = response.json()
                 print("TEST PASSED - createMenu")
@@ -37,7 +37,7 @@ def createMenu(menu):
      
 def checkInTable(expected):
     try:
-        response = requests.get(baseURL + "/menu")
+        response = requests.get(baseURL + "/api/menu")
         if response.status_code == 200:
             items = response.json()
             if expected in items:
@@ -51,7 +51,7 @@ def checkInTable(expected):
 
 def getMenuById(expected, id):
     try:
-        response = requests.get(baseURL + "/menu/" + str(id))
+        response = requests.get(baseURL + "/api/menu/" + str(id))
         if response.status_code == 200:
             item = response.json()
             if item == expected:
@@ -65,7 +65,7 @@ def getMenuById(expected, id):
 
 def getMenuByName(expected, name):
     try:
-        response = requests.get(baseURL + "/menu/" + name)
+        response = requests.get(baseURL + "/api/menu/" + name)
         if response.status_code == 200:
             item = response.json()
             if item == expected:
@@ -79,7 +79,7 @@ def getMenuByName(expected, name):
 
 def getMenuHistroyById(expected, id):
     try:
-        response = requests.get(baseURL + "/menu/" + str(id) + "/history")
+        response = requests.get(baseURL + "/api/menu/" + str(id) + "/history")
         if response.status_code == 200:
             items = response.json()
             if items == expected:
@@ -93,7 +93,7 @@ def getMenuHistroyById(expected, id):
 
 def getMenuHistroyByName(expected, name):
     try:
-        response = requests.get(baseURL + "/menu/" + name + "/history")
+        response = requests.get(baseURL + "/api/menu/" + name + "/history")
         if response.status_code == 200:
             items = response.json()
             if items == expected:
@@ -107,7 +107,7 @@ def getMenuHistroyByName(expected, name):
 
 def updateMenuById(expected, id, newItem):
     try:
-        response = requests.put(baseURL + "/menu/" + str(id), json={"items": newItem})
+        response = requests.put(baseURL + "/api/menu/" + str(id), json={"items": newItem})
         if response.status_code == 200:
             item = response.json()
             if item == expected:
@@ -121,7 +121,7 @@ def updateMenuById(expected, id, newItem):
 
 def updateMenuByName(expected, name, newItem):
     try:
-        response = requests.put(baseURL + "/menu/" + name, json={"items": newItem})
+        response = requests.put(baseURL + "/api/menu/" + name, json={"items": newItem})
         if response.status_code == 200:
             item = response.json()
             if item == expected:
@@ -147,7 +147,7 @@ if __name__ == '__main__':
         dateFormated = today.strftime("%Y-%m-%d")
         baseURL = "http://" + config['menuAPI.host'] + ":" + config['menuAPI.port']
         try:
-            if requests.get(baseURL + "/menu/IntegrationTestMenu").status_code != 404:
+            if requests.get(baseURL + "/api/menu/IntegrationTestMenu").status_code != 404:
                 raise AbortTest("Integration abouted. IntegrationTestMenu already exists. Remove and try again.")
             menu = {"id": None, "menuName": "IntegrationTestMenu", "items": "[]", "revisionDate": dateFormated}
 
@@ -184,12 +184,12 @@ if __name__ == '__main__':
 
             #404 checks
             requestBody = {"items": menu['items']}
-            testFor404(requests.get(baseURL + "/menu/" + str(menu["id"] + 9999)))
-            testFor404(requests.get(baseURL + "/menu/" + "asdfawetlhnijbvn k;jdf asdfahe"))
-            testFor404(requests.put(baseURL + "/menu/" + str(menu["id"] + 9999), json=requestBody))
-            testFor404(requests.put(baseURL + "/menu/" + "asdfawetlhnijbvn k;jdf asdfahe", json=requestBody))
-            testFor404(requests.get(baseURL + "/menu/" + str(menu["id"] + 9999) + "/history"))
-            testFor404(requests.get(baseURL + "/menu/" + "asdfawetlhnijbvn k;jdf asdfahe" + "/history"))
+            testFor404(requests.get(baseURL + "/api/menu/" + str(menu["id"] + 9999)))
+            testFor404(requests.get(baseURL + "/api/menu/" + "asdfawetlhnijbvn k;jdf asdfahe"))
+            testFor404(requests.put(baseURL + "/api/menu/" + str(menu["id"] + 9999), json=requestBody))
+            testFor404(requests.put(baseURL + "/api/menu/" + "asdfawetlhnijbvn k;jdf asdfahe", json=requestBody))
+            testFor404(requests.get(baseURL + "/api/menu/" + str(menu["id"] + 9999) + "/history"))
+            testFor404(requests.get(baseURL + "/api/menu/" + "asdfawetlhnijbvn k;jdf asdfahe" + "/history"))
             
         except AbortTest as err:
             print(err)

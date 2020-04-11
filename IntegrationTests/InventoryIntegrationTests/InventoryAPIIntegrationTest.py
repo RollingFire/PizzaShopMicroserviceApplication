@@ -22,19 +22,19 @@ def loadConfig():
 
 def checkDatabaseInitial():
     try:
-        response = requests.get(baseURL + "/inventory")
+        response = requests.get(baseURL + "/api/inventory")
         if response.status_code == 200:
             inventory = response.json()
             if inventory == []:
-                response = requests.post(baseURL + "/inventory/Test")
+                response = requests.post(baseURL + "/api/inventory/Test")
                 if response.status_code == 201:
-                    response = requests.get(baseURL + "/inventory")
+                    response = requests.get(baseURL + "/api/inventory")
                     if response.status_code == 200:
                         inventory = response.json()
                         if inventory[0]["id"] == 1:
-                            response = requests.delete(baseURL + "/inventory/" + str(1))
+                            response = requests.delete(baseURL + "/api/inventory/" + str(1))
                             if response.status_code == 200:
-                                response = requests.get(baseURL + "/inventory")
+                                response = requests.get(baseURL + "/api/inventory")
                                 if response.status_code == 200:
                                     inventory = response.json()
                                     if inventory == []:
@@ -47,7 +47,7 @@ def checkDatabaseInitial():
 
 def getInventory(expected):
     try:
-        response = requests.get(baseURL + "/inventory")
+        response = requests.get(baseURL + "/api/inventory")
         if response.status_code == 200:
             inventory = response.json()
             if inventory == expected:
@@ -61,7 +61,7 @@ def getInventory(expected):
 
 def getInventoryName(name, expected):
     try:
-        response = requests.get(baseURL + "/inventory/" + name)
+        response = requests.get(baseURL + "/api/inventory/" + name)
         if response.status_code == 200:
             item = response.json()
             if item == expected:
@@ -75,7 +75,7 @@ def getInventoryName(name, expected):
 
 def getInventoryID(id, expected):
     try:
-        response = requests.get(baseURL + "/inventory/" + str(id))
+        response = requests.get(baseURL + "/api/inventory/" + str(id))
         if response.status_code == 200:
             item = response.json()
             if item == expected:
@@ -89,10 +89,10 @@ def getInventoryID(id, expected):
 
 def deleteInventoryID(id):
     try:
-        response = requests.delete(baseURL + "/inventory/" + str(id))
+        response = requests.delete(baseURL + "/api/inventory/" + str(id))
         if response.status_code == 200:
             try:
-                response = requests.get(baseURL + "/inventory/" + str(id))
+                response = requests.get(baseURL + "/api/inventory/" + str(id))
                 response.json()
                 print("TEST FAILED - deleteInventoryID: Item not deleted.")
             except ValueError:
@@ -104,10 +104,10 @@ def deleteInventoryID(id):
 
 def deleteInventoryName(name):
     try:
-        response = requests.delete(baseURL + "/inventory/" + name)
+        response = requests.delete(baseURL + "/api/inventory/" + name)
         if response.status_code == 200:
             try:
-                response = requests.get(baseURL + "/inventory/" + str(id))
+                response = requests.get(baseURL + "/api/inventory/" + str(id))
                 response.json()
                 print("TEST FAILED - deleteInventoryID: Item not deleted.")
             except ValueError:
@@ -119,9 +119,9 @@ def deleteInventoryName(name):
 
 def postInventory(item, expected):
     try:
-        response = requests.post(baseURL + "/inventory", json=item)
+        response = requests.post(baseURL + "/api/inventory", json=item)
         if response.status_code == 201:
-            getResponse = requests.get(baseURL + "/inventory/" + response.json()["name"])
+            getResponse = requests.get(baseURL + "/api/inventory/" + response.json()["name"])
             if getResponse.status_code == 200 and getResponse.json() == expected:
                 print("TEST PASSED - postInventory")
             else:
@@ -133,9 +133,9 @@ def postInventory(item, expected):
 
 def postInventoryName(name, expected):
     try:
-        response = requests.post(baseURL + "/inventory/" + name)
+        response = requests.post(baseURL + "/api/inventory/" + name)
         if response.status_code == 201:
-            getResponse = requests.get(baseURL + "/inventory/" + name)
+            getResponse = requests.get(baseURL + "/api/inventory/" + name)
             if getResponse.status_code == 200 and getResponse.json() == expected:
                 print("TEST PASSED - postInventoryName")
             else:
@@ -148,9 +148,9 @@ def postInventoryName(name, expected):
 def postInventoryRestockID(id, restockAmount, expectedUnits):
     try:
         request = {"unitsAdded":restockAmount}
-        response = requests.post(baseURL + "/inventory/restock/" + str(id), json=request)
+        response = requests.post(baseURL + "/api/inventory/restock/" + str(id), json=request)
         if response.status_code == 200:
-            getResponse = requests.get(baseURL + "/inventory/" + str(id))
+            getResponse = requests.get(baseURL + "/api/inventory/" + str(id))
             if getResponse.status_code == 200 and getResponse.json()["units"] == expectedUnits:
                 print("TEST PASSED - postInventoryRestockID")
             else:
@@ -163,9 +163,9 @@ def postInventoryRestockID(id, restockAmount, expectedUnits):
 def postInventoryRestockName(name, restockAmount, expectedUnits):
     try:
         request = {"unitsAdded":restockAmount}
-        response = requests.post(baseURL + "/inventory/restock/" + name, json=request)
+        response = requests.post(baseURL + "/api/inventory/restock/" + name, json=request)
         if response.status_code == 200:
-            getResponse = requests.get(baseURL + "/inventory/" + name)
+            getResponse = requests.get(baseURL + "/api/inventory/" + name)
             if getResponse.status_code == 200 and getResponse.json()["units"] == expectedUnits:
                 print("TEST PASSED - postInventoryRestockName")
             else:
@@ -177,9 +177,9 @@ def postInventoryRestockName(name, restockAmount, expectedUnits):
 
 def putInventoryID(id, requestBody, expected):
     try:
-        response = requests.put(baseURL + "/inventory/" + str(id), json=requestBody)
+        response = requests.put(baseURL + "/api/inventory/" + str(id), json=requestBody)
         if response.status_code == 200:
-            getResponse = requests.get(baseURL + "/inventory/" + str(id))
+            getResponse = requests.get(baseURL + "/api/inventory/" + str(id))
             if getResponse.status_code == 200 and getResponse.json() == expected:
                 print("TEST PASSED - putInventoryID")
             else:
@@ -191,9 +191,9 @@ def putInventoryID(id, requestBody, expected):
 
 def putInventoryName(name, requestBody, expected):
     try:
-        response = requests.put(baseURL + "/inventory/" + name, json=requestBody)
+        response = requests.put(baseURL + "/api/inventory/" + name, json=requestBody)
         if response.status_code == 200:
-            getResponse = requests.get(baseURL + "/inventory/" + requestBody["name"])
+            getResponse = requests.get(baseURL + "/api/inventory/" + requestBody["name"])
             if getResponse.status_code == 200 and getResponse.json() == expected:
                 print("TEST PASSED - putInventoryName")
             else:
@@ -251,14 +251,14 @@ if __name__ == '__main__':
 
             #Check 404s
             request = {"name": "string","units": 0,"unitType": "string","restockAt": 0,"restockAmount": 0}
-            testFor404(requests.get(baseURL + "/inventory/0"))
-            testFor404(requests.delete(baseURL + "/inventory/0"))
-            testFor404(requests.put(baseURL + "/inventory/0", json=request))
-            testFor404(requests.get(baseURL + "/inventory/AStingThatShouldntBeTakenAsANameOfAnItmeBecasueThatWouldBeWeird"))
-            testFor404(requests.delete(baseURL + "/inventory/AStingThatShouldntBeTakenAsANameOfAnItmeBecasueThatWouldBeWeird"))
-            testFor404(requests.put(baseURL + "/inventory/AStingThatShouldntBeTakenAsANameOfAnItmeBecasueThatWouldBeWeird", json=request))
-            testFor404(requests.post(baseURL + "/inventory/restock/0", json={"unitsAdded": 0}))
-            testFor404(requests.post(baseURL + "/inventory/restock/AStingThatShouldntBeTakenAsANameOfAnItmeBecasueThatWouldBeWeird", json={"unitsAdded": 0}))
+            testFor404(requests.get(baseURL + "/api/inventory/0"))
+            testFor404(requests.delete(baseURL + "/api/inventory/0"))
+            testFor404(requests.put(baseURL + "/api/inventory/0", json=request))
+            testFor404(requests.get(baseURL + "/api/inventory/AStingThatShouldntBeTakenAsANameOfAnItmeBecasueThatWouldBeWeird"))
+            testFor404(requests.delete(baseURL + "/api/inventory/AStingThatShouldntBeTakenAsANameOfAnItmeBecasueThatWouldBeWeird"))
+            testFor404(requests.put(baseURL + "/api/inventory/AStingThatShouldntBeTakenAsANameOfAnItmeBecasueThatWouldBeWeird", json=request))
+            testFor404(requests.post(baseURL + "/api/inventory/restock/0", json={"unitsAdded": 0}))
+            testFor404(requests.post(baseURL + "/api/inventory/restock/AStingThatShouldntBeTakenAsANameOfAnItmeBecasueThatWouldBeWeird", json={"unitsAdded": 0}))
 
             #Final check
             getInventory([])

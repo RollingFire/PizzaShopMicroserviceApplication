@@ -23,9 +23,9 @@ def loadConfig():
 def createMenuItem(menuItem):
     try:
         requestBody = {  "catagory": menuItem["catagory"], "itemName": menuItem["itemName"], "discription": menuItem["discription"], "cost": menuItem["cost"]}
-        response = requests.post(baseURL + "/menuItem", json=requestBody)
+        response = requests.post(baseURL + "/api/menuItem", json=requestBody)
         if response.status_code == 201:
-            response = requests.get(baseURL + "/menuItem")
+            response = requests.get(baseURL + "/api/menuItem")
             if response.status_code == 200:
                 menuItem = response.json()
                 print("TEST PASSED - createMenuItem")
@@ -37,7 +37,7 @@ def createMenuItem(menuItem):
      
 def checkInTable(expected):
     try:
-        response = requests.get(baseURL + "/menuItem")
+        response = requests.get(baseURL + "/api/menuItem")
         if response.status_code == 200:
             items = response.json()
             if expected in items:
@@ -51,7 +51,7 @@ def checkInTable(expected):
 
 def getMenuItemById(expected, id):
     try:
-        response = requests.get(baseURL + "/menuItem/" + str(id))
+        response = requests.get(baseURL + "/api/menuItem/" + str(id))
         if response.status_code == 200:
             item = response.json()
             if item == expected:
@@ -65,7 +65,7 @@ def getMenuItemById(expected, id):
 
 def getMenuItemHistroyById(expected, id):
     try:
-        response = requests.get(baseURL + "/menuItem/" + str(id) + "/history")
+        response = requests.get(baseURL + "/api/menuItem/" + str(id) + "/history")
         if response.status_code == 200:
             items = response.json()
             if items == expected:
@@ -79,7 +79,7 @@ def getMenuItemHistroyById(expected, id):
 
 def updateMenuItemById(expected, id, query):
     try:
-        response = requests.put(baseURL + "/menuItem/" + str(id) + query)
+        response = requests.put(baseURL + "/api/menuItem/" + str(id) + query)
         if response.status_code == 200:
             item = response.json()
             if item == expected:
@@ -136,9 +136,9 @@ if __name__ == '__main__':
 
             #404 checks
             requestBody = {"catagory": menuItem['catagory']}
-            testFor404(requests.get(baseURL + "/menuItem/" + str(menuItem["id"] + 9999)))
-            testFor404(requests.put(baseURL + "/menuItem/" + str(menuItem["id"] + 9999), json=requestBody))
-            testFor404(requests.get(baseURL + "/menuItem/" + str(menuItem["id"] + 9999) + "/history"))
+            testFor404(requests.get(baseURL + "/api/menuItem/" + str(menuItem["id"] + 9999)))
+            testFor404(requests.put(baseURL + "/api/menuItem/" + str(menuItem["id"] + 9999), json=requestBody))
+            testFor404(requests.get(baseURL + "/api/menuItem/" + str(menuItem["id"] + 9999) + "/history"))
         except AbortTest as err:
             print(err)
     except (KeyboardInterrupt, SystemExit) as e:

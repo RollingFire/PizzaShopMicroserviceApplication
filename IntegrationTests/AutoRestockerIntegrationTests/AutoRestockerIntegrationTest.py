@@ -28,34 +28,34 @@ def main():
     three = {"name": "AutoRestockerIntegrationTest3", "units": 24.1, "unitType": "COUNT", "restockAt": 18.6, "restockAmount": 64}
 
     #create items by name
-    requests.post(baseURL + "/inventory", json=one)
-    requests.post(baseURL + "/inventory", json=two)
-    requests.post(baseURL + "/inventory", json=three)
+    requests.post(baseURL + "/api/inventory", json=one)
+    requests.post(baseURL + "/api/inventory", json=two)
+    requests.post(baseURL + "/api/inventory", json=three)
 
     #wait for auto restock
     time.sleep(int(config["restock.restockFrequencySeconds"]) + 2)
 
     #check with get by name
-    returnedUnites = requests.get(baseURL + "/inventory/" + one["name"]).json()["units"]
+    returnedUnites = requests.get(baseURL + "/api/inventory/" + one["name"]).json()["units"]
     compareRequestAndExpected(1, returnedUnites, one['units'] + one['restockAmount'])
-    returnedUnites = requests.get(baseURL + "/inventory/" + two["name"]).json()["units"]
+    returnedUnites = requests.get(baseURL + "/api/inventory/" + two["name"]).json()["units"]
     compareRequestAndExpected(2, returnedUnites, two['units'] + two['restockAmount'])
-    returnedUnites = requests.get(baseURL + "/inventory/" + three["name"]).json()["units"]
+    returnedUnites = requests.get(baseURL + "/api/inventory/" + three["name"]).json()["units"]
     compareRequestAndExpected(3, returnedUnites, three['units'])
 
     #wait for auto restock
     time.sleep(int(config["restock.restockFrequencySeconds"]))
 
     #check with get by name
-    returnedUnites = requests.get(baseURL + "/inventory/" + one["name"]).json()["units"]
+    returnedUnites = requests.get(baseURL + "/api/inventory/" + one["name"]).json()["units"]
     compareRequestAndExpected(4, returnedUnites, one['units'] + (one['restockAmount'] * 2))
-    returnedUnites = requests.get(baseURL + "/inventory/" + two["name"]).json()["units"]
+    returnedUnites = requests.get(baseURL + "/api/inventory/" + two["name"]).json()["units"]
     compareRequestAndExpected(5, returnedUnites, two['units'] + two['restockAmount'])
 
     #deleting items used for test
-    requests.delete(baseURL + "/inventory/" + one["name"])
-    requests.delete(baseURL + "/inventory/" + two["name"])
-    requests.delete(baseURL + "/inventory/" + three["name"])
+    requests.delete(baseURL + "/api/inventory/" + one["name"])
+    requests.delete(baseURL + "/api/inventory/" + two["name"])
+    requests.delete(baseURL + "/api/inventory/" + three["name"])
 
 
 if __name__ == '__main__':

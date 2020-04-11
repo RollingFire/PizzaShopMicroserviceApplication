@@ -23,7 +23,7 @@ def loadConfig():
 
 def getMenuItems():
     try:
-        response = requests.get(menuBaseURL + "/menuItem")
+        response = requests.get(menuBaseURL + "/api/menuItem")
         if response.status_code == 200:
             existingItems = response.json()
             #Two items already exist.
@@ -32,7 +32,7 @@ def getMenuItems():
 
             #One item exists but creating one more.
             elif len(existingItems) == 1:
-                response = requests.post(menuBaseURL + "/menuItem", {"catagory": "TestCat", "itemName": "TestItem", "discription": "Menu Item created to be used in testing.", "cost": 0})
+                response = requests.post(menuBaseURL + "/api/menuItem", {"catagory": "TestCat", "itemName": "TestItem", "discription": "Menu Item created to be used in testing.", "cost": 0})
                 if response.status_code == 200:
                     return existingItems[0]["id"], response.json()["id"]
                 else:
@@ -40,8 +40,8 @@ def getMenuItems():
 
             #Need to create two items.
             elif len(existingItemss) == 0:
-                response = requests.post(menuBaseURL + "/menuItem", {"catagory": "TestCat", "itemName": "TestItem", "discription": "Menu Item created to be used in testing.", "cost": 0})
-                response = requests.post(menuBaseURL + "/menuItem", {"catagory": "TestCat", "itemName": "TestItem", "discription": "Menu Item created to be used in testing.", "cost": 0})
+                response = requests.post(menuBaseURL + "/api/menuItem", {"catagory": "TestCat", "itemName": "TestItem", "discription": "Menu Item created to be used in testing.", "cost": 0})
+                response = requests.post(menuBaseURL + "/api/menuItem", {"catagory": "TestCat", "itemName": "TestItem", "discription": "Menu Item created to be used in testing.", "cost": 0})
                 if response.status_code == 200:
                     return response.json()["id"]-1, response.json()["id"]
                 else:
@@ -53,7 +53,7 @@ def getMenuItems():
 
 def getInventoryItems():
     try:
-        response = requests.get(inventoryBaseURL + "/inventory")
+        response = requests.get(inventoryBaseURL + "/api/inventory")
         if response.status_code == 200:
             existingItems = response.json()
             #Two items already exist.
@@ -62,7 +62,7 @@ def getInventoryItems():
 
             #One item exists but creating one more.
             elif len(existingItems) == 1:
-                response = requests.post(inventoryBaseURL + "/inventory", {"name": "TestItem","units": 0,"unitType": "Test","restockAt": 0,"restockAmount": 0})
+                response = requests.post(inventoryBaseURL + "/api/inventory", {"name": "TestItem","units": 0,"unitType": "Test","restockAt": 0,"restockAmount": 0})
                 if response.status_code == 200:
                     inventoryItemsCreated.append(response.json()["id"])
                     return existingItems[0]["id"], response.json()["id"]
@@ -71,8 +71,8 @@ def getInventoryItems():
 
             #Need to create two items.
             elif len(existingItemss) == 0:
-                response = requests.post(inventoryBaseURL + "/inventory", {"name": "TestItem1","units": 0,"unitType": "Test","restockAt": 0,"restockAmount": 0})
-                response = requests.post(inventoryBaseURL + "/inventory", {"name": "TestItem2","units": 0,"unitType": "Test","restockAt": 0,"restockAmount": 0})
+                response = requests.post(inventoryBaseURL + "/api/inventory", {"name": "TestItem1","units": 0,"unitType": "Test","restockAt": 0,"restockAmount": 0})
+                response = requests.post(inventoryBaseURL + "/api/inventory", {"name": "TestItem2","units": 0,"unitType": "Test","restockAt": 0,"restockAmount": 0})
                 if response.status_code == 200:
                     inventoryItemsCreated.append(response.json()["id"]-1)
                     inventoryItemsCreated.append(response.json()["id"])
@@ -87,7 +87,7 @@ def getInventoryItems():
 
 def cleanUpCreatedInventoryItems():
     for id in inventoryItemsCreated:
-        requests.delete(inventoryBaseURL + "/inventory/" + str(id))
+        requests.delete(inventoryBaseURL + "/api/inventory/" + str(id))
 
                 
 def testFor404(response):
