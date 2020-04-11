@@ -18,7 +18,7 @@ public class CustomerServiceRESTController {
     @Autowired
     private CustomerService customerService;
 
-    @RequestMapping(value = "/customer", method = RequestMethod.GET)
+    @RequestMapping(value = "/api/customer", method = RequestMethod.GET)
     ResponseEntity<?> getInventory(@RequestParam(required=false) String firstName, 
                                    @RequestParam(required=false) String lastName) {
         try {
@@ -34,7 +34,7 @@ public class CustomerServiceRESTController {
         }
     }
 
-    @RequestMapping(value = "/customer/{id:^[0-9]+$}", method = RequestMethod.GET)
+    @RequestMapping(value = "/api/customer/{id:^[0-9]+$}", method = RequestMethod.GET)
     ResponseEntity<?> getCustomerByID(@PathVariable(value = "id") int id) {
         try {
             Customer customer = customerService.getCustomerByID(id);
@@ -48,7 +48,7 @@ public class CustomerServiceRESTController {
         }
     }
 
-    @RequestMapping(value = "/customer", method = RequestMethod.POST)
+    @RequestMapping(value = "/api/customer", method = RequestMethod.POST)
     ResponseEntity<?> addCustomer(@RequestParam(required=false) String firstName, 
                                   @RequestParam(required=false) String lastName) {
         try {
@@ -59,7 +59,7 @@ public class CustomerServiceRESTController {
         }
     }
 
-    @RequestMapping(value = "/customer/{id:^[0-9]+$}", method = RequestMethod.POST)
+    @RequestMapping(value = "/api/customer/{id:^[0-9]+$}", method = RequestMethod.POST)
     ResponseEntity<?> incrementOrderCount(@PathVariable(value = "id") int id) {
         try {
             int newNumberOfOrders = customerService.incrementOrderCount(id);
@@ -73,7 +73,7 @@ public class CustomerServiceRESTController {
         }
     }
 
-    @RequestMapping(value = "/customer/{id:^[0-9]+$}", method = RequestMethod.DELETE)
+    @RequestMapping(value = "/api/customer/{id:^[0-9]+$}", method = RequestMethod.DELETE)
     ResponseEntity<?> deleteCustomer(@PathVariable(value = "id") int id) {
         try {
             int numberOfRowsChanged = customerService.deleteCustomer(id);
@@ -87,7 +87,7 @@ public class CustomerServiceRESTController {
         }
     }
 
-    @RequestMapping(value = "/customer/{id:^[0-9]+$}", method = RequestMethod.PUT)
+    @RequestMapping(value = "/api/customer/{id:^[0-9]+$}", method = RequestMethod.PUT)
     ResponseEntity<?> changeName(@PathVariable(value = "id") int id,
                                  @RequestParam(required=false) String firstName, 
                                  @RequestParam(required=false) String lastName) {
