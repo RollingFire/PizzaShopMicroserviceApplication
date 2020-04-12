@@ -1,6 +1,6 @@
 <div>
     <h1 class="menuTitle" id="menuTitle">{{currentMenu.menu.menuName}}</h1> 
-    <div *ngFor="let catagory of currentMenu.menuItems.keys()" id="catagory_{{catagory}}">
+    <div *ngFor="let catagory of getCatagories()" id="catagory_{{catagory}}">
         <h2>{{catagory}}</h2>
         <div *ngFor="let item of currentMenu.menuItems.get(catagory)" id="{{item.itemName}}">
             <h4>{{item.itemName}}</h4>

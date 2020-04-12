@@ -51,7 +51,6 @@ export class MenuComponent implements OnInit {
           let list = this.getMapValue(this.menuItems, data.catagory); //.push(data);
           list.push(data);
           this.menuItems.set(data.catagory, list);
-          console.log(list)
         },
         error => console.log(error)
       );

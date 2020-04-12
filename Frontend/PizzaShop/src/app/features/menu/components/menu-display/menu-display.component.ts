@@ -10,12 +10,14 @@ import { FullMenu } from '../../menu.component';
 })
 export class MenuDisplayComponent implements OnInit {
   @Input() currentMenu: FullMenu;
-  catagories: string[];
-
+  
   constructor(private apiCallerService: MenuAPICallerService) {
   }
   
   ngOnInit(): void {
-    this.catagories = Array.from(this.currentMenu.menuItems.keys());
+  }
+
+  getCatagories(): Array<string> {
+    return Array.from(this.currentMenu.menuItems.keys());
   }
 }
