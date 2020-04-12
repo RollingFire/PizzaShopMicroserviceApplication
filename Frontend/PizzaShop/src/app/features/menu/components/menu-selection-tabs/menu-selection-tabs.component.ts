@@ -1,5 +1,5 @@
 import { Component, OnInit, Input, EventEmitter, Output } from '@angular/core';
-import { Menu } from 'src/app/core/models/menu';
+import { Menu } from 'src/app/core/models/Menu';
 
 @Component({
   selector: 'app-menu-selection-tabs',

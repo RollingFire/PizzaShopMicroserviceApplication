@@ -1,8 +1,8 @@
 import { TestBed } from '@angular/core/testing';
 
-import { MenuAPICallerService } from './menuapicaller.service';
+import { MenuAPICallerService } from './menu-api-caller.service';
 
-describe('APICallerService', () => {
+describe('MenuAPICallerService', () => {
   let service: MenuAPICallerService;
 
   beforeEach(() => {

@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
-import { MenuAPICallerService } from 'src/app/core/services/menuapicaller.service';
-import { Menu } from 'src/app/core/models/menu';
+import { MenuAPICallerService } from 'src/app/core/services/menu-api-caller/menu-api-caller.service';
+import { Menu } from 'src/app/core/models/Menu';
+import { MenuItem } from 'src/app/core/models/MenuItem';
 
 @Component({
   selector: 'app-menu',
@@ -10,16 +11,21 @@ import { Menu } from 'src/app/core/models/menu';
 export class MenuComponent implements OnInit {
 
   menus: Menu[];
-  currentMenu: Menu = {
-    id: 0,
-    menuName: "",
-    items: "",
-    revisionDate: ""
+  currentMenu: FullMenu = {
+    menu: {
+      id: 0,
+      menuName: "",
+      items: [],
+      revisionDate: ""
+    },
+    menuItems: new Map<string, MenuItem[]>()
   };
+  private menuItems: Map<string, MenuItem[]>;
 
   constructor(private menuApiCallerService: MenuAPICallerService) {
+    this.menuItems = new Map<string, MenuItem[]>()
     menuApiCallerService.getMenus().subscribe(
-      data => {this.menus = data, this.currentMenu = data[0]},
+      data => {this.menus = data, this.buildFullMenu(data[0])},
       error => console.log(error),
     );
   }
@@ -28,12 +34,40 @@ export class MenuComponent implements OnInit {
   }
 
   changeMenu(menuID): void {
-    var newMenuSelection;
+    let newMenu: Menu
     this.menus.forEach( function(menu) {
       if (menu.id === menuID) {
-        newMenuSelection = menu;
+        newMenu = menu;
       }
     })
-    this.currentMenu = newMenuSelection
+    this.buildFullMenu(newMenu)
   }
+
+  buildFullMenu(menu: Menu): void {
+    this.menuItems = new Map<string, MenuItem[]>()
+    for (let i = 0; i < menu.items.length; i++) {
+      this.menuApiCallerService.getMenuItemById(menu.items[i]).subscribe(
+        data => {
+          let list = this.getMapValue(this.menuItems, data.catagory); //.push(data);
+          list.push(data);
+          this.menuItems.set(data.catagory, list);
+          console.log(list)
+        },
+        error => console.log(error)
+      );
+    }
+    this.currentMenu = {
+      menu: menu,
+      menuItems: this.menuItems
+    };
+  }
+
+  getMapValue(map, key) {
+    return map.get(key) || [];
+  }
+}
+
+export interface FullMenu {
+  menu: Menu;
+  menuItems: Map<string, MenuItem[]>;
 }

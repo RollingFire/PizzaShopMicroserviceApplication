@@ -1,6 +1,6 @@
 export interface Menu {
     id: number,
     menuName: string,
-    items: string,
+    items: number[],
     revisionDate: string
 }

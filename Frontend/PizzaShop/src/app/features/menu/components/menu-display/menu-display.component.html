@@ -1,12 +1,11 @@
 <div>
-    {{currentMenu.id}}
-    <!-- <h1 class="menuTitle" id="menuTitle">{{menu.menuName}}</h1> 
-    <div *ngFor="let catagory of menu.catagories" id="{{catagory.catName}}">
-        <h2>{{catagory.catName}}</h2>
-        <div *ngFor="let item of catagory.items" id="{{item.name}}">-->
-            <!-- <h4>{{menu.itemName}}</h4>
-            <h5>{{menu.cost}}</h5>
-            <p>{{menu.discription}}</p> -->
-        <!-- </div>
-    </div> -->
+    <h1 class="menuTitle" id="menuTitle">{{currentMenu.menu.menuName}}</h1> 
+    <div *ngFor="let catagory of currentMenu.menuItems.keys()" id="catagory_{{catagory}}">
+        <h2>{{catagory}}</h2>
+        <div *ngFor="let item of currentMenu.menuItems.get(catagory)" id="{{item.itemName}}">
+            <h4>{{item.itemName}}</h4>
+            <h5>{{item.cost}}</h5>
+            <p>{{item.discription}}</p>
+        </div>
+    </div>
 </div>
