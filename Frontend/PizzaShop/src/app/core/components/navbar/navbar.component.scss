@@ -1,8 +1,19 @@
-.navbar-container {
+.navbarContainer {
     position: sticky;
     top: 0;
+    background-color: #62b46d;
 }
 
-.active :hover {
-    color: #FF0000;
+.tabList {
+    display: flex;
+    margin: auto;
+}
+
+.navTab {
+    list-style-type: none;
+    padding: 10px;
+}
+
+.active {
+    background-color: rgb(158, 252, 36);
 }

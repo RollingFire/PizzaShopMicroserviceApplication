@@ -16,7 +16,37 @@ export class MenuAPICallerService {
     return this.http.get<Menu[]>("/api/menu");
   }
 
-  getMenuItemById(id): Observable<MenuItem> {
+  getMenuItems(): Observable<MenuItem[]> {
+    return this.http.get<MenuItem[]>("/api/menuItem");
+  }
+
+  getMenuItemById(id: number): Observable<MenuItem> {
     return this.http.get<MenuItem>("/api/menuItem/" + id);
+  }
+
+  updateMenuById(id: number, items: number[]): Observable<Menu> {
+    return this.http.put<Menu>("/api/menu/" + id, {"items": items});
+  }
+
+  updateManuItemById(id: number, changes: Map<string, string>): Observable<MenuItem> {
+    let queryParm: string = "";
+    let keys = Array.from(changes.keys());
+    let values = Array.from(changes.values());
+    for (let i = 0; i < changes.size; i++) {
+      if (changes.values[i] == "") {
+        continue
+      }
+      if (queryParm == "") {
+        queryParm = "?"
+      } else {
+        queryParm += "&"
+      }
+      queryParm += keys[i] + "=" + values[i];
+    }
+    return this.http.put<MenuItem>("/api/menuItem/" + id + queryParm, "");
+  }
+
+  createNewMenu(items: number[]): Observable<Menu> {
+    return this.http.post<Menu>("/api/menu", {"items": items});
   }
 }

@@ -1,0 +1,41 @@
+.menuTitle {
+    text-align: center;
+}
+
+.catagoryTitle {
+    margin: auto;
+    display: inline;
+}
+
+.catagoryRenameButton {
+    margin-left: 15px;
+}
+
+.menuItemContainer {
+    display: flex;
+    flex-wrap: wrap;
+    width: 45%;
+    margin: 10px;
+    border: 1px solid black;
+    padding: 10px;
+}
+
+.itemCost {
+    width: 10%;
+    margin: auto;
+    text-align: right;
+}
+
+.itemName {
+    width: 90%;
+    margin: auto;
+}
+
+.itemDiscription {
+    width: 100%;
+    margin: auto;
+}
+
+.itemButtoms {
+    margin-left: auto;
+}
