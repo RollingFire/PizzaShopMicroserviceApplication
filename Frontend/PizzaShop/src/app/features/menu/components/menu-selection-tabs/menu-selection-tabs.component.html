@@ -1,9 +1,5 @@
 <div class="tabContainer" id="menuDisplayTabContatiner">
-    <ul>
-        <li *ngFor="let menu of menus" id="menuTab_{{menu.id}}">
-            <button (click)="clickTab(menu.id)">{{menu.menuName}}</button>
-        </li>
-    </ul>
+    <input *ngFor="let menu of menus" type="button" class="menu" (click)="clickTab(menu.id)" value="{{menu.menuName}}">
 </div>
 <div *ngIf="isAdmin">
     <div id="createMenu">

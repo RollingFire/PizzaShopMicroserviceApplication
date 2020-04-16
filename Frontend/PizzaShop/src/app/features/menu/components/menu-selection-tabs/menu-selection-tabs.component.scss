@@ -1,13 +1,10 @@
 .tabContainer {
+    margin-top: 15px;
     background-color: #167263;
-}
-
-ul {
+    white-space: nowrap;
     overflow-x: auto;
 }
 
-li {
-    float: left;
-    padding: 10px;
-    list-style-type: none;
+.menu {
+    margin: 10px;
 }
