@@ -46,8 +46,8 @@ export class MenuAPICallerService {
     return this.http.put<MenuItem>("/api/menuItem/" + id + queryParm, "");
   }
 
-  createNewMenu(items: number[]): Observable<Menu> {
-    return this.http.post<Menu>("/api/menu", {"items": items});
+  createNewMenu(menuName: string, items: number[]): Observable<Menu> {
+    return this.http.post<Menu>("/api/menu", {"menuName": menuName, "items": items});
   }
 
   createNewMenuItem(catagory: string, itemName: string, cost: number, discription: string): Observable<MenuItem> {

@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { CookieCaller } from '../../utillities/CookieCaller';
 
 @Component({
   selector: 'app-navbar',
@@ -7,15 +8,17 @@ import { Component, OnInit } from '@angular/core';
 })
 
 export class NavbarComponent implements OnInit {
+  isAdmin: boolean;
 
-  constructor() {}
+  constructor() {
+    this.isAdmin = CookieCaller.getCookieValue("isAdmin") == "true"
+  }
 
   ngOnInit(): void {}
 
-  private tabs: any[] = [
+  tabs: any[] = [
     {"name": "Home",      "href": "/"},
     {"name": "Menu",      "href": "/menu"},
-    {"name": "Inventory", "href": "/inventory", "adminTab": true}
   ];
 
   getTabs() {

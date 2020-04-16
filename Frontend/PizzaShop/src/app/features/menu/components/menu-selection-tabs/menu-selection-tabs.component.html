@@ -5,3 +5,18 @@
         </li>
     </ul>
 </div>
+<div *ngIf="isAdmin">
+    <div id="createMenu">
+        <button (click)=openMenuCreate()>Create New Menu</button>
+    </div>
+    <div id="createMenuForm" style="display: none;">
+        <form #createMenuForm="ngForm" (ngSubmit)="createMenu(createMenuForm)">
+            <div>
+                <label>Menu Name</label>
+                <input type="text" name="menuName" required ngModel>
+            </div>
+            <input type="submit" (click)=closeMenuCreate() value="Create">
+            <input type="button" (click)=closeMenuCreate() value="Cancel">
+        </form>
+    </div>
+</div>

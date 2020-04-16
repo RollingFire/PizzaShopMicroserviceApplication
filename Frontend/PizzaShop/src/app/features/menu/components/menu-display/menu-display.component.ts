@@ -2,6 +2,7 @@ import { Component, OnInit, Input } from '@angular/core';
 import { MenuAPICallerService } from 'src/app/core/services/menu-api-caller/menu-api-caller.service';
 import { FullMenu } from '../../menu.component';
 import { MenuItem } from 'src/app/core/models/MenuItem';
+import { CookieCaller } from 'src/app/core/utillities/CookieCaller';
 
 
 @Component({
@@ -13,13 +14,14 @@ export class MenuDisplayComponent implements OnInit {
   @Input() currentMenu: FullMenu;
   allMenuItems: MenuItem[];
   addMenuItemSelected: MenuItem
-  isAdmin: boolean = true;
+  isAdmin: boolean;
   
   constructor(private apiCallerService: MenuAPICallerService) {
     apiCallerService.getMenuItems().subscribe(
       data => this.allMenuItems = data,
       error => console.log(error)
     );
+    this.isAdmin = CookieCaller.getCookieValue("isAdmin") == "true"
   }
   
   ngOnInit(): void {
