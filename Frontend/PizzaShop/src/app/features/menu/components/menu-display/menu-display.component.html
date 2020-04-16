@@ -1,6 +1,6 @@
 <div>
     <h1 class="menuTitle" id="menuTitle">{{currentMenu.menu.menuName}}</h1> 
-    <div *ngIf="isAdmin">
+    <div *ngIf="isAdmin" style="margin: 10px;">
         <div id="menuItemAddCreateButtons">
             <button (click)=openAddMenuItemToMenu()>Add item to menu</button>
             <button (click)=openCreateMenuItem()>Create and add new menu item</button>
