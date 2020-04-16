@@ -18,7 +18,7 @@ def compareRequestAndExpected(testNumber, returned, expected):
     if (returned == expected):
         print("TEST " + str(testNumber) + " PASSED")
     else:
-        print("TEST " + str(testNumber) + " FAILED: returned=" + returned + " expected=" + expected)
+        print("TEST " + str(testNumber) + " FAILED: returned=" + str(returned) + " expected=" + str(expected))
 
 
 def main():

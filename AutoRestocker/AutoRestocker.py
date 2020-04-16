@@ -19,22 +19,22 @@ def loadConfig():
 def restockItem(inventoryItem):
     if inventoryItem['units'] <= inventoryItem['restockAt'] and inventoryItem['restockAt'] > 0:
         request = {"unitsAdded": inventoryItem['restockAmount']}
-        response = requests.post(baseURL + "/inventory/restock/" + str(inventoryItem['id']), json=request)
+        response = requests.post(baseURL + "/api/inventory/restock/" + str(inventoryItem['id']), json=request)
         if response.status_code != 200:
-            print(str(datetime.now()) + " Response status code from a post call to /inventory/restock/id: " + str(response.status_code))
+            print(str(datetime.now()) + " Response status code from a post call to /api/inventory/restock/id: " + str(response.status_code))
         else:
             print(str(datetime.now()) + " Restocked " + str(inventoryItem['name']) + " with " + str(inventoryItem['restockAmount']) + " " + str(inventoryItem['unitType']))
 
 
 def restockInventory():
     try:
-        response = requests.get(baseURL + "/inventory")
+        response = requests.get(baseURL + "/api/inventory")
         if response.status_code == 200:
             inventory = response.json()
             for item in inventory:
                 restockItem(item)
         else:
-            print(str(datetime.now()) + " Response status code from a get call to /inventory: " + str(response.status_code))
+            print(str(datetime.now()) + " Response status code from a get call to /api/inventory: " + str(response.status_code))
     except requests.ConnectionError as e:
         print(str(datetime.now()) + " Failed to connect to " + baseURL + " - Retrying")
 
