@@ -1,0 +1,17 @@
+.navbarContainer {
+    background-color: #62b46d;
+}
+
+.tabList {
+    display: flex;
+    margin: auto;
+}
+
+.navTab {
+    list-style-type: none;
+    padding: 10px;
+}
+
+.active {
+    background-color: rgb(158, 252, 36);
+}

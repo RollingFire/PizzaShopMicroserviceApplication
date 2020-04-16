@@ -1,0 +1,74 @@
+<div>
+    <h1 class="menuTitle" id="menuTitle">{{currentMenu.menu.menuName}}</h1> 
+    <div *ngIf="isAdmin" style="margin: 10px;">
+        <div id="menuItemAddCreateButtons">
+            <button (click)=openAddMenuItemToMenu()>Add item to menu</button>
+            <button (click)=openCreateMenuItem()>Create and add new menu item</button>
+        </div>
+        <div id="addMenuItemToMenu" style="display: none;">
+            <select [(ngModel)]=addMenuItemSelected>
+                <option *ngFor="let menuItem of allMenuItems" [ngValue]=menuItem>{{menuItem.itemName}}</option>
+            </select>
+            <input type="submit" (click)="addMenuItemToMenu(currentMenu.menu.id, addMenuItemSelected); closeAddMenuItemToMenu()" value="Add">
+            <input type="button" (click)=closeAddMenuItemToMenu() value="Cancel">
+        </div>
+        <div id="createMenuItem" style="display: none;">
+            <form #createMenuItemForm="ngForm" (ngSubmit)="createAndAddNewMenuItem(currentMenu.menu.id, createMenuItemForm)">
+                <div>
+                    <label>Catagory</label>
+                    <input type="text" name="catagory" required ngModel>
+                </div>
+                <div>
+                    <label>Item Name</label>
+                    <input type="text" name="itemName" required ngModel>
+                </div>
+                <div>
+                    <label>Item Cost</label>
+                    <input type="text" name="cost" required ngModel>
+                </div>
+                <div>
+                    <label>Item Discription</label>
+                    <input type="text" name="discription" required ngModel>
+                </div>
+                <div class="itemButtoms">
+                    <input type="submit" value="Create" (click)="closeCreateMenuItem()">
+                    <input type="button" value="Cancel" (click)="closeCreateMenuItem()">
+                </div>
+            </form>     
+        </div>
+    </div>
+    <div class="menuCatagoryContainer" *ngFor="let catagory of getCatagories()" id="catagory_{{catagory}}">
+        <h2 class="catagoryTitle">{{catagory}}</h2>
+        <div *ngFor="let item of currentMenu.menuItems.get(catagory)">
+            <div class="menuItemContainer" id="{{item.itemName}}">
+                <h4 class="itemName">{{item.itemName}}</h4>
+                <h5 class="itemCost">${{item.cost}}</h5>
+                <p class="itemDiscription">{{item.discription}}</p>
+                <div class="itemButtoms" *ngIf="isAdmin">
+                    <button class="itemEditButton" (click)=editItem(item.itemName)>Edit</button>
+                    <button class="itemRemoveButton" (click)="removeMenuItem(currentMenu.menu.id, item.id, catagory)">Remove</button>
+                </div>
+            </div>
+            <div class="menuItemContainer" *ngIf="isAdmin" style="display: none;" id="{{item.itemName}}_edit">
+                <form #editMenuItemform="ngForm" (ngSubmit)="updateMenuItem(item.id, editMenuItemform)">
+                    <div>
+                        <label>Item Name</label>
+                        <input type="text" name="itemName" required ngModel>
+                    </div>
+                    <div>
+                        <label>Item Cost</label>
+                        <input type="text" name="cost" required ngModel>
+                    </div>
+                    <div>
+                        <label>Item Discription</label>
+                        <input type="text" name="discription" required ngModel>
+                    </div>
+                    <div class="itemButtoms">
+                        <input type="submit" (click)=editItemClose(item.itemName) value="Save">
+                        <input type="button" (click)=editItemClose(item.itemName) value="Cancel">
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
