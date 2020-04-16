@@ -1,0 +1,13 @@
+<div style="margin: 25px; border: 1px solid #222222; max-width: 250px; padding: 4px;">
+    <form #loginForm="ngForm" (ngSubmit)="submitLoginForm(loginForm)">
+        <div>
+            <label>User Name </label>
+            <input type="text" name="userName" required ngModel>
+        </div>
+        <div>
+            <label>isAdmin</label>
+            <input type="checkbox" name="isAdmin" required ngModel>
+        </div>
+        <button>Login</button>
+    </form>
+</div>

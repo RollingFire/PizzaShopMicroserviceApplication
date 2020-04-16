@@ -1,0 +1,8 @@
+<div *ngIf="!isLoginPage" class="userConatiner">
+    <div *ngIf="user == null">
+        <button (click)=login()>Login</button>
+    </div>
+    <div *ngIf="user != null">
+        <p>Hi {{user}}!<button style="margin-left: 10px;" (click)=logout()>Logout</button></p>
+    </div>
+</div>

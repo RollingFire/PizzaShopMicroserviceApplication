@@ -7,9 +7,14 @@ export class CookieCaller {
                 return rawPairs[i].split('=')[1]
             }
         }
+        return null
     }
 
     static setCookieValue(key: string, value: string) {
         document.cookie = key + '=' + value
+    }
+
+    static expireCookieValue(key: string) {
+        document.cookie = key + '=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;"' 
     }
 }
