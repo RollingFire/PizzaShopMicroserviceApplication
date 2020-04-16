@@ -1,7 +1,6 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { MenuAPICallerService } from 'src/app/core/services/menu-api-caller/menu-api-caller.service';
 import { FullMenu } from '../../menu.component';
-import { stringify } from 'querystring';
 import { MenuItem } from 'src/app/core/models/MenuItem';
 
 
@@ -13,8 +12,8 @@ import { MenuItem } from 'src/app/core/models/MenuItem';
 export class MenuDisplayComponent implements OnInit {
   @Input() currentMenu: FullMenu;
   allMenuItems: MenuItem[];
-  isAdmin: boolean = true;
   addMenuItemSelected: MenuItem
+  isAdmin: boolean = true;
   
   constructor(private apiCallerService: MenuAPICallerService) {
     apiCallerService.getMenuItems().subscribe(
@@ -121,6 +120,11 @@ export class MenuDisplayComponent implements OnInit {
     }
   }
   
+  /**
+   * Add a menuItem to a menu.
+   * @param menuId Menu id where item is added
+   * @param newItem New menutItem to be added to the menu
+   */
   addMenuItemToMenu(menuId: number, newItem: MenuItem) {
     let oldItems = this.currentMenu.menu.items;
     if (oldItems.indexOf(newItem.id) == -1) {
@@ -132,19 +136,46 @@ export class MenuDisplayComponent implements OnInit {
     }
   }
 
+  /**
+   * Update display to reflect newly added menuItem
+   * @param newItem Newly added menutItem to also display
+   */
   addMenuItemToDisplay(newItem: MenuItem) {
     let items: MenuItem[] = this.currentMenu.menuItems.get(newItem.catagory) || []
     items.push(newItem)
     this.currentMenu.menuItems.set(newItem.catagory, items)
   }
 
+  /**
+   * Show the add menuItem section
+   */
   openAddMenuItemToMenu() {
-    document.getElementById("addMenuItem_selection").style.display = "";
-    document.getElementById("addMenuItem").style.display = "none";
+    document.getElementById("addMenuItemToMenu").style.display = "";
+    document.getElementById("menuItemAddCreateButtons").style.display = "none";
   }
 
+  /**
+   * Hide the add menuItem section
+   */
   closeAddMenuItemToMenu() {
-    document.getElementById("addMenuItem").style.display = "";
-    document.getElementById("addMenuItem_selection").style.display = "none";
+    document.getElementById("menuItemAddCreateButtons").style.display = "";
+    document.getElementById("addMenuItemToMenu").style.display = "none";
+  }
+
+  openCreateMenuItem() {
+    document.getElementById("createMenuItem").style.display = "";
+    document.getElementById("menuItemAddCreateButtons").style.display = "none";
+  }
+
+  closeCreateMenuItem() {
+    document.getElementById("menuItemAddCreateButtons").style.display = "";
+    document.getElementById("createMenuItem").style.display = "none";
+  }
+
+  createAndAddNewMenuItem(menuId: number, form) {
+    this.apiCallerService.createNewMenuItem(form.value.catagory, form.value.itemName, form.value.cost, form.value.discription).subscribe(
+      data => this.addMenuItemToMenu(menuId, data),
+      error => console.log(error)
+    );
   }
 }
