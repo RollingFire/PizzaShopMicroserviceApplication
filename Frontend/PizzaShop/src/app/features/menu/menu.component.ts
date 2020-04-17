@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { MenuAPICallerService } from 'src/app/core/services/menu-api-caller/menu-api-caller.service';
-import { Menu } from 'src/app/core/models/Menu';
-import { MenuItem } from 'src/app/core/models/MenuItem';
+import { Menu } from 'src/app/core/models/menu';
+import { MenuItem } from 'src/app/core/models/menuItem';
 
 @Component({
   selector: 'app-menu',

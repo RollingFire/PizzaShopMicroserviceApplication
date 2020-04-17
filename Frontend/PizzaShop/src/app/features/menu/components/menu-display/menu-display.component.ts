@@ -1,7 +1,7 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { MenuAPICallerService } from 'src/app/core/services/menu-api-caller/menu-api-caller.service';
 import { FullMenu } from '../../menu.component';
-import { MenuItem } from 'src/app/core/models/MenuItem';
+import { MenuItem } from 'src/app/core/models/menuItem';
 import { CookieCaller } from 'src/app/core/utillities/CookieCaller';
 
 

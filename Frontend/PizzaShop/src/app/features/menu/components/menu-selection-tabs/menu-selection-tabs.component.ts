@@ -1,5 +1,5 @@
 import { Component, OnInit, Input, EventEmitter, Output } from '@angular/core';
-import { Menu } from 'src/app/core/models/Menu';
+import { Menu } from 'src/app/core/models/menu';
 import { MenuAPICallerService } from 'src/app/core/services/menu-api-caller/menu-api-caller.service';
 import { CookieCaller } from 'src/app/core/utillities/CookieCaller';
 
