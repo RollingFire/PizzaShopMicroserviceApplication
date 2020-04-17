@@ -39,6 +39,10 @@ public class MenuItemServiceIMPL implements MenuItemService {
 
     @Autowired private DriverManagerWrapper driverManagerWrapped;
 
+    /**
+     * Calls the MySQL server to get all of the current menu items.
+     * @return MenuItem[] Array of all the current menu items.
+     */
     @Override
     public MenuItem[] getMenuItems() throws SQLException, ClassNotFoundException {
         try {
@@ -66,6 +70,11 @@ public class MenuItemServiceIMPL implements MenuItemService {
         }
     }
 
+    /**
+     * Calls the MySQL server to get the menu itme with the given id.
+     * @param id id of the menu item that you want to retrive.
+     * @return MenuItem Menu item that is retrived
+     */
     @Override
     public MenuItem getMenuItemByID(int id) throws SQLException, ClassNotFoundException {
         try {
@@ -90,6 +99,11 @@ public class MenuItemServiceIMPL implements MenuItemService {
         }
     }
 
+    /**
+     * Calls the MySQL server to get a list of all the previous versions of a menu item
+     * @param origenalId id of the current menu item.
+     * @return MenuItem[] Array containing all the previouse versions.
+     */
     @Override
     public MenuItem[] getMenuItemHistoryById(int origenalId) throws SQLException, ClassNotFoundException {
         ArrayList<MenuItem> history = new ArrayList<>();
@@ -120,6 +134,11 @@ public class MenuItemServiceIMPL implements MenuItemService {
         }
     }
 
+    /**
+     * Calls the MySQL server to get a list of all menu item and runs a filter on them to get a list of menu items similar to your search.
+     * @param search Search word
+     * @return MenuItem[] List of menu items matching search criteria.
+     */
     @Override
     public MenuItem[] searchMenuItemsByName(String search) throws SQLException, ClassNotFoundException {
         MenuItem[] allItems = getMenuItems();
@@ -149,6 +168,11 @@ public class MenuItemServiceIMPL implements MenuItemService {
         return finalResaults.toArray(new MenuItem[finalResaults.size()]);
     }
 
+    /**
+     * Calls the MySQL server to add a new menu item to the database.
+     * @param item CreateMenuItemRequest that will be used to create the new menu item.
+     * @return MenuItem The new menu item.
+     */
     @Override
     public MenuItem createNewMenuItem(CreateMenuItemRequest item) throws SQLException, ClassNotFoundException {
         try {
@@ -180,6 +204,12 @@ public class MenuItemServiceIMPL implements MenuItemService {
         }
     }
 
+    /**
+     * Calls the MySQL server to update a menu item.
+     * @param id id of the menu item to update.
+     * @param updatePairs Map<string, object> containing pairs to update, key=SQL column, value=value for column.
+     * @return MenuItem Updated menu item.
+     */
     @Override
     public MenuItem updateMenuItem(int id, Map<String,Object> updatePairs) throws SQLException, ClassNotFoundException {
         try {

@@ -40,6 +40,10 @@ public class MenuServiceIMPL implements MenuService {
     @Autowired private DriverManagerWrapper driverManagerWrapped;
     
 
+    /**
+     * Calls the MySQL server to get all of the current menus.
+     * @return Menu[] Array of all the current menus.
+     */
     @Override
     public Menu[] getMenus() throws SQLException, ClassNotFoundException {
         try {
@@ -65,6 +69,11 @@ public class MenuServiceIMPL implements MenuService {
         }
     }
 
+    /**
+     * Calls the MySQL server to get the menu with the given id.
+     * @param id id of the menu that you want to retrive.
+     * @return MenuItem Menu that is retrived
+     */
     @Override
     public Menu getCurrentMenuById(int id) throws SQLException, ClassNotFoundException {
         try {
@@ -86,6 +95,11 @@ public class MenuServiceIMPL implements MenuService {
         }
     }
 
+    /**
+     * Calls the MySQL server to get the menu with the given menu name.
+     * @param menuName Name of the menu that you want to retrive.
+     * @return Menu Menu that is retrived.
+     */
     @Override
     public Menu getCurrentMenuByName(String menuName) throws SQLException, ClassNotFoundException {
         try {
@@ -108,6 +122,11 @@ public class MenuServiceIMPL implements MenuService {
         }
     }
 
+    /**
+     * Calls the MySQL server to get a list of all the previous versions of a menu.
+     * @param origenalId id of the current menu.
+     * @return Menu[] Array containing all the previouse versions.
+     */
     @Override
     public Menu[] getMenuHistoryById(int origenalId) throws SQLException, ClassNotFoundException {
         ArrayList<Menu> history = new ArrayList<>();
@@ -136,6 +155,11 @@ public class MenuServiceIMPL implements MenuService {
         }
     }
 
+    /**
+     * Calls the MySQL server to get a list of all the previous versions of a menu.
+     * @param menuName Name of the current menu.
+     * @return Menu[] Array containing all the previouse versions.
+     */
     @Override
     public Menu[] getMenuHistoryByName(String menuName) throws SQLException, ClassNotFoundException {
         ArrayList<Menu> history = new ArrayList<>();
@@ -165,6 +189,11 @@ public class MenuServiceIMPL implements MenuService {
         }
     }
 
+    /**
+     * Calls the MySQL server to add a new menu to the database.
+     * @param menuRequest CreateMenuRequest that will be used to create the new menu.
+     * @return Menu The new menu.
+     */
     @Override
     public Menu createNewMenu(CreateMenuRequest menuRequest) throws SQLException, ClassNotFoundException {
         try {
@@ -191,6 +220,12 @@ public class MenuServiceIMPL implements MenuService {
         }
     }
 
+    /**
+     * Calls the MySQL server to update a menu.
+     * @param id id of the menu to update.
+     * @param updatePairs Map<string, object> containing pairs to update, key=SQL column, value=value for column.
+     * @return Menu Updated menu.
+     */
     @Override
     public Menu updateMenu(int id, Map<String,Object> updatePairs) throws SQLException, ClassNotFoundException {
         try {
@@ -220,6 +255,12 @@ public class MenuServiceIMPL implements MenuService {
         }
     }
 
+    /**
+     * Calls the MySQL server to update a menu.
+     * @param menuName Menu of the menu to update.
+     * @param updatePairs Map<string, object> containing pairs to update, key=SQL column, value=value for column.
+     * @return Menu Updated menu.
+     */
     @Override
     public Menu updateMenu(String menuName, Map<String,Object> updatePairs) throws SQLException, ClassNotFoundException {
         Menu menu = getCurrentMenuByName(menuName);
@@ -231,6 +272,11 @@ public class MenuServiceIMPL implements MenuService {
         }
     }
 
+    /**
+     * Converter to convert a string retrived from a sql call that represents an array of ints to an array of ints.
+     * @param sqlValue String is to be converting. format "[1,2,3]" || "[1, 2, 3]" || "[]" || "[1]"
+     * @return int[] Array of ints.
+     */
     public int[] sqlStringToIntArray(String sqlValue) {
         sqlValue = sqlValue.replaceAll("[\\[$|\\]$|\\s]", "");
         if (sqlValue.length() == 0) {
