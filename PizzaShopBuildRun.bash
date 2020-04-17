@@ -1,31 +1,23 @@
-mvn -f ./InventoryMicroservice/inventory-microservice package
-mvn -f ./CustomerMicroservice/customer-microservice package
-mvn -f ./MenuMicroservice/menu-microservice package
-mvn -f ./RecipeMicroservice/recipe-microservice package
-mvn -f ./OrderMicroservice/order-microservice package
-
-docker build -t pizza-shop-mysql ./Database
-docker build -t pizza-shop-inventory-api ./InventoryMicroservice/inventory-microservice
-docker build -t pizza-shop-auto-restocker ./AutoRestocker
-docker build -t pizza-shop-customer-api ./CustomerMicroservice/customer-microservice
-docker build -t pizza-shop-menu-api ./MenuMicroservice/menu-microservice
-docker build -t pizza-shop-recipe-api ./RecipeMicroservice/recipe-microservice
-docker build -t pizza-shop-order-api ./OrderMicroservice/order-microservice
-
-docker run -d --name pizza-mysql -p 3306:3306 -e MYSQL_ROOT_PASSWORD=admin123 pizza-shop-mysql
-docker run -d --name pizza-inventory-api -p 9093:9093 pizza-shop-inventory-api
-winpty docker run -d -t --name pizza-auto-restocker pizza-shop-auto-restocker
-docker run -d --name pizza-customer-api -p 9092:9092 pizza-shop-customer-api
-docker run -d --name pizza-menu-api -p 9095:9095 pizza-shop-menu-api
-docker run -d --name pizza-recipe-api -p 9096:9096 pizza-shop-recipe-api
-docker run -d --name pizza-order-api -p 9094:9094 pizza-shop-order-api
-
+echo "--------------------Setting up Network--------------------"
 docker network create pizza-shop
-docker network connect pizza-shop pizza-mysql
-docker network connect pizza-shop pizza-inventory-api
-docker network connect pizza-shop pizza-auto-restocker
-docker network connect pizza-shop pizza-customer-api
-docker network connect pizza-shop pizza-menu-api
-docker network connect pizza-shop pizza-recipe-api
-docker network connect pizza-shop pizza-order-api
-
+echo "--------------------Building Database--------------------"
+cd Database
+./BuildDatabase.bash
+echo "--------------------Building Inventory--------------------"
+cd ../InventoryMicroservice
+./BuildInventory.bash
+echo "--------------------Building AutoRestocker--------------------"
+cd ../AutoRestocker
+./BuildAutoRestocker.bash
+echo "--------------------Building Customer--------------------"
+cd ../CustomerMicroservice
+./BuildCustomer.bash
+echo "--------------------Building Menu--------------------"
+cd ../MenuMicroservice
+./BuildMenu.bash
+echo "--------------------Building Recipe--------------------"
+cd ../RecipeMicroservice
+./BuildRecipe.bash
+echo "--------------------Building Order--------------------"
+cd ../OrderMicroservice
+./BuildOrder.bash
