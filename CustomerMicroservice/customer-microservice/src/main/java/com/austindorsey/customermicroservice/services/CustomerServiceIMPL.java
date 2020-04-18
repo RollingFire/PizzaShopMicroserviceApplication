@@ -34,6 +34,12 @@ public class CustomerServiceIMPL implements CustomerService {
 
     @Autowired private DriverManagerWrapper driverManagerWrapped;
 
+    /**
+     * Calls the MySQL server to get all customers.
+     * @return Customer[] All customers retrived
+     * @throws SQLException SQL errors
+     * @throws ClassNotFroundException Only if com.mysql.cj.jdbc.Driver can not be found.
+     */
     @Override
     public Customer[] getCustomers() throws SQLException, ClassNotFoundException {
         try {
@@ -62,6 +68,13 @@ public class CustomerServiceIMPL implements CustomerService {
         }
     }
 
+    /**
+     * Calls the MySQL server to get customer by customer id.
+     * @param id Customer id to retrive.
+     * @return Customer Returns null if not found.
+     * @throws SQLException SQL errors
+     * @throws ClassNotFroundException Only if com.mysql.cj.jdbc.Driver can not be found.
+     */
     @Override
     public Customer getCustomerByID(int id) throws SQLException, ClassNotFoundException {
         try {
@@ -86,6 +99,14 @@ public class CustomerServiceIMPL implements CustomerService {
         }
     }
     
+    /**
+     * Calls the MySQL server to get customers by name.
+     * @param searchFirstName First name to filter by.
+     * @param searchFirstName Last name to filter by
+     * @return Customer[] Customers returned after filtering by first and last name.
+     * @throws SQLException SQL errors
+     * @throws ClassNotFroundException Only if com.mysql.cj.jdbc.Driver can not be found.
+     */
     @Override
     public Customer[] getCustomersByName(String searchFirstName, String searchLastName) throws SQLException, ClassNotFoundException {
         if (searchFirstName == null && searchLastName == null) {
@@ -124,7 +145,14 @@ public class CustomerServiceIMPL implements CustomerService {
             }
         }
     }
-
+    
+    /**
+     * Calls the MySQL server to delete customers by id.
+     * @param id Customer id to delete.
+     * @return int Number of rows deleted
+     * @throws SQLException SQL errors
+     * @throws ClassNotFroundException Only if com.mysql.cj.jdbc.Driver can not be found.
+     */
     @Override
     public int deleteCustomer(int id) throws SQLException, ClassNotFoundException {
         try {
@@ -141,6 +169,13 @@ public class CustomerServiceIMPL implements CustomerService {
         }
     }
 
+    /**
+     * Calls the MySQL server to increase the order cound of the customer
+     * @param id Customer id to incriment the order cound of.
+     * @return int New order cound of customer. Returns -1 if customer can't be found.
+     * @throws SQLException SQL errors
+     * @throws ClassNotFroundException Only if com.mysql.cj.jdbc.Driver can not be found.
+     */
     @Override
     public int incrementOrderCount(int id) throws SQLException, ClassNotFoundException {
         try {
@@ -164,6 +199,15 @@ public class CustomerServiceIMPL implements CustomerService {
         }
     }
 
+    /**
+     * Calls the MySQL server to update the name of the customer
+     * @param id Id of the customer whos name to update.
+     * @param firstName New first name.
+     * @param lastName New last name.
+     * @return String New first and last name.
+     * @throws SQLException SQL errors
+     * @throws ClassNotFroundException Only if com.mysql.cj.jdbc.Driver can not be found.
+     */
     @Override
     public String changeName(int id, String firstName, String lastName) throws SQLException, ClassNotFoundException {
         try {
@@ -200,6 +244,14 @@ public class CustomerServiceIMPL implements CustomerService {
         }
     }
 
+    /**
+     * Calls the MySQL server to create a new customer.
+     * @param firstName First name of the new customer.
+     * @param lastName Last name of the new customer.
+     * @return Customer Newly created customer.
+     * @throws SQLException SQL errors
+     * @throws ClassNotFroundException Only if com.mysql.cj.jdbc.Driver can not be found.
+     */
     @Override
     public Customer addCustomer(String firstName, String lastName) throws SQLException, ClassNotFoundException {
         try {
