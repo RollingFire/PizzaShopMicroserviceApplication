@@ -164,16 +164,25 @@ export class MenuDisplayComponent implements OnInit {
     document.getElementById("addMenuItemToMenu").style.display = "none";
   }
 
+  /**
+   * Shows the create menu item section
+   */
   openCreateMenuItem() {
     document.getElementById("createMenuItem").style.display = "";
     document.getElementById("menuItemAddCreateButtons").style.display = "none";
   }
 
+  /**
+   * Closes the create menu item section
+   */
   closeCreateMenuItem() {
     document.getElementById("menuItemAddCreateButtons").style.display = "";
     document.getElementById("createMenuItem").style.display = "none";
   }
 
+  /**
+   * Creates a new menuItem and adds it to the current menu.
+   */
   createAndAddNewMenuItem(menuId: number, form) {
     this.apiCallerService.createNewMenuItem(form.value.catagory, form.value.itemName, form.value.cost, form.value.discription).subscribe(
       data => this.addMenuItemToMenu(menuId, data),

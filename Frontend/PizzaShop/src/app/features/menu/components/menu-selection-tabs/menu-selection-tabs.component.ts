@@ -24,6 +24,10 @@ export class MenuSelectionTabsComponent implements OnInit {
     this.tabClicked.emit(id);
   }
 
+  /**
+   * Creates a new menu from the from and selects it.
+   * @param form Create menu form
+   */
   createMenu(form) {
     this.apiCallerService.createNewMenu(form.value.menuName, []).subscribe(
       data => {
@@ -34,11 +38,17 @@ export class MenuSelectionTabsComponent implements OnInit {
     );
   }
 
+  /**
+   * Open the create new menu form
+   */
   openMenuCreate() {
     document.getElementById("createMenuForm").style.display = ""
     document.getElementById("createMenu").style.display = "none"
   }
 
+  /**
+   * Closes the create new menu form
+   */
   closeMenuCreate() {
     document.getElementById("createMenu").style.display = ""
     document.getElementById("createMenuForm").style.display = "none"

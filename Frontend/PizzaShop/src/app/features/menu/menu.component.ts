@@ -33,6 +33,10 @@ export class MenuComponent implements OnInit {
   ngOnInit(): void {
   }
 
+  /**
+   * Changes the selected menu.
+   * @param menuID Id of the new menu selected
+   */
   changeMenu(menuID): void {
     let newMenu: Menu
     this.menus.forEach( function(menu) {
@@ -43,12 +47,16 @@ export class MenuComponent implements OnInit {
     this.buildFullMenu(newMenu)
   }
 
+  /**
+   * Builds the this.currentMenu with the menu and menuItems for the passed menu.
+   * @param menu Menu to build
+   */
   buildFullMenu(menu: Menu): void {
     this.menuItems = new Map<string, MenuItem[]>()
     for (let i = 0; i < menu.items.length; i++) {
       this.menuApiCallerService.getMenuItemById(menu.items[i]).subscribe(
         data => {
-          let list = this.getMapValue(this.menuItems, data.catagory); //.push(data);
+          let list = this.getMapValue(this.menuItems, data.catagory);
           list.push(data);
           this.menuItems.set(data.catagory, list);
         },
@@ -61,6 +69,11 @@ export class MenuComponent implements OnInit {
     };
   }
 
+  /**
+   * Proviteds a default map. Returns an emprty array if the key is undefined.
+   * @param map Map to get from
+   * @param key Key used in get
+   */
   getMapValue(map, key) {
     return map.get(key) || [];
   }

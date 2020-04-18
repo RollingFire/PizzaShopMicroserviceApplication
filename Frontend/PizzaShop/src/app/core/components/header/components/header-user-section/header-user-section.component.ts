@@ -18,11 +18,20 @@ export class HeaderUserSectionComponent implements OnInit {
   ngOnInit(): void {
   }
 
+  /**
+   * Function for when the login button is clicked. 
+   * Sets needed cookie values and redirects to login page.
+   */
   login(): void {
     CookieCaller.setCookieValue("originPath", document.location.pathname)
     document.location.pathname = "/login"
   }
 
+  
+  /**
+   * Function for when the logout button is clicked. 
+   * Clears user data stored in cookie and reloads the page.
+   */
   logout(): void {
     CookieCaller.expireCookieValue("user")
     CookieCaller.expireCookieValue("isAdmin")

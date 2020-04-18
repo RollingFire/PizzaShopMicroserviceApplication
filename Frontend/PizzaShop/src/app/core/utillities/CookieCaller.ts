@@ -1,3 +1,6 @@
+/**
+ * Contains static methods that can be used to manage cookie values.
+ */
 export class CookieCaller {
     static getCookieValue(key: string) {
         let cookie: string = document.cookie
