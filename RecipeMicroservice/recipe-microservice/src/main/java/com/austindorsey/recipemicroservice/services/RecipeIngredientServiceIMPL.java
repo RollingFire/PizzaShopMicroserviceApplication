@@ -38,6 +38,12 @@ public class  RecipeIngredientServiceIMPL implements RecipeIngredientService {
     @Autowired private DriverManagerWrapper driverManagerWrapped;
     @Autowired private InventoryAPIInterface inventoryInterface;
 
+    /**
+     * Gets the unique menuItemIds from the recipe table.
+     * @return int[] Array of unique menuItemIds
+     * @throws SQLException SQL errors
+     * @throws ClassNotFroundException Only if com.mysql.cj.jdbc.Driver can not be found.
+     */
     @Override
     public int[] getUniqueMenuItemIds() throws SQLException, ClassNotFoundException  {
         try {
@@ -59,6 +65,13 @@ public class  RecipeIngredientServiceIMPL implements RecipeIngredientService {
         }
     }
 
+    /**
+     * Gets the recipe for the menuItem.
+     * @param menuItemId id of the menuItem to get the recipe for.
+     * @return RecipeIngredient[] Array of all the ingredients. Returns empty list if not found.
+     * @throws SQLException SQL errors
+     * @throws ClassNotFroundException Only if com.mysql.cj.jdbc.Driver can not be found.
+     */
     @Override
     public RecipeIngredient[] getRecipe(int menuItemId) throws SQLException, ClassNotFoundException {
         try {
@@ -83,6 +96,14 @@ public class  RecipeIngredientServiceIMPL implements RecipeIngredientService {
         }
     }
 
+    /**
+     * Creates a new recipe for a menuItem.
+     * @param menuItemId id of the menuItem to create the recipe for.
+     * @param request Array of RecipeIngredientRequests that will make up the recipe.
+     * @return RecipeIngredient[] Array of all the new ingredients.
+     * @throws SQLException SQL errors
+     * @throws ClassNotFroundException Only if com.mysql.cj.jdbc.Driver can not be found.
+     */
     @Override
     public RecipeIngredient[] createRecipe(int menuItemId, RecipeIngredientRequest[] request) throws SQLException, ClassNotFoundException {
         try {
@@ -114,6 +135,13 @@ public class  RecipeIngredientServiceIMPL implements RecipeIngredientService {
         }
     }
 
+    /**
+     * Get a single resipe ingredient by id.
+     * @param id id of the ingredient.
+     * @return RecipeIngredient Ingredient with the requested id. Returns null if not found.
+     * @throws SQLException SQL errors
+     * @throws ClassNotFroundException Only if com.mysql.cj.jdbc.Driver can not be found.
+     */
     @Override
     public RecipeIngredient getRecipeIngredient(int id) throws SQLException, ClassNotFoundException {
         try {
@@ -137,6 +165,13 @@ public class  RecipeIngredientServiceIMPL implements RecipeIngredientService {
         }
     }
 
+    /**
+     * Get a single resipe ingredient by id.
+     * @param id id of the ingredient.
+     * @return RecipeIngredient Ingredient with the requested id. Returns null if not found.
+     * @throws SQLException SQL errors
+     * @throws ClassNotFroundException Only if com.mysql.cj.jdbc.Driver can not be found.
+     */
     @Override
     public RecipeIngredient updateRecipeIngredient(int id, RecipeIngredientRequest request) throws SQLException, ClassNotFoundException {
         try {
@@ -152,6 +187,13 @@ public class  RecipeIngredientServiceIMPL implements RecipeIngredientService {
         }
     }
 
+    /**
+     * Remove a recipe ingredient from a recipe.
+     * @param id id of the ingredient.
+     * @return int Number of rows removed
+     * @throws SQLException SQL errors
+     * @throws ClassNotFroundException Only if com.mysql.cj.jdbc.Driver can not be found.
+     */
     @Override
     public int removeIngredientFromRecipe(int id) throws SQLException, ClassNotFoundException {
         try {
@@ -166,6 +208,12 @@ public class  RecipeIngredientServiceIMPL implements RecipeIngredientService {
         }
     }
 
+    /**
+     * Removes the number of units from each ingrediant for the recipe from the inventory stock.
+     * @param menuItemId Id of the menu item to remove the ingredients from the inventory for.
+     * @throws SQLException SQL errors
+     * @throws ClassNotFroundException Only if com.mysql.cj.jdbc.Driver can not be found.
+     */
     @Override
     public void fireRecipe(int menuItemId) throws InventoryAPIError, ClassNotFoundException, SQLException {
         RecipeIngredient[] recipeIngredients = getRecipe(menuItemId);
@@ -189,11 +237,23 @@ public class  RecipeIngredientServiceIMPL implements RecipeIngredientService {
         }
     }
 
+    /**
+     * Removes the number of units from an ingrediant from the inventory stock.
+     * @param recipeIngredientId Id of the ingredient to remove the units used from the inventory.
+     * @throws SQLException SQL errors
+     * @throws ClassNotFroundException Only if com.mysql.cj.jdbc.Driver can not be found.
+     */
     @Override
     public void fireRecipeIngredient(int recipeIngredientId) throws InventoryAPIError, ClassNotFoundException, SQLException {
         fireRecipeIngredient(getRecipeIngredient(recipeIngredientId));
     }
 
+    /**
+     * Removes the number of units from an ingrediant from the inventory stock.
+     * @param recipeIngredient Ingredient to remove the units used from the inventory.
+     * @throws SQLException SQL errors
+     * @throws ClassNotFroundException Only if com.mysql.cj.jdbc.Driver can not be found.
+     */
     public void fireRecipeIngredient(RecipeIngredient recipeIngredient) throws InventoryAPIError {
         try {
             int returnedStatusCode = inventoryInterface.removeUnitsFromInventory(recipeIngredient.getInventoryItemId(), recipeIngredient.getQuantityUsed().doubleValue());
