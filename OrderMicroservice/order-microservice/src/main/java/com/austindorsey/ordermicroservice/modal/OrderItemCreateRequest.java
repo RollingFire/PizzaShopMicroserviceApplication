@@ -48,6 +48,11 @@ public class OrderItemCreateRequest {
                                             "ORDER BY id DESC LIMIT 1;";
     }
 
+    /**
+     * Calls menu api to get the current cost of the menuItem and maultiplys it by the quantity
+     * @return double The total cost
+     * @throws Exception Throws exception if the status code of the call to the menu api is not 200
+     */
     public void updateTotalCost() throws Exception {
         String url = "http://" + menuHost + ":" + menuPort + "/menuItem/" + menuItemId;
         HttpClient client = HttpClient.newHttpClient();

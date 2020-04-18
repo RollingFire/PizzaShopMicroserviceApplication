@@ -25,8 +25,6 @@ public class OrderCreateRequest {
                                             "' ORDER BY id DESC LIMIT 1;";
     }
 
-    // SELECT * FROM placedOrder WHERE customerId=1 AND orderStatus LIKE 'TEST' LIMIT 1 ORDER BY id DESC;
-
     public int getCustomerId() {
         return customerId;
     }

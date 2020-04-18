@@ -43,6 +43,14 @@ public class OrderServiceIMPL implements OrderService {
     @Autowired private DriverManagerWrapper driverManagerWrapped;
     @Autowired private OrderItemService orderItemService;
 
+    /**
+     * Calls the MySQL server to get orders filtered by status and customerId
+     * @param customerId Id of the customer who placed the order.
+     * @param status Orderstatus to filter by.
+     * @return Order[] Array of all the orders that match filter params.
+     * @throws SQLException SQL errors
+     * @throws ClassNotFroundException Only if com.mysql.cj.jdbc.Driver can not be found.
+     */
     @Override
     public Order[] getOrders(String status, Integer customerId) throws SQLException, ClassNotFoundException {
         String filterQuary = "";
@@ -79,6 +87,14 @@ public class OrderServiceIMPL implements OrderService {
         }
     }
 
+    /**
+     * Calls the MySQL server to create a new order
+     * @param request OrderCrateRequest that is used to create the order and order items.
+     * @return OrderWithItems Returns the newly created order along with the order items created
+     * @throws SQLException SQL errors
+     * @throws ClassNotFroundException Only if com.mysql.cj.jdbc.Driver can not be found.
+     * @throws Exception Throws exception if the status code of the call to the menu api is not 200 when calling OrderItemCreateRequestShort.toOrderItemCreateRequest
+     */
     @Override
     public OrderWithItems postOrder(OrderCreateRequest request) throws Exception {
         try {
@@ -112,6 +128,13 @@ public class OrderServiceIMPL implements OrderService {
         }
     }
 
+    /**
+     * Calls the MySQL server to get the order by the id.
+     * @param id id to retrive.
+     * @return Order. Returns null of it can not be found.
+     * @throws SQLException SQL errors
+     * @throws ClassNotFroundException Only if com.mysql.cj.jdbc.Driver can not be found.
+     */
     @Override
     public Order getOrderById(int id) throws SQLException, ClassNotFoundException {
         try {
@@ -134,6 +157,14 @@ public class OrderServiceIMPL implements OrderService {
         }
     }
 
+    /**
+     * Calls the MySQL server to update the order by the id.
+     * @param id id to retrive.
+     * @param request OrderUpdateRequest Data that the order will be updated to.
+     * @return Order Updated order. Returns null of it can not be found.
+     * @throws SQLException SQL errors
+     * @throws ClassNotFroundException Only if com.mysql.cj.jdbc.Driver can not be found.
+     */
     @Override
     public Order updateOrderById(int id, OrderUpdateRequest request) throws SQLException, ClassNotFoundException {
         try {
@@ -150,6 +181,14 @@ public class OrderServiceIMPL implements OrderService {
         }
     }
 
+    /**
+     * Calls the MySQL server to update the order by the id.
+     * @param id id to retrive.
+     * @param status Status to update the order to.
+     * @return Order Updated order. Returns null of it can not be found.
+     * @throws SQLException SQL errors
+     * @throws ClassNotFroundException Only if com.mysql.cj.jdbc.Driver can not be found.
+     */
     @Override
     public Order updateOrderStatusById(int id, String status) throws SQLException, ClassNotFoundException {
         try {

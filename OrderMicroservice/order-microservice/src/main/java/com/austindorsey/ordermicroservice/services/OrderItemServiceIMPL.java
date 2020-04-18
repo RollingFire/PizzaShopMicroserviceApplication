@@ -36,7 +36,14 @@ public class OrderItemServiceIMPL implements OrderItemService {
     private Connection mysql;
     
     @Autowired private DriverManagerWrapper driverManagerWrapped;
-    
+
+    /**
+     * Calls the MySQL server to get all order items that belong to the orderId.
+     * @param orderId Gets order items that belong to orderId.
+     * @return OrderItem[]
+     * @throws SQLException SQL errors
+     * @throws ClassNotFroundException Only if com.mysql.cj.jdbc.Driver can not be found.
+     */
     @Override
     public OrderItem[] getOrderItemsByOrderId(int orderId) throws SQLException, ClassNotFoundException {
         try {
@@ -63,6 +70,14 @@ public class OrderItemServiceIMPL implements OrderItemService {
         }
     }
 
+    /**
+     * Calls the MySQL server to add and order item
+     * @param orderId orderId that the order itme will belong to.
+     * @param request OrederItemCreateRequest that will be used to create the order item.
+     * @return OrderItem Newly created order item.
+     * @throws SQLException SQL errors
+     * @throws ClassNotFroundException Only if com.mysql.cj.jdbc.Driver can not be found.
+     */
     @Override
     public OrderItem addOrderItemToOrderId(int orderId, OrderItemCreateRequest request)
             throws SQLException, ClassNotFoundException {
@@ -92,6 +107,13 @@ public class OrderItemServiceIMPL implements OrderItemService {
         }
     }
 
+    /**
+     * Calls the MySQL server to get the order item by id
+     * @param id id of the order item.
+     * @return OrderItem Retrived order item.
+     * @throws SQLException SQL errors
+     * @throws ClassNotFroundException Only if com.mysql.cj.jdbc.Driver can not be found.
+     */
     @Override
     public OrderItem getOrderItemById(int id) throws SQLException, ClassNotFoundException {
         try {
@@ -117,6 +139,14 @@ public class OrderItemServiceIMPL implements OrderItemService {
         }
     }
 
+    /**
+     * Calls the MySQL server to update the order item by id
+     * @param id id of the order item to update
+     * @param request OrderItemUpdateRequest Is used to update the order item
+     * @return OrderItem Updated order item.
+     * @throws SQLException SQL errors
+     * @throws ClassNotFroundException Only if com.mysql.cj.jdbc.Driver can not be found.
+     */
     @Override
     public OrderItem updateOrderItemById(int id, OrderItemUpdateRequest request)
             throws SQLException, ClassNotFoundException {
@@ -142,6 +172,14 @@ public class OrderItemServiceIMPL implements OrderItemService {
         }
     }
 
+    /**
+     * Calls the MySQL server to update the status of the order item by id
+     * @param id id of the order item to update
+     * @param status Status to update order item to.
+     * @return OrderItem Updated order item.
+     * @throws SQLException SQL errors
+     * @throws ClassNotFroundException Only if com.mysql.cj.jdbc.Driver can not be found.
+     */
     @Override
     public OrderItem updateOrderItemStatusById(int id, String status) throws SQLException, ClassNotFoundException {
         try {
@@ -158,6 +196,13 @@ public class OrderItemServiceIMPL implements OrderItemService {
         }
     }
 
+    /**
+     * Calls the MySQL server to get all order items with the matching status.
+     * @param status Status to search for
+     * @return OrderItem[] OrderItems that match status
+     * @throws SQLException SQL errors
+     * @throws ClassNotFroundException Only if com.mysql.cj.jdbc.Driver can not be found.
+     */
     @Override
     public OrderItem[] getOrderItemsByStatus(String status) throws SQLException, ClassNotFoundException {
         try {

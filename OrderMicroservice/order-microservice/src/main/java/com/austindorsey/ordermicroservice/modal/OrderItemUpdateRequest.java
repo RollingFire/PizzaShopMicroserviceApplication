@@ -34,8 +34,14 @@ public class OrderItemUpdateRequest {
         }
     }
 
+    /**
+     * Calls menu api to get the current cost of the menuItem and maultiplys it by the quantity
+     * @param menuItemId Id of the menuItem that the orderItem reprisents.
+     * @return double The total cost
+     * @throws Exception Throws exception if the status code of the call to the api if not 200
+     */
     public double getTotalCost(int menuItemId) throws Exception {
-        String url = "http://" + menuHost + ":" + menuPort + "/menuItem/" + menuItemId;
+        String url = "http://" + menuHost + ":" + menuPort + "/api/menuItem/" + menuItemId;
         HttpClient client = HttpClient.newHttpClient();
         HttpRequest request = HttpRequest.newBuilder()
                 .GET()
