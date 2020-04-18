@@ -43,6 +43,8 @@ public class MenuServiceIMPL implements MenuService {
     /**
      * Calls the MySQL server to get all of the current menus.
      * @return Menu[] Array of all the current menus.
+     * @throws SQLException SQL errors
+     * @throws ClassNotFroundException Only if com.mysql.cj.jdbc.Driver can not be found.
      */
     @Override
     public Menu[] getMenus() throws SQLException, ClassNotFoundException {
@@ -73,6 +75,8 @@ public class MenuServiceIMPL implements MenuService {
      * Calls the MySQL server to get the menu with the given id.
      * @param id id of the menu that you want to retrive.
      * @return MenuItem Menu that is retrived
+     * @throws SQLException SQL errors
+     * @throws ClassNotFroundException Only if com.mysql.cj.jdbc.Driver can not be found.
      */
     @Override
     public Menu getCurrentMenuById(int id) throws SQLException, ClassNotFoundException {
@@ -99,6 +103,8 @@ public class MenuServiceIMPL implements MenuService {
      * Calls the MySQL server to get the menu with the given menu name.
      * @param menuName Name of the menu that you want to retrive.
      * @return Menu Menu that is retrived.
+     * @throws SQLException SQL errors
+     * @throws ClassNotFroundException Only if com.mysql.cj.jdbc.Driver can not be found.
      */
     @Override
     public Menu getCurrentMenuByName(String menuName) throws SQLException, ClassNotFoundException {
@@ -126,6 +132,8 @@ public class MenuServiceIMPL implements MenuService {
      * Calls the MySQL server to get a list of all the previous versions of a menu.
      * @param origenalId id of the current menu.
      * @return Menu[] Array containing all the previouse versions.
+     * @throws SQLException SQL errors
+     * @throws ClassNotFroundException Only if com.mysql.cj.jdbc.Driver can not be found.
      */
     @Override
     public Menu[] getMenuHistoryById(int origenalId) throws SQLException, ClassNotFoundException {
@@ -159,6 +167,8 @@ public class MenuServiceIMPL implements MenuService {
      * Calls the MySQL server to get a list of all the previous versions of a menu.
      * @param menuName Name of the current menu.
      * @return Menu[] Array containing all the previouse versions.
+     * @throws SQLException SQL errors
+     * @throws ClassNotFroundException Only if com.mysql.cj.jdbc.Driver can not be found.
      */
     @Override
     public Menu[] getMenuHistoryByName(String menuName) throws SQLException, ClassNotFoundException {
@@ -193,6 +203,8 @@ public class MenuServiceIMPL implements MenuService {
      * Calls the MySQL server to add a new menu to the database.
      * @param menuRequest CreateMenuRequest that will be used to create the new menu.
      * @return Menu The new menu.
+     * @throws SQLException SQL errors
+     * @throws ClassNotFroundException Only if com.mysql.cj.jdbc.Driver can not be found.
      */
     @Override
     public Menu createNewMenu(CreateMenuRequest menuRequest) throws SQLException, ClassNotFoundException {
@@ -225,6 +237,8 @@ public class MenuServiceIMPL implements MenuService {
      * @param id id of the menu to update.
      * @param updatePairs Map<string, object> containing pairs to update, key=SQL column, value=value for column.
      * @return Menu Updated menu.
+     * @throws SQLException SQL errors
+     * @throws ClassNotFroundException Only if com.mysql.cj.jdbc.Driver can not be found.
      */
     @Override
     public Menu updateMenu(int id, Map<String,Object> updatePairs) throws SQLException, ClassNotFoundException {
@@ -260,6 +274,8 @@ public class MenuServiceIMPL implements MenuService {
      * @param menuName Menu of the menu to update.
      * @param updatePairs Map<string, object> containing pairs to update, key=SQL column, value=value for column.
      * @return Menu Updated menu.
+     * @throws SQLException SQL errors
+     * @throws ClassNotFroundException Only if com.mysql.cj.jdbc.Driver can not be found.
      */
     @Override
     public Menu updateMenu(String menuName, Map<String,Object> updatePairs) throws SQLException, ClassNotFoundException {
