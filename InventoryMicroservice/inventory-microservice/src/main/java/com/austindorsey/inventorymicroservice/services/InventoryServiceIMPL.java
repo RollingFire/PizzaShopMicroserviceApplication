@@ -32,7 +32,13 @@ public class InventoryServiceIMPL implements InventoryService {
     private Connection mysql;
 
     @Autowired private DriverManagerWrapper driverManagerWrapped;
-    
+
+    /**
+     * Calls the MySQL server to get all items in the inventory.
+     * @return InventoryItem[] Array of all items in the inventory.
+     * @throws SQLException SQL errors
+     * @throws ClassNotFroundException Only if com.mysql.cj.jdbc.Driver can not be found.
+     */
     @Override
     public InventoryItem[] getInventory() throws SQLException, ClassNotFoundException {
         try {
@@ -61,6 +67,13 @@ public class InventoryServiceIMPL implements InventoryService {
         }
     }
 
+    /**
+     * Calls the MySQL server to gets the inventory matching the given name.
+     * @param name Name of the inventory item.
+     * @return InventoryItem Inventory item that matches the name. Returns null if inventory item is not found.
+     * @throws SQLException SQL errors
+     * @throws ClassNotFroundException Only if com.mysql.cj.jdbc.Driver can not be found.
+     */
     @Override
     public InventoryItem getItemByName(String name) throws SQLException, ClassNotFoundException {
         try {
@@ -86,6 +99,13 @@ public class InventoryServiceIMPL implements InventoryService {
         }
     }
 
+    /**
+     * Calls the MySQL server to gets the inventory matching the given id.
+     * @param id id of the inventory item.
+     * @return InventoryItem Inventory item that matches the name. Returns null if inventory item is not found.
+     * @throws SQLException SQL errors
+     * @throws ClassNotFroundException Only if com.mysql.cj.jdbc.Driver can not be found.
+     */
     @Override
     public InventoryItem getItemByID(int id) throws SQLException, ClassNotFoundException {
         try {
@@ -111,6 +131,14 @@ public class InventoryServiceIMPL implements InventoryService {
         }
     }
 
+    /**
+     * Calls the MySQL server to add stock to the inventory item matching the given name.
+     * @param name Name of the inventory item.
+     * @param unitsAdded The number of units that you want to add to the inventory stick.
+     * @return double New number of units in the inventory. Returns -1 if inventory item not found.
+     * @throws SQLException SQL errors
+     * @throws ClassNotFroundException Only if com.mysql.cj.jdbc.Driver can not be found.
+     */
     @Override
     public double restockItemByName(String name, double unitsAdded) throws SQLException, ClassNotFoundException {
         try {
@@ -136,6 +164,14 @@ public class InventoryServiceIMPL implements InventoryService {
         }
     }
 
+    /**
+     * Calls the MySQL server to add stock to the inventory item matching the given id.
+     * @param id id of the inventory item.
+     * @param unitsAdded The number of units that you want to add to the inventory stick.
+     * @return double New number of units in the inventory. Returns -1 if inventory item not found.
+     * @throws SQLException SQL errors
+     * @throws ClassNotFroundException Only if com.mysql.cj.jdbc.Driver can not be found.
+     */
     @Override
     public double restockItemByID(int id, double unitsAdded) throws SQLException, ClassNotFoundException {
         try {
@@ -161,6 +197,13 @@ public class InventoryServiceIMPL implements InventoryService {
         }
     }
 
+    /**
+     * Calls the MySQL server to add a new item to the inventory.
+     * @param item InventoryItem New item to add to the inventory.
+     * @return InventoryItem Returns the inventory item that is created.
+     * @throws SQLException SQL errors
+     * @throws ClassNotFroundException Only if com.mysql.cj.jdbc.Driver can not be found.
+     */
     @Override
     public InventoryItem addItemToInventory(InventoryItem item) throws SQLException, ClassNotFoundException {
         try {
@@ -177,6 +220,13 @@ public class InventoryServiceIMPL implements InventoryService {
         }
     }
 
+    /**
+     * Calls the MySQL server to add a new item to the inventory.
+     * @param name Name of the new inventory item.
+     * @return InventoryItem Returns the inventory item that is created.
+     * @throws SQLException SQL errors
+     * @throws ClassNotFroundException Only if com.mysql.cj.jdbc.Driver can not be found.
+     */
     @Override
     public InventoryItem addItemToInventory(String name) throws SQLException, ClassNotFoundException {
         try {
@@ -191,6 +241,13 @@ public class InventoryServiceIMPL implements InventoryService {
         }
     }
 
+    /**
+     * Calls the MySQL server to remove an item from the inventory.
+     * @param name Name of the inventory item to remove.
+     * @return int Number of rows deleted.
+     * @throws SQLException SQL errors
+     * @throws ClassNotFroundException Only if com.mysql.cj.jdbc.Driver can not be found.
+     */
     @Override
     public int removeItemFromInventoryByName(String name) throws SQLException, ClassNotFoundException {
         try {
@@ -205,6 +262,13 @@ public class InventoryServiceIMPL implements InventoryService {
         }
     }
 
+    /**
+     * Calls the MySQL server to remove an item from the inventory.
+     * @param id Id of the inventory item to remove.
+     * @return int Number of rows deleted.
+     * @throws SQLException SQL errors
+     * @throws ClassNotFroundException Only if com.mysql.cj.jdbc.Driver can not be found.
+     */
     @Override
     public int removeItemFromInventoryByID(int id) throws SQLException, ClassNotFoundException {
         try {
@@ -219,6 +283,14 @@ public class InventoryServiceIMPL implements InventoryService {
         }
     }
 
+    /**
+     * Calls the MySQL server to remove an item from the inventory.
+     * @param name Name of the inventory item to update.
+     * @param item InventoryItem Contains the data to update the inventory item with. 
+     * @return InventoryItem Returns the updated inventory item
+     * @throws SQLException SQL errors
+     * @throws ClassNotFroundException Only if com.mysql.cj.jdbc.Driver can not be found.
+     */
     @Override
     public InventoryItem updateItemInInventoryByName(String name, InventoryItem item) throws SQLException, ClassNotFoundException {
         try {
@@ -238,6 +310,14 @@ public class InventoryServiceIMPL implements InventoryService {
         }
     }
 
+    /**
+     * Calls the MySQL server to remove an item from the inventory.
+     * @param id Id of the inventory item to update.
+     * @param item InventoryItem Contains the data to update the inventory item with. 
+     * @return InventoryItem Returns the updated inventory item
+     * @throws SQLException SQL errors
+     * @throws ClassNotFroundException Only if com.mysql.cj.jdbc.Driver can not be found.
+     */
     @Override
     public InventoryItem updateItemInInventoryByID(int id, InventoryItem item) throws SQLException, ClassNotFoundException {
         try {
