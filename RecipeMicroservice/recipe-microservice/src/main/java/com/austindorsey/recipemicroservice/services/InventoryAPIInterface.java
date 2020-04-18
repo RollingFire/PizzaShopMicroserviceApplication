@@ -32,7 +32,7 @@ public class InventoryAPIInterface {
 
         HttpClient client = HttpClient.newHttpClient();
         HttpRequest request = HttpRequest.newBuilder()
-                .uri(URI.create("http://" + inventoryHost + ":" + inventoryPort + "/inventory/restock/" + inventoryId))
+                .uri(URI.create("http://" + inventoryHost + ":" + inventoryPort + "/api/inventory/restock/" + inventoryId))
                 .header("Content-Type", "application/json")
                 .POST(HttpRequest.BodyPublishers.ofString(requestBody))
                 .build();
