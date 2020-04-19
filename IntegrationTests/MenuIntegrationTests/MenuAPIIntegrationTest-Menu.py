@@ -149,7 +149,7 @@ if __name__ == '__main__':
         try:
             if requests.get(baseURL + "/api/menu/IntegrationTestMenu").status_code != 404:
                 raise AbortTest("Integration abouted. IntegrationTestMenu already exists. Remove and try again.")
-            menu = {"id": None, "menuName": "IntegrationTestMenu", "items": "[]", "revisionDate": dateFormated}
+            menu = {"id": None, "menuName": "IntegrationTestMenu", "items": [], "revisionDate": dateFormated}
 
             #post
             intID = createMenu(menu)
@@ -167,13 +167,13 @@ if __name__ == '__main__':
             origenalMenu = menu
 
             lastMenu = origenalMenu.copy()
-            newItem = "[1,2,4]"
+            newItem = [1,2,4]
             lastMenu['items'] = newItem
             updateMenuById(lastMenu, menu["id"], newItem)
             getMenuById(lastMenu, menu["id"])
             
             currentMenu = lastMenu.copy()
-            newItem = "[4,5,6]"
+            newItem = [4,5,6]
             currentMenu['items'] = newItem
             updateMenuByName(currentMenu, menu["menuName"], newItem)
             getMenuByName(currentMenu, menu["menuName"])
