@@ -162,8 +162,7 @@ public class OrderItemServiceIMPL implements OrderItemService {
             String url = "jdbc:mysql://" + dbHost + ":" + dbPort + "/" + dbName;
             mysql = driverManagerWrapped.getConnection(url, dbUserName, dbPassword);
             Statement statement = mysql.createStatement();
-            getOrderItemById(id).getMenuItemId();
-            statement.executeUpdate(request.getSQLUpdateStatement(id, tableNameOrderItem, getOrderItemById(id).getMenuItemId()));
+            statement.executeUpdate(sql);
             return getOrderItemById(id);
         } finally {
             if (mysql != null) {

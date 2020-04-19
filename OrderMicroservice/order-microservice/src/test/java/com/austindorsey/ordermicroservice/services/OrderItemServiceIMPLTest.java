@@ -4,6 +4,7 @@ import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyString;
+import static org.mockito.ArgumentMatchers.anyInt;
 import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
@@ -15,6 +16,8 @@ import java.sql.ResultSet;
 import java.sql.Statement;
 
 import com.austindorsey.ordermicroservice.modal.OrderItem;
+import com.austindorsey.ordermicroservice.modal.OrderItemCreateRequest;
+import com.austindorsey.ordermicroservice.modal.OrderItemUpdateRequest;
 
 import org.junit.jupiter.api.Test;
 import org.mockito.ArgumentCaptor;
@@ -149,54 +152,51 @@ public class OrderItemServiceIMPLTest {
         verify(mockStatement, times(1)).executeQuery(anyString());
     }
     
-    // TODO addOrderItemToOrderId
-    // @Test
-    // public void addOrderItemToOrderId() throws Exception {
-    //     OrderItem item1 = new OrderItem(1, 2, 3, 4, "PLACED", 20.14, Date.valueOf("2012-3-31"));
-    //     OrderItemCreateRequest requestMock = Mockito.mock(OrderItemCreateRequest.class);
-    //     doReturn("").when(requestMock).getSQLInsertStatement(anyString());
-    //     //when(requestMock.getSQLInsertStatement(anyString())).thenReturn("INSERT INTO");
-    //     String expectedSQL = "INSERT INTO null (orderId, menuItemId, quantity, orderItemStatus, cost) VALUES (" + 
-    //                             item1.getOrderId() + ", " +
-    //                             item1.getMenuItemId() + ", " +
-    //                             item1.getQuantity() + ", " +
-    //                             item1.getOrderItemStatus() + ", " +
-    //                             item1.getCost().doubleValue() + ", " +
-    //                             ");";
+    @Test
+    public void addOrderItemToOrderId() throws Exception {
+        OrderItem item1 = new OrderItem(1, 2, 3, 4, "PLACED", 20.14, Date.valueOf("2012-3-31"));
+        OrderItemCreateRequest requestMock = Mockito.mock(OrderItemCreateRequest.class);
+        doReturn("MockedSQLInsert").when(requestMock).getSQLInsertStatement(any());
+        doReturn("MockedSQLSelect").when(requestMock).getSQLSelectStatement(any());
+        String expectedSQLInsert = "MockedSQLInsert";
+        String expectedSQLQuery = "MockedSQLSelect";
 
-    //     Mockito.mock(DriverManagerWrapper.class);
-    //     doReturn(mockConnection).when(driverManagerWrapper).getConnection(any(), any(), any());
-    //     when(mockConnection.createStatement()).thenReturn(mockStatement);
-    //     when(mockStatement.executeUpdate(anyString())).thenReturn(1);
-    //     when(mockStatement.executeQuery(anyString())).thenReturn(mockResult);
-    //     when(mockResult.next())
-    //         .thenReturn(true)
-    //         .thenReturn(false);
-    //     when(mockResult.getInt("id"))
-    //         .thenReturn(item1.getId());
-    //     when(mockResult.getInt("menuItemId"))
-    //         .thenReturn(item1.getMenuItemId());
-    //     when(mockResult.getInt("quantity"))
-    //         .thenReturn(item1.getQuantity());
-    //     when(mockResult.getString("orderItemStatus"))
-    //         .thenReturn(item1.getOrderItemStatus());
-    //     when(mockResult.getDouble("cost"))
-    //         .thenReturn(item1.getCost().doubleValue());
-    //     when(mockResult.getDate("lastRevisionDate"))
-    //         .thenReturn(item1.getLastRevisionDate());
+        Mockito.mock(DriverManagerWrapper.class);
+        doReturn(mockConnection).when(driverManagerWrapper).getConnection(any(), any(), any());
+        when(mockConnection.createStatement()).thenReturn(mockStatement);
+        when(mockStatement.executeUpdate(any())).thenReturn(1);
+        when(mockStatement.executeQuery(any())).thenReturn(mockResult);
+        when(mockResult.next())
+            .thenReturn(true)
+            .thenReturn(false);
+        when(mockResult.getInt("id"))
+            .thenReturn(item1.getId());
+        when(mockResult.getInt("menuItemId"))
+            .thenReturn(item1.getMenuItemId());
+        when(mockResult.getInt("quantity"))
+            .thenReturn(item1.getQuantity());
+        when(mockResult.getString("orderItemStatus"))
+            .thenReturn(item1.getOrderItemStatus());
+        when(mockResult.getDouble("cost"))
+            .thenReturn(item1.getCost().doubleValue());
+        when(mockResult.getDate("lastRevisionDate"))
+            .thenReturn(item1.getLastRevisionDate());
 
-    //     OrderItem returnedItems = service.addOrderItemToOrderId(item1.getOrderId(), requestMock);
+        OrderItem returnedItems = service.addOrderItemToOrderId(item1.getOrderId(), requestMock);
 
-    //     Mockito.verify(mockStatement).executeUpdate(captor.capture());
-    //     String capturedSQL = captor.getValue();
+        Mockito.verify(mockStatement).executeUpdate(captor.capture());
+        String capturedSQLUpdate = captor.getValue();
+        Mockito.verify(mockStatement).executeQuery(captor.capture());
+        String capturedSQLQuery = captor.getValue();
 
-    //     assertEquals(item1, returnedItems);
-    //     assertEquals(expectedSQL, capturedSQL);
-    //     verify(driverManagerWrapper, times(1)).getConnection(any(), any(), any());
-    //     verify(mockConnection, times(1)).createStatement();
-    //     verify(mockStatement, times(1)).executeUpdate(anyString());
-    //     verify(mockStatement, times(1)).executeQuery(anyString());
-    // }
+        assertEquals(item1, returnedItems);
+        assertEquals(expectedSQLInsert, capturedSQLUpdate);
+        assertEquals(expectedSQLQuery, capturedSQLQuery);
+        verify(driverManagerWrapper, times(1)).getConnection(any(), any(), any());
+        verify(mockConnection, times(1)).createStatement();
+        verify(mockStatement, times(1)).executeUpdate(anyString());
+        verify(mockStatement, times(1)).executeQuery(anyString());
+    }
 
     @Test
     public void getOrderItemById_found() throws Exception {
@@ -258,35 +258,31 @@ public class OrderItemServiceIMPLTest {
         verify(mockStatement, times(1)).executeQuery(anyString());
     }
 
-    // TODO updateOrderItemById
-    // @Test
-    // public void updateOrderItemById() throws Exception {
-    //     OrderItem oldItem = new OrderItem(1, 2, 3, 4, "PLACED", 20.14, Date.valueOf("2012-3-31"));
-    //     OrderItem newItem = new OrderItem(1, 2, 3, 6, "CANCELLED", 31.14, Date.valueOf("2012-4-2"));
-    //     OrderItemUpdateRequest request = new OrderItemUpdateRequest(newItem.getQuantity(), newItem.getOrderItemStatus());
-    //     String expectedSQL = "UPDATE null SET " + 
-    //                         "quantity=" + request.getQuantity() + ", " +
-    //                         "orderItemStatus='" + request.getOrderItemStatus() + 
-    //                         "cost=" + newItem.getCost() + 
-    //                         "' WHERE id=" + oldItem.getId() + ";";
+    @Test
+    public void updateOrderItemById() throws Exception {
+        OrderItem oldItem = new OrderItem(1, 2, 3, 4, "PLACED", 20.14, Date.valueOf("2012-3-31"));
+        OrderItem newItem = new OrderItem(1, 2, 3, 6, "CANCELLED", 31.14, Date.valueOf("2012-4-2"));
+        OrderItemUpdateRequest requestMock = Mockito.mock(OrderItemUpdateRequest.class);
+        doReturn("MockedSQL").when(requestMock).getSQLUpdateStatement(anyInt(), any(), anyInt());
+        String expectedSQL = "MockedSQL";
 
-    //     Mockito.mock(DriverManagerWrapper.class);
-    //     doReturn(mockConnection).when(driverManagerWrapper).getConnection(any(), any(), any());
-    //     when(mockConnection.createStatement()).thenReturn(mockStatement);
-    //     when(mockStatement.executeUpdate(anyString())).thenReturn(1);
+        doReturn(newItem).when(service).getOrderItemById(newItem.getId());
+        Mockito.mock(DriverManagerWrapper.class);
+        doReturn(mockConnection).when(driverManagerWrapper).getConnection(any(), any(), any());
+        when(mockConnection.createStatement()).thenReturn(mockStatement);
+        when(mockStatement.executeUpdate(anyString())).thenReturn(1);
 
-    //     OrderItem returnedItems = service.updateOrderItemById(oldItem.getId(), request);
+        OrderItem returnedItems = service.updateOrderItemById(oldItem.getId(), requestMock);
 
-    //     Mockito.verify(mockStatement).executeUpdate(captor.capture());
-    //     String capturedSQL = captor.getValue();
+        Mockito.verify(mockStatement).executeUpdate(captor.capture());
+        String capturedSQL = captor.getValue();
 
-    //     assertEquals(newItem, returnedItems);
-    //     assertEquals(expectedSQL, capturedSQL);
-    //     verify(driverManagerWrapper, times(1)).getConnection(any(), any(), any());
-    //     verify(mockConnection, times(1)).createStatement();
-    //     verify(mockStatement, times(1)).executeUpdate(anyString());
-    //     verify(mockStatement, times(1)).executeQuery(anyString());
-    // }
+        assertEquals(newItem, returnedItems);
+        assertEquals(expectedSQL, capturedSQL);
+        verify(driverManagerWrapper, times(1)).getConnection(any(), any(), any());
+        verify(mockConnection, times(1)).createStatement();
+        verify(mockStatement, times(1)).executeUpdate(anyString());
+    }
 
     @Test
     public void updateOrderItemStatusById() throws Exception {
