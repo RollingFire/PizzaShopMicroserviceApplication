@@ -17,6 +17,7 @@ import java.sql.Statement;
 import com.austindorsey.ordermicroservice.modal.Order;
 import com.austindorsey.ordermicroservice.modal.OrderCreateRequest;
 import com.austindorsey.ordermicroservice.modal.OrderItem;
+import com.austindorsey.ordermicroservice.modal.OrderItemCreateRequest;
 import com.austindorsey.ordermicroservice.modal.OrderItemCreateRequestShort;
 import com.austindorsey.ordermicroservice.modal.OrderUpdateRequest;
 import com.austindorsey.ordermicroservice.modal.OrderWithItems;
@@ -262,53 +263,57 @@ public class OrderServiceIMPLTest {
         verify(mockStatement, times(1)).executeQuery(anyString());
     }
 
-    // TODO Fix this test
-    // @Test
-    // public void postOrder_2Items() throws Exception {
-    //     Order expectedOrder = new Order(1, 2, "PLACED", Date.valueOf("2012-3-31"));
-    //     OrderItem item1 = new OrderItem(1, 2, 3, 4, "PLACED", 20.14, Date.valueOf("2012-3-31"));
-    //     OrderItem item2 = new OrderItem(2, 2, 4, 5, "PROCESSING", 10.80, Date.valueOf("2012-3-20"));
-    //     OrderItem[] items = {item1, item2};
-    //     OrderItemCreateRequestShort item1Request = Mockito.mock(OrderItemCreateRequestShort.class);
-    //     OrderItemCreateRequestShort item2Request = Mockito.mock(OrderItemCreateRequestShort.class);
-    //     OrderItemCreateRequestShort[] itemRequests = {item1Request, item2Request};
-    //     OrderCreateRequest request = new OrderCreateRequest(2, "PLACED", itemRequests);
-    //     String expectedSQL = "INSERT INTO null (customerId, orderStatus) VALUES (" +
-    //                         expectedOrder.getCustomerId() + ", '" +
-    //                         expectedOrder.getOrderStatus() + "');";
-    //     OrderWithItems expected = new OrderWithItems(expectedOrder, items);
+    @Test
+    public void postOrder_2Items() throws Exception {
+        Order expectedOrder = new Order(1, 2, "PLACED", Date.valueOf("2012-3-31"));
+        OrderItem item1 = new OrderItem(1, 1, 3, 4, "PLACED", 20.14, Date.valueOf("2012-3-31"));
+        OrderItem item2 = new OrderItem(2, 1, 4, 5, "PROCESSING", 10.80, Date.valueOf("2012-3-20"));
+        OrderItem[] items = {item1, item2};
+        OrderItemCreateRequestShort item1RequestShort = Mockito.mock(OrderItemCreateRequestShort.class);
+        OrderItemCreateRequestShort item2RequestShort = Mockito.mock(OrderItemCreateRequestShort.class);
+        OrderItemCreateRequestShort[] itemRequestsShort = {item1RequestShort, item2RequestShort};
+        OrderCreateRequest request = new OrderCreateRequest(2, "PLACED", itemRequestsShort);
+        String expectedSQL = "INSERT INTO null (customerId, orderStatus) VALUES (" +
+                            expectedOrder.getCustomerId() + ", '" +
+                            expectedOrder.getOrderStatus() + "');";
+        OrderWithItems expected = new OrderWithItems(expectedOrder, items);
 
-    //     doReturn(item1).when(orderItemService).addOrderItemToOrderId(expectedOrder.getId(), item1Request);
-    //     doReturn(item2).when(orderItemService).addOrderItemToOrderId(expectedOrder.getId(), item2Request);
-    //     Mockito.mock(DriverManagerWrapper.class);
-    //     doReturn(mockConnection).when(driverManagerWrapper).getConnection(any(), any(), any());
-    //     when(mockConnection.createStatement()).thenReturn(mockStatement);
-    //     when(mockStatement.executeUpdate(anyString())).thenReturn(1);
-    //     when(mockStatement.executeQuery(anyString())).thenReturn(mockResult);
-    //     when(mockResult.next())
-    //         .thenReturn(true)
-    //         .thenReturn(false);
-    //     when(mockResult.getInt("id"))
-    //         .thenReturn(expectedOrder.getId());
-    //     when(mockResult.getInt("customerId"))
-    //         .thenReturn(expectedOrder.getCustomerId());
-    //     when(mockResult.getString("orderStatus"))
-    //         .thenReturn(expectedOrder.getOrderStatus());
-    //     when(mockResult.getDate("datePlaced"))
-    //         .thenReturn(expectedOrder.getDatePlaced());
+        OrderItemCreateRequest item1Request = Mockito.mock(OrderItemCreateRequest.class);
+        OrderItemCreateRequest item2Request = Mockito.mock(OrderItemCreateRequest.class);
+        doReturn(item1Request).when(item1RequestShort).toOrderItemCreateRequest(expectedOrder.getId());
+        doReturn(item2Request).when(item2RequestShort).toOrderItemCreateRequest(expectedOrder.getId());
+        doReturn(item1).when(orderItemService).addOrderItemToOrderId(expectedOrder.getId(), item1Request);
+        doReturn(item2).when(orderItemService).addOrderItemToOrderId(expectedOrder.getId(), item2Request);
+        
+        Mockito.mock(DriverManagerWrapper.class);
+        doReturn(mockConnection).when(driverManagerWrapper).getConnection(any(), any(), any());
+        when(mockConnection.createStatement()).thenReturn(mockStatement);
+        when(mockStatement.executeUpdate(anyString())).thenReturn(1);
+        when(mockStatement.executeQuery(anyString())).thenReturn(mockResult);
+        when(mockResult.next())
+            .thenReturn(true)
+            .thenReturn(false);
+        when(mockResult.getInt("id"))
+            .thenReturn(expectedOrder.getId());
+        when(mockResult.getInt("customerId"))
+            .thenReturn(expectedOrder.getCustomerId());
+        when(mockResult.getString("orderStatus"))
+            .thenReturn(expectedOrder.getOrderStatus());
+        when(mockResult.getDate("datePlaced"))
+            .thenReturn(expectedOrder.getDatePlaced());
 
-    //     OrderWithItems returned = service.postOrder(request);
+        OrderWithItems returned = service.postOrder(request);
 
-    //     Mockito.verify(mockStatement).executeUpdate(captor.capture());
-    //     String capturedSQL = captor.getValue();
+        Mockito.verify(mockStatement).executeUpdate(captor.capture());
+        String capturedSQL = captor.getValue();
 
-    //     assertEquals(expected, returned);
-    //     assertEquals(expectedSQL, capturedSQL);
-    //     verify(driverManagerWrapper, times(1)).getConnection(any(), any(), any());
-    //     verify(mockConnection, times(1)).createStatement();
-    //     verify(mockStatement, times(1)).executeUpdate(anyString());
-    //     verify(mockStatement, times(1)).executeQuery(anyString());
-    // }
+        assertEquals(expected, returned);
+        assertEquals(expectedSQL, capturedSQL);
+        verify(driverManagerWrapper, times(1)).getConnection(any(), any(), any());
+        verify(mockConnection, times(1)).createStatement();
+        verify(mockStatement, times(1)).executeUpdate(anyString());
+        verify(mockStatement, times(1)).executeQuery(anyString());
+    }
     
     @Test
     public void getOrderById_found() throws Exception {
