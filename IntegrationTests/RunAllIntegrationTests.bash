@@ -14,3 +14,7 @@ echo "--------------------Menu--------------------"
 cd ../MenuIntegrationTests
 py MenuAPIIntegrationTest-Menu.py
 py MenuAPIIntegrationTest-MenuItem.py
+
+echo "--------------------Recipe--------------------"
+cd ../RecipeIntegrationTests
+py RecipeAPIIntegrationTest.py
