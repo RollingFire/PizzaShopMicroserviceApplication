@@ -123,7 +123,7 @@ def getRecipeIngredientByID(expected, ingredientId):
 def createRecipe(expected, menuItemId, ingredients):
     try:
         response = requests.post(recipeBaseURL + "/api/recipe/" + str(menuItemId), json=ingredients)
-        if response.status_code == 200:
+        if response.status_code == 201:
             item = response.json()
             expected[0]["id"] = item[0]["id"]
             if item == expected:
