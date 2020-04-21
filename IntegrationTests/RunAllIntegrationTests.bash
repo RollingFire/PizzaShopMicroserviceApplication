@@ -18,3 +18,7 @@ py MenuAPIIntegrationTest-MenuItem.py
 echo "--------------------Recipe--------------------"
 cd ../RecipeIntegrationTests
 py RecipeAPIIntegrationTest.py
+
+echo "--------------------Order--------------------"
+cd ../OrderIntegrationTests
+py OrderAPIIntegrationTest.py

@@ -136,9 +136,9 @@ if __name__ == '__main__':
 
             #404 checks
             requestBody = {"catagory": menuItem['catagory']}
-            testFor404(requests.get(baseURL + "/api/menuItem/" + str(menuItem["id"] + 9999)))
-            testFor404(requests.put(baseURL + "/api/menuItem/" + str(menuItem["id"] + 9999), json=requestBody))
-            testFor404(requests.get(baseURL + "/api/menuItem/" + str(menuItem["id"] + 9999) + "/history"))
+            testFor404(requests.get(baseURL + "/api/menuItem/0"))
+            testFor404(requests.put(baseURL + "/api/menuItem/0", json=requestBody))
+            testFor404(requests.get(baseURL + "/api/menuItem/0/history"))
         except AbortTest as err:
             print(err)
     except (KeyboardInterrupt, SystemExit) as e:
