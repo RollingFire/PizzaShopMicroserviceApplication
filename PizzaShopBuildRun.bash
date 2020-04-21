@@ -2,7 +2,7 @@ echo "--------------------Setting up Network--------------------"
 docker network create pizza-shop
 echo "--------------------Building Database--------------------"
 cd Database
-./BuildDatabase.bash
+./BuildSQL.bash
 echo "--------------------Building Inventory--------------------"
 cd ../InventoryMicroservice
 ./BuildInventory.bash
@@ -21,3 +21,6 @@ cd ../RecipeMicroservice
 echo "--------------------Building Order--------------------"
 cd ../OrderMicroservice
 ./BuildOrder.bash
+echo "--------------------Building Frontend--------------------"
+cd ../Frontend/PizzaShop
+./BuildFrontend.bash
