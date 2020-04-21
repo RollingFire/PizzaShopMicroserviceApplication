@@ -49,7 +49,7 @@ public class RecipeIngredientRESTController {
         try {
             RecipeIngredient[] recipeIngredients = recipeService.createRecipe(menuItemId, requestBody);
             if (recipeIngredients.length > 0) {
-                return new ResponseEntity<>(recipeIngredients, HttpStatus.OK);
+                return new ResponseEntity<>(recipeIngredients, HttpStatus.CREATED);
             } else {
                 return new ResponseEntity<>(HttpStatus.NOT_FOUND);
             }

@@ -54,7 +54,7 @@ public class OrderItemCreateRequest {
      * @throws Exception Throws exception if the status code of the call to the menu api is not 200
      */
     public void updateTotalCost() throws Exception {
-        String url = "http://" + menuHost + ":" + menuPort + "/menuItem/" + menuItemId;
+        String url = "http://" + menuHost + ":" + menuPort + "/api/menuItem/" + menuItemId;
         HttpClient client = HttpClient.newHttpClient();
         HttpRequest request = HttpRequest.newBuilder()
                 .GET()
