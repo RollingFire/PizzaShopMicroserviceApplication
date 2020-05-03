@@ -37,6 +37,8 @@
             </form>     
         </div>
     </div>
+    <p *ngIf="currentMenu.menu.id == 0 && !isAdmin">There are no menus created. Log in as admin to create one.</p>
+    <p *ngIf="getCatagories().length == 0 && !isAdmin">There are no menuItems created for this menu. Log in as admin to add some.</p>
     <div class="menuCatagoryContainer" *ngFor="let catagory of getCatagories()" id="catagory_{{catagory}}">
         <h2 class="catagoryTitle">{{catagory}}</h2>
         <div *ngFor="let item of currentMenu.menuItems.get(catagory)">
