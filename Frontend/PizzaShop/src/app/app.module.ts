@@ -13,6 +13,7 @@ import { MenuDisplayComponent } from './features/menu/components/menu-display/me
 import { HeaderUserSectionComponent } from './core/components/header/components/header-user-section/header-user-section.component';
 import { HeaderComponent } from './core/components/header/header.component';
 import { LoginPageComponent } from './features/login-page/login-page.component';
+import { InventoryPageComponent } from './features/inventory-page/inventory-page.component';
 
 
 @NgModule({
@@ -25,7 +26,8 @@ import { LoginPageComponent } from './features/login-page/login-page.component';
     MenuDisplayComponent,
     HeaderUserSectionComponent,
     HeaderComponent,
-    LoginPageComponent
+    LoginPageComponent,
+    InventoryPageComponent
   ],
   imports: [
     BrowserModule,

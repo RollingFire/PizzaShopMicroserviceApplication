@@ -1,6 +1,6 @@
 <div class="navbarContainer">
     <ul class="tabList">
-        <li *ngFor="let tab of tabs" class="navTab" id="tab_{{tab.name}}" [ngClass]="{'active': isActive(tab.href)}">
+        <li *ngFor="let tab of displayTabs" class="navTab" id="tab_{{tab.name}}" [ngClass]="{'active': isActive(tab.href)}">
             <a href={{tab.href}}>{{tab.name}}</a>
         </li>
     </ul>

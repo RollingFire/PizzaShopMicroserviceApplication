@@ -1,0 +1,75 @@
+<div>
+    <div>
+        <div id="createNewInventoryItemButton">
+            <button (click)=openCreateNewInventoryItem() style="margin: 12px;">Add item to inventory</button>
+        </div>
+        <div id="createNewInventoryItemForm" style="display: none;">
+            <form #createInventoryItemForm="ngForm" (ngSubmit)="createInventoryItem(createInventoryItemForm)">
+                <div>
+                    <label>Item Name</label>
+                    <input type="text" name="name" required ngModel>
+                </div>
+                <div>
+                    <label>units</label>
+                    <input type="number" name="units" required ngModel>
+                </div>
+                <div>
+                    <label>unitType</label>
+                    <input type="text" name="unitType" required ngModel>
+                </div>
+                <div>
+                    <label>restockAt</label>
+                    <input type="number" name="restockAt" required ngModel>
+                </div>
+                <div>
+                    <label>restockAmount</label>
+                    <input type="number" name="restockAmount" required ngModel>
+                </div>
+                <div class="itemButtoms">
+                    <input type="submit" value="Create" (click)="closeCreateNewInventoryItem()">
+                    <input type="button" value="Cancel" (click)="closeCreateNewInventoryItem()">
+                </div>
+            </form>   
+        </div>
+    </div>
+    <div>
+        <div class="itemTableHeader">
+            <span class="itemIdColumn">ID</span>
+            <span class="itemNameColumn">Name</span>
+            <span class="itemUnitsColumn">Units</span>
+            <span class="itemUnitTypeColumn">UnitType</span>
+            <span class="itemRestockAtColumn">RestockAt</span>
+            <span class="itemRestockAmountColumn">RestockAmount</span>
+            <div class="itemEditButtonColumnContainer"></div>          
+        </div>
+        <div  class="inventoryItem" *ngFor="let item of inventory" id="inventoryItem_{{item.id}}">
+            <div *ngIf="rowEditItemId == null || rowEditItemId != item.id" style="display: inherit;width: 100%;">
+                <span class="itemIdColumn">{{item.id}}</span>
+                <span class="itemNameColumn">{{item.name}}</span>
+                <span class="itemUnitsColumn">{{item.units}}</span>
+                <span class="itemUnitTypeColumn">{{item.unitType}}</span>
+                <span class="itemRestockAtColumn">{{item.restockAt}}</span>
+                <span class="itemRestockAmountColumn">{{item.restockAmount}}</span>
+                <div class="itemEditButtonColumnContainer">
+                    <span class="itemEditButton"><button id="editItemButton_{{item.id}}" (click)="openEditInventoryItem(item.id)">Edit</button></span>
+                    <span class="itemEditButton"><button id="deleteItemButton_{{item.id}}" (click)="deleteInventoryItem(item)">Delete</button></span>
+                </div>
+            </div>
+            <div *ngIf="rowEditItemId == item.id" style="display: inherit;width: 100%;">
+                <form #editInventoryItemform="ngForm" (ngSubmit)="submitEditInventoryItem(item, editInventoryItemform)" style="display: inherit;width: 100%;">
+                    <span class="itemIdColumn">{{item.id}}</span>
+                    <span class="itemNameColumn"><input type="text" id="editName_{{item.id}}" style="width: 100%;" name="name" required [(ngModel)]="item.name"></span>
+                    <span class="itemUnitsColumn"><input type="number" id="editUnits_{{item.id}}" style="width: 100%;" name="units" required [(ngModel)]="item.units"></span>
+                    <span class="itemUnitTypeColumn"><input type="text" id="editUnitType_{{item.id}}" style="width: 100%;" name="unitType" required [(ngModel)]="item.unitType"></span>
+                    <span class="itemRestockAtColumn"><input type="number" id="editRestockAt_{{item.id}}" style="width: 100%;" name="restockAt" required [(ngModel)]="item.restockAt"></span>
+                    <span class="itemRestockAmountColumn"><input type="number" id="editRestockAmount_{{item.id}}" style="width: 100%;" name="restockAmount" required [(ngModel)]="item.restockAmount"></span>
+                    <div class="itemEditButtonColumnContainer">
+                        <span class="itemEditButton"><input type="submit" id="saveItemButton_{{item.id}}" value="Save" style="width: 100%;"></span>
+                        <span class="itemEditButton"><input type="button" id="cancelItemButton_{{item.id}}" (click)="closeEditInventoryItem()" value="Cancel" style="width: 100%;"></span>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    <p *ngIf="inventory.length == 0" style="margin: 24px;">Inventory is empty.</p>
+</div>

@@ -1,0 +1,75 @@
+.inventoryContainer {
+    width: 96%;
+    margin: auto;
+    margin-top: 12px;
+    border-collapse: collapse;
+}
+
+.inventoryItem {
+    display: flex;
+    width: 96%;
+    margin: auto;
+    border: solid;
+    border-width: 1px 0;
+    border-color:  #999999;
+}
+
+.itemTableHeader {
+    display: flex;
+    width: 96%;
+    margin: auto;
+    background-color: #999999;
+}
+
+.itemIdColumn {
+    text-align: left;
+    width: 15%;
+    padding: 10px;
+    margin: auto;
+}
+
+.itemNameColumn {
+    text-align: left;
+    width: 20%;
+    padding: 10px;
+    margin: auto;
+}
+
+.itemUnitsColumn {
+    text-align: left;
+    width: 15%;
+    padding: 10px;
+    margin: auto;
+}
+
+.itemUnitTypeColumn {
+    text-align: left;
+    width: 10%;
+    padding: 10px;
+    margin: auto;
+}
+
+.itemRestockAtColumn {
+    text-align: left;
+    width: 10%;
+    padding: 10px;
+    margin: auto;
+}
+
+.itemRestockAmountColumn {
+    text-align: left;
+    width: 15%;
+    padding: 10px;
+    margin: auto;
+}
+
+.itemEditButtonColumnContainer {
+    display: flex;
+    flex-wrap: wrap;
+    width: 15%;
+    padding: 10px;
+}
+
+.itemEditButton {
+    padding: 5px;
+}

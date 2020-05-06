@@ -8,5 +8,10 @@
         "target": "http://pizza-menu-api:9095",
         "secure": false,
         "changeOrigin": true
+    },
+    "/api/inventory/*": {
+        "target": "http://pizza-inventory-api:9093",
+        "secure": false,
+        "changeOrigin": true
     }
 }
